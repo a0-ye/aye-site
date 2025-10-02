@@ -1,0 +1,20 @@
+.container{
+    align-self:center;
+
+    width: 94px;
+    height: 114px;
+    background-color: rgb(255, 238, 206);
+    border: 6px;
+    border-style: double;
+    border-color: rgb(63, 99, 69);
+    border-radius: 8px;
+
+    color: black;
+}
+
+.container:hover{
+    background-color: rgb(236, 221, 191);
+}
+.container::shadow{
+    box-shadow: inset;
+}
