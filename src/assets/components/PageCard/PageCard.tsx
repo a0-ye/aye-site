@@ -3,13 +3,14 @@ import './PageCard.css'
 
 interface PageCardProps {
     id: number;
-    expanded: boolean;  // 0 or 1
-    content: React.ReactNode;   // html content
+    activeCard: number;
+    thumbnail?: React.ReactNode; // html content for minimized
+    content: React.ReactNode;   // html content for expanded
     onClick?: () => void;
 }
 
 const PageCard = (props: PageCardProps) => {
-    if(props.expanded){
+    if(props.id === props.activeCard){
 
         return (
             <div className='container grown'>
@@ -23,7 +24,9 @@ const PageCard = (props: PageCardProps) => {
                     className='container'
                     onClick = {props.onClick}
                 >
-                    click me! {props.id}
+                    {props.thumbnail}
+                    <p></p>
+                    <> ID:{props.id}</>
                 </div>
             )
     }
