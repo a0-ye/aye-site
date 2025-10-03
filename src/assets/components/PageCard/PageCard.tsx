@@ -12,10 +12,9 @@ const PageCard = (props: PageCardProps) => {
     if(props.expanded){
 
         return (
-            <div className='container.grown'>
-
+            <div className='container grown'>
+                {props.content}
             </div>
-
         )
 
     } else{

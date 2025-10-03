@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 import PageCard from './assets/components/PageCard/PageCard'
@@ -19,7 +17,7 @@ function App() {
         <button>contact</button> */}
       </div>
       
-      <div>
+      <div className='cardrow'>
         <PageCard content={<div> Hello World!</div>}    id={0} expanded={activeCard === 0}
           onClick={() => setActiveCard(0)}
         />

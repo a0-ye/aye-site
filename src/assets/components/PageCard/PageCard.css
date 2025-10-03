@@ -1,5 +1,9 @@
 .container{
+    margin: 10px;
+    padding: 10px;
     align-self:center;
+    align-items: center;
+    position:relative;
 
     width: 94px;
     height: 114px;
@@ -9,12 +13,24 @@
     border-color: rgb(63, 99, 69);
     border-radius: 8px;
 
+    transition: width 0.2s, height 0.2s, box-shadow 0.2s;
     color: black;
 }
 
 .container:hover{
     background-color: rgb(236, 221, 191);
 }
-.container::shadow{
-    box-shadow: inset;
+.container.grown{
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    margin-inline: auto; 
+    width: fit-content;
+    
+    width: 500px;
+    height: 500px;
+    z-index: 10;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* Optional: add shadow */
+    transition: width 0.2s, height 0.2s, box-shadow 0.2s;
+
 }
