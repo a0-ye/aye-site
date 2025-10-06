@@ -2,8 +2,11 @@ import { useState } from 'react'
 import './App.css'
 
 import PageCard from './assets/components/PageCard/PageCard'
+import SpringPageCard from './assets/components/SpringPageCard/SpringPageCard'
 import AboutMeContent from './assets/CardContent/AboutMe'
 import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
+
+import Tilt from 'react-parallax-tilt';
 
 
 function App() {
@@ -20,17 +23,18 @@ function App() {
         <button>contact</button> */}
       </div>
       
-      <div className='cardrow'>
-        <PageCard 
-        content=<> {closeCard} {AboutMeContent}</> 
-        thumbnail=<>  {AboutMeThumbnail}  </>
-        id={0} 
-        activeCard={activeCard}
-        onClick={() => setActiveCard(0)}
-        />
+      {/* <div className='cardrow'>
+          <PageCard 
+          content=<> {closeCard} {AboutMeContent}</> 
+          thumbnail=<>  {AboutMeThumbnail}  </>
+          id={0} 
+          activeCard={activeCard}
+          onClick={() => setActiveCard(0)}
+          />
         
+
         <PageCard 
-        content=<> {closeCard}{} <p></p> <img src='src/assets/img/cow.png'/> </>
+        content=<> {closeCard}{} <p></p>  </>
         thumbnail= <>  {}{}  </>
         id={1} 
         activeCard={activeCard}
@@ -44,8 +48,26 @@ function App() {
         activeCard={activeCard}
         onClick={() => setActiveCard(2)}
         />
+      </div> */}
+
+      <div className='SpringRow'> 
+        <SpringPageCard 
+          id={0} 
+          activeCard={activeCard}
+          content={AboutMeContent}
+          thumbnail={0}
+          onClick={() => setActiveCard(0)}
+          />
+        <SpringPageCard 
+          id={1} 
+          activeCard={activeCard}
+          content={<img src='src/assets/img/cow.png'/>}
+          thumbnail={1}
+          onClick={() => setActiveCard(1)}
+          />
       </div>
-      <h1></h1>
+
+      <h1>gurt</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}

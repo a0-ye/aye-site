@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './PageCard.css'
+
+
+import Tilt from 'react-parallax-tilt';
+
 
 interface PageCardProps {
     id: number;
@@ -13,13 +17,14 @@ const PageCard = (props: PageCardProps) => {
     if(props.id === props.activeCard){
 
         return (
-            <div className='container grown'>
-                {props.content}
-            </div>
+                <div className='container grown'>
+                    {props.content}
+                </div>
         )
 
     } else{
         return (
+            <Tilt>
                 <div 
                     className='container'
                     onClick = {props.onClick}
@@ -28,6 +33,7 @@ const PageCard = (props: PageCardProps) => {
                     <p></p>
                     <> ID:{props.id}</>
                 </div>
+            </Tilt>
             )
     }
     

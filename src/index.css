@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #beb998;
+  background-color: #575757;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -48,6 +48,7 @@ button {
 }
 button:hover {
   border-color: #646cff;
+  transform: perspective(1000px) rotateX(10deg) rotateY(10deg) scale(1.05);
 }
 button:focus,
 button:focus-visible {
