@@ -44,7 +44,7 @@ interface SpringPageCardProps {
         if (!isCentered) {
             const dx = centerX - cardCenterX;
             const dy = centerY - cardCenterY;
-            api.start({ x: dx, y: dy, scale: 1.2 });
+            api.start({ x: dx, y: dy, scale: 9 });
         } else {
             api.start({ x: 0, y: 0, scale: 1 });
         }
@@ -59,6 +59,7 @@ interface SpringPageCardProps {
         style = {{
             width:cardWidth,
             height:cardHeight,
+            
             background: '#915dccff',
             borderRadius: 8,
             ...springs
