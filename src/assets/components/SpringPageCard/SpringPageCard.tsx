@@ -16,7 +16,7 @@ interface SpringPageCardProps {
 
 
 /**
- * A card that when clicked, moves to the center of the screen, then grows in size, now displaying more detailed content
+ * A card that when clicked, moves to the center of the screen, then expands to display more detailed content
  * 
  * 
  * Achieved using React Spring.
@@ -29,7 +29,7 @@ interface SpringPageCardProps {
     const cardHeight = 80;
     const [isCentered, setIsCentered] = useState(false);
     const [springs, api] = useSpring( () => ({
-        from: {x:0, y:0, scale: [1,1], size: '20%'},
+        from: {x:0, y:0, width:cardWidth, height:cardHeight, zIndex:0}, // transform: 'scale(1)'
     }))
 
     const triggerSpring = () => {
@@ -38,15 +38,29 @@ interface SpringPageCardProps {
         const rect = cardRef.current.getBoundingClientRect();
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
-        const cardCenterX = rect.left + rect.width / 2;
-        const cardCenterY = rect.top + rect.height / 2;
+
 
         if (!isCentered) {
+            const cardCenterX = rect.left + rect.width / 2;
+            const cardCenterY = rect.top + rect.height / 2;
             const dx = centerX - cardCenterX;
             const dy = centerY - cardCenterY;
-            api.start({ x: dx, y: dy, scale: 9 });
+            console.log(centerX, centerY);
+            
+            api.start({
+                // every animation transformation is relative to the div's current position
+                to:[
+                    {x: dx, y: dy,zIndex:100},
+                    // {transform: 'scale(5)'},
+                    // { x: -(cardWidth),},
+                    { width:cardWidth*5, height:cardHeight*5},
+
+                ]
+                
+                });
         } else {
-            api.start({ x: 0, y: 0, scale: 1 });
+            // change this trigger to be tied to some button instead of onclick?
+            api.start({ x: 0, y: 0, width:cardWidth, height:cardHeight,zIndex:0});
         }
 
         setIsCentered(!isCentered);
@@ -57,15 +71,12 @@ interface SpringPageCardProps {
         onClick={triggerSpring}
         ref={cardRef}
         style = {{
-            width:cardWidth,
-            height:cardHeight,
-            
             background: '#915dccff',
             borderRadius: 8,
             ...springs
         }}
     >
-        {isCentered ? props.content : props.thumbnail}
+        {isCentered ? props.content : <Tilt>{props.thumbnail}</Tilt>}
     </animated.div>
     
 }

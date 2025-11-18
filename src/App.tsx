@@ -6,6 +6,8 @@ import SpringPageCard from './assets/components/SpringPageCard/SpringPageCard'
 import AboutMeContent from './assets/CardContent/AboutMe'
 import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 
+import MotionCard from './assets/components/framerCard/FramerCard'
+
 import Tilt from 'react-parallax-tilt';
 
 
@@ -22,33 +24,24 @@ function App() {
         <button>aboutme</button>
         <button>contact</button> */}
       </div>
+
+      <div className='framerRow'>
+          <MotionCard></MotionCard>
+      </div>
+
+      <div style={{
+        width:500,
+        height:200,
+        backgroundColor:"#d3d6beff"
+        }}>boudning1
+          <MotionCard></MotionCard>
+        </div>
       
-      {/* <div className='cardrow'>
-          <PageCard 
-          content=<> {closeCard} {AboutMeContent}</> 
-          thumbnail=<>  {AboutMeThumbnail}  </>
-          id={0} 
-          activeCard={activeCard}
-          onClick={() => setActiveCard(0)}
-          />
-        
-
-        <PageCard 
-        content=<> {closeCard}{} <p></p>  </>
-        thumbnail= <>  {}{}  </>
-        id={1} 
-        activeCard={activeCard}
-        onClick={() => setActiveCard(1)}
-        />
-
-        <PageCard 
-        content=<>{closeCard}{}</>
-        thumbnail=<>  none of your business  </>
-        id={2} 
-        activeCard={activeCard}
-        onClick={() => setActiveCard(2)}
-        />
-      </div> */}
+      <div style={{
+        width:500,
+        height:200,
+        backgroundColor:"#d6bed1ff"
+        }}>bounding2</div>
 
       <div className='SpringRow'> 
         <SpringPageCard 

@@ -10,6 +10,7 @@ interface PageCardProps {
     activeCard: number;
     thumbnail?: React.ReactNode; // html content for minimized
     content: React.ReactNode;   // html content for expanded
+    // maybe put a button from parent 
     onClick?: () => void;
 }
 
