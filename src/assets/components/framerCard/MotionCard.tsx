@@ -1,19 +1,19 @@
-"use client"
-import { frame, motion, useSpring } from "motion/react"
-import { useEffect, useRef, useState, type RefObject} from "react"
+import { frame, motion, useAnimate, useSpring } from "motion/react"
+import { useEffect, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
 
-function useFollowPointer(ref: RefObject<HTMLDivElement>, doFollow: boolean) {
+
+function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boolean) {
     const spring = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
     const x = useSpring(0, spring)
     const y = useSpring(0, spring)
-    
     useEffect(() => {
+        if (!ref || !ref.current) return
         if (!doFollow) return
-        if (!ref.current) return
 
         const handlePointerMove = (e: PointerEvent) => {
             const { clientX, clientY } = e
-            const element = ref.current
+            const element = ref.current;
+            if (!element) return
 
             frame.read(() => {
                 x.set(clientX - element.offsetLeft - element.offsetWidth / 2)
@@ -22,25 +22,19 @@ function useFollowPointer(ref: RefObject<HTMLDivElement>, doFollow: boolean) {
     }
     window.addEventListener("pointermove", handlePointerMove)
     return () => window.removeEventListener("pointermove", handlePointerMove)
-}, [doFollow, x, y, ref])
+}, [doFollow, ref, x,y])
     return {x,y}
 }
 
-function dropZoneCheck(event: PointerEvent, info:any){
-    /**
-     *  point: The x and y coordinates of the pointer.
-     *  delta: The distance moved since the last event.
-     *  offset: The distance from the element's origin.
-     *  velocity: The current velocity of the pointer.
-     */
-    console.log("Drop Zone Check:",event, info);
-    return
+interface cardProps{
+    style?: CSSProperties;
+    children?: ReactNode;
 }
 
-
-export default function MotionCard() {
+export default function MotionCard(props: cardProps) {
+    const [ref, animate] = useAnimate();
     const [doFollow, setFollow] = useState(false)
-    const ref = useRef<HTMLDivElement>(null)
+    const [currentOrigin, setOrigin] = useState({x:0,y:0})
     const {x,y} = useFollowPointer(ref, doFollow)
 
     useEffect(()=>{
@@ -55,22 +49,23 @@ export default function MotionCard() {
         }
     },[doFollow])
 
+    const onDragEndHandler = () => {
+        animate(ref.current, {x:currentOrigin.x, y:currentOrigin.y})
+    };
+
     return <motion.div
         draggable={true}
         drag
-        dragSnapToOrigin
-        dragTransition={{
-            min:0,
-            max:100,
-            bounceDamping:20,
-            bounceStiffness:200,
-        }}
-
-        dragElastic={0.1}
         onMouseDown={()=> setFollow(true) }
-        onDragEnd={dropZoneCheck}
+        onDragEnd={onDragEndHandler}
         ref={ref}
-        style={{...box, x, y}} />
+        style={{...box, x,y, ...props.style, originX:currentOrigin.x, originY:currentOrigin.y}}>
+            <button onClick={()=>{
+                setOrigin({x:currentOrigin.x + 15, y:currentOrigin.y + 15 });
+                console.log("updated origin by 15",currentOrigin);
+            }}></button>
+            {props.children}
+        </motion.div>
 }
 
 /**
@@ -79,7 +74,7 @@ export default function MotionCard() {
 
 const box = {
     width: 100,
-    height: 100,
+    height: 125,
     backgroundColor: "#2f7cf8",
     borderRadius: 10,
 }

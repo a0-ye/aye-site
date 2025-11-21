@@ -6,15 +6,27 @@ import SpringPageCard from './assets/components/SpringPageCard/SpringPageCard'
 import AboutMeContent from './assets/CardContent/AboutMe'
 import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 
-import MotionCard from './assets/components/framerCard/FramerCard'
+import Draggable from './assets/components/dnd-kit-wrappers/draggable'
+import Droppable from './assets/components/dnd-kit-wrappers/droppable'
 
-import Tilt from 'react-parallax-tilt';
+import MotionCard from './assets/components/framerCard/MotionCard'
+import CardZone from './assets/components/framerCard/CardZone'
 
+import { DndContext, type DragEndEvent } from '@dnd-kit/core'
+
+function handleDragEnd(event:DragEndEvent){
+  // over contains the ID of the droppable zone
+  if(!event.over) return
+  // console.log(event.over);
+  
+  return 
+}
 
 function App() {
   const [count, setCount] = useState(0)
   const [activeCard, setActiveCard] = useState(-1)
-  const closeCard = <button onClick={ () => setActiveCard(-1)}>close card</button>;
+  const mc1 = <MotionCard style={{backgroundColor:'#3877ff'}}></MotionCard>
+
 
   return (
     <>
@@ -24,24 +36,26 @@ function App() {
         <button>aboutme</button>
         <button>contact</button> */}
       </div>
+          
+      <div className='framerRow' style={{display:'flex'}}>
+        <DndContext onDragEnd={handleDragEnd}>
+          <Droppable drop_id={0}>
+            <CardZone>
+              <MotionCard>
+                <Draggable drag_id={0}></Draggable>
+              </MotionCard>
+              {/* <Draggable drag_id={0}>
+                {mc1}
+              </Draggable> */}
+            </CardZone>
+          </Droppable>
 
-      <div className='framerRow'>
-          <MotionCard></MotionCard>
+          <Droppable drop_id={1}>
+            <CardZone>
+            </CardZone>
+          </Droppable>
+        </DndContext>
       </div>
-
-      <div style={{
-        width:500,
-        height:200,
-        backgroundColor:"#d3d6beff"
-        }}>boudning1
-          <MotionCard></MotionCard>
-        </div>
-      
-      <div style={{
-        width:500,
-        height:200,
-        backgroundColor:"#d6bed1ff"
-        }}>bounding2</div>
 
       <div className='SpringRow'> 
         <SpringPageCard 
@@ -59,19 +73,6 @@ function App() {
           onClick={() => setActiveCard(1)}
           />
       </div>
-
-      <h1>gurt</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

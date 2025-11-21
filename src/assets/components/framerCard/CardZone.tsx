@@ -1,11 +1,20 @@
 import { frame, motion, useSpring } from "motion/react"
-import { useEffect, useRef, useState, type RefObject} from "react"
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
 
-export default function MotionCard() {
+interface ZoneProps{
+    style?: CSSProperties;
+    children?: ReactNode;
+
+}
+
+export default function CardZone(props: ZoneProps) {
     const ref = useRef<HTMLDivElement>(null)
-    return <motion.div
-        ref={ref}
-        style={{...box}} />
+    return <motion.div 
+            ref={ref} 
+            style={{...box,margin:5,padding:15}}>
+                {props.children}
+            </motion.div>
+
 }
 
 /**
@@ -13,8 +22,8 @@ export default function MotionCard() {
  */
 
 const box = {
-    width: 100,
-    height: 100,
+    width: 400,
+    height: 250,
     backgroundColor: "#f5f3ddff",
     borderRadius: 10,
 }
