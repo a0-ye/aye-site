@@ -12,20 +12,50 @@ import Droppable from './assets/components/dnd-kit-wrappers/droppable'
 import MotionCard from './assets/components/framerCard/MotionCard'
 import CardZone from './assets/components/framerCard/CardZone'
 
-import { DndContext, type DragEndEvent } from '@dnd-kit/core'
+import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 
-function handleDragEnd(event:DragEndEvent){
-  // over contains the ID of the droppable zone
-  if(!event.over) return
-  // console.log(event.over);
-  
-  return 
+interface CardData{
+  id:UniqueIdentifier;
+  zone:UniqueIdentifier;
+  origin:{x:number,y:number}
 }
 
+function useCardHandler(initialCardData: CardData[]):[CardData[], (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void]{
+  const [cards, setCards] = useState(initialCardData)
+  const moveCard = (cardID:UniqueIdentifier, newZoneID:UniqueIdentifier) => {
+    setCards(prevCards => prevCards.map(card => card.id === cardID ? { ...card, zone: newZoneID } : card));
+  };
+  return [cards, moveCard]
+
+}
+
+
+
 function App() {
+  const initialCards:CardData[] = []
+  // const [cards, moveCard] = useCardHandler(initialCards);
+  const [cardOrigin, setCardOrigin] = useState({x:0,y:0})
+  const [originList, setOriginList] = useState([{x:0,y:0},{x:0,y:0}]) // TODO: figure out a way to add and remove cards ??
+
+  const [cardsData, moveCard] = useCardHandler([
+    {id:25,zone:0,origin:{x:0,y:0}},
+    {id:67,zone:0,origin:{x:0,y:0}},
+  ])
+
   const [count, setCount] = useState(0)
   const [activeCard, setActiveCard] = useState(-1)
-  const mc1 = <MotionCard style={{backgroundColor:'#3877ff'}}></MotionCard>
+
+  const handleDragEnd = (event:DragEndEvent) => {
+    // over contains the ID of the droppable zone
+    if(!event.over) return
+    // console.log(event.over);
+    const cardID = event.active.id
+    const newZoneID = event.over.id
+    console.log("updating card zone:",event,cardID, newZoneID);
+    moveCard(cardID, newZoneID)
+    
+    return 
+  }
 
 
   return (
@@ -38,12 +68,13 @@ function App() {
       </div>
           
       <div className='framerRow' style={{display:'flex'}}>
+        <button onClick={     () => {setOriginList([{x:500,y:70}, {x:0,y:0}])}     }></button>
         <DndContext onDragEnd={handleDragEnd}>
           <Droppable drop_id={0}>
             <CardZone>
-              <MotionCard>
-                <Draggable drag_id={0}></Draggable>
-              </MotionCard>
+                  <MotionCard origin={cardsData[0].origin}>
+                    <Draggable drag_id={cardsData[0].id}></Draggable>
+                  </MotionCard>
               {/* <Draggable drag_id={0}>
                 {mc1}
               </Draggable> */}

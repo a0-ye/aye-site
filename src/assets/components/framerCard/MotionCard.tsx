@@ -1,7 +1,6 @@
 import { frame, motion, useAnimate, useSpring } from "motion/react"
 import { useEffect, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
 
-
 function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boolean) {
     const spring = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
     const x = useSpring(0, spring)
@@ -26,15 +25,24 @@ function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boole
     return {x,y}
 }
 
-interface cardProps{
+interface CardProps{
+    id?:number;
+    zone?:number;
+    origin:{x:number,y:number}
+
     style?: CSSProperties;
     children?: ReactNode;
 }
 
-export default function MotionCard(props: cardProps) {
+
+/**
+ * Card that you can drag around, and always returns to its 'origin point'
+ * Origin can be updated, and is updated via the origin prop. Updated 
+ */
+export default function MotionCard(props: CardProps) {
     const [ref, animate] = useAnimate();
     const [doFollow, setFollow] = useState(false)
-    const [currentOrigin, setOrigin] = useState({x:0,y:0})
+    // const [currentOrigin, setOrigin] = useState(props.origin)
     const {x,y} = useFollowPointer(ref, doFollow)
 
     useEffect(()=>{
@@ -49,21 +57,20 @@ export default function MotionCard(props: cardProps) {
         }
     },[doFollow])
 
-    const onDragEndHandler = () => {
-        animate(ref.current, {x:currentOrigin.x, y:currentOrigin.y})
-    };
+    const returnToOrigin = () => {animate(ref.current, {x:props.origin.x, y:props.origin.y})}
+    useEffect(()=>{returnToOrigin()},[props.origin])    // when origin is updated, return to origin
 
     return <motion.div
         draggable={true}
         drag
         onMouseDown={()=> setFollow(true) }
-        onDragEnd={onDragEndHandler}
+        onDragEnd={returnToOrigin}
         ref={ref}
-        style={{...box, x,y, ...props.style, originX:currentOrigin.x, originY:currentOrigin.y}}>
-            <button onClick={()=>{
+        style={{...box, x,y, ...props.style, originX:props.origin.x, originY:props.origin.y}}>
+            {/* <button onClick={()=>{
                 setOrigin({x:currentOrigin.x + 15, y:currentOrigin.y + 15 });
                 console.log("updated origin by 15",currentOrigin);
-            }}></button>
+            }}></button> */}
             {props.children}
         </motion.div>
 }
