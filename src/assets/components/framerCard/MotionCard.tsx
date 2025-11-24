@@ -1,5 +1,7 @@
+import type { UniqueIdentifier } from "@dnd-kit/core"
 import { frame, motion, useAnimate, useSpring } from "motion/react"
 import { useEffect, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
+
 
 function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boolean) {
     const spring = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
@@ -18,17 +20,18 @@ function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boole
                 x.set(clientX - element.offsetLeft - element.offsetWidth / 2)
                 y.set(clientY - element.offsetTop - element.offsetHeight / 2)
             })
-    }
-    window.addEventListener("pointermove", handlePointerMove)
-    return () => window.removeEventListener("pointermove", handlePointerMove)
-}, [doFollow, ref, x,y])
+        }
+        window.addEventListener("pointermove", handlePointerMove)
+        return () => window.removeEventListener("pointermove", handlePointerMove)
+    }, [doFollow, ref, x,y])
     return {x,y}
 }
 
 interface CardProps{
-    id?:number;
-    zone?:number;
-    origin:{x:number,y:number}
+    cardData:
+        [UniqueIdentifier,
+        {zone: UniqueIdentifier; origin: { x: number, y: number } }
+    ];
 
     style?: CSSProperties;
     children?: ReactNode;
@@ -40,6 +43,7 @@ interface CardProps{
  * Origin can be updated, and is updated via the origin prop. Updated 
  */
 export default function MotionCard(props: CardProps) {
+    const cardData = props.cardData[1]
     const [ref, animate] = useAnimate();
     const [doFollow, setFollow] = useState(false)
     // const [currentOrigin, setOrigin] = useState(props.origin)
@@ -57,8 +61,8 @@ export default function MotionCard(props: CardProps) {
         }
     },[doFollow])
 
-    const returnToOrigin = () => {animate(ref.current, {x:props.origin.x, y:props.origin.y})}
-    useEffect(()=>{returnToOrigin()},[props.origin])    // when origin is updated, return to origin
+    const returnToOrigin = () => {animate(ref.current, {x:cardData.origin.x, y:cardData.origin.y})}
+    useEffect(()=>{returnToOrigin()},[cardData.origin])    // when origin is updated, return to origin
 
     return <motion.div
         draggable={true}
@@ -66,7 +70,9 @@ export default function MotionCard(props: CardProps) {
         onMouseDown={()=> setFollow(true) }
         onDragEnd={returnToOrigin}
         ref={ref}
-        style={{...box, x,y, ...props.style, originX:props.origin.x, originY:props.origin.y}}>
+        style={{...box, x,y, ...props.style, 
+                backgroundColor: cardData.zone? "#2f7cf8" : "#f8902fff",
+                originX:cardData.origin.x, originY:cardData.origin.y}}>
             {/* <button onClick={()=>{
                 setOrigin({x:currentOrigin.x + 15, y:currentOrigin.y + 15 });
                 console.log("updated origin by 15",currentOrigin);
@@ -82,7 +88,7 @@ export default function MotionCard(props: CardProps) {
 const box = {
     width: 100,
     height: 125,
-    backgroundColor: "#2f7cf8",
+    backgroundColor:"#2f7cf8",
     borderRadius: 10,
 }
 

@@ -9,6 +9,10 @@ interface ZoneProps{
 
 export default function CardZone(props: ZoneProps) {
     const ref = useRef<HTMLDivElement>(null)
+
+    // useEffect( ()=> {recalculate the anchor points based on num cards} , [num_of_cards_in_zone])
+
+
     return <motion.div 
             ref={ref} 
             style={{...box,margin:5,padding:15}}>

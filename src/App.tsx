@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useId} from 'react'
 import './App.css'
 
 import PageCard from './assets/components/PageCard/PageCard'
@@ -15,69 +15,98 @@ import CardZone from './assets/components/framerCard/CardZone'
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 
 interface CardData{
-  id:UniqueIdentifier;
   zone:UniqueIdentifier;
   origin:{x:number,y:number}
 }
 
-function useCardHandler(initialCardData: CardData[]):[CardData[], (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void]{
+interface CardMap {
+  [id:UniqueIdentifier] : CardData;
+}
+
+function makeCoords(x:number, y:number) { return {x:x, y:y}}
+
+function useCardHandler(initialCardData: CardMap):[
+  CardMap,
+  (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void,
+  (cardIDs: UniqueIdentifier[], newOrigins: { x: number; y: number }[]) => void
+]{
   const [cards, setCards] = useState(initialCardData)
   const moveCard = (cardID:UniqueIdentifier, newZoneID:UniqueIdentifier) => {
-    setCards(prevCards => prevCards.map(card => card.id === cardID ? { ...card, zone: newZoneID } : card));
+    setCards(prevCards => {
+      const newCards = {...prevCards};
+      const updatedCard = {
+        ...newCards[cardID],
+        zone: newZoneID,
+      };
+      newCards[cardID] = updatedCard;
+      return newCards;
+    });
   };
-  return [cards, moveCard]
+
+// given a list of n cardIDs n Origins, matches cards and origins 1 to 1 and updates card origins
+const changeOrigin = (cardIDs: UniqueIdentifier[], newOrigins: { x: number; y: number }[]) => {
+  const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
+  setCards((prevCards) => {
+    const newCards = { ...prevCards };
+    zippedPairs.forEach(([cardID, newOrigin]) => {
+      const currentCard = newCards[cardID];
+      if (currentCard) {
+        newCards[cardID] = {
+          ...currentCard,
+          origin: newOrigin,
+        };
+      }
+    });
+    return newCards;
+  });
+};
+  return [cards, moveCard, changeOrigin]
 
 }
 
 
 
 function App() {
-  const initialCards:CardData[] = []
+
+  const initialCards: Record<UniqueIdentifier, CardData> = {
+    [useId()]:{zone:0,origin:{x:0,y:0}},
+    [useId()]:{zone:0,origin:{x:0,y:0}},
+  }
+
   // const [cards, moveCard] = useCardHandler(initialCards);
-  const [cardOrigin, setCardOrigin] = useState({x:0,y:0})
-  const [originList, setOriginList] = useState([{x:0,y:0},{x:0,y:0}]) // TODO: figure out a way to add and remove cards ??
-
-  const [cardsData, moveCard] = useCardHandler([
-    {id:25,zone:0,origin:{x:0,y:0}},
-    {id:67,zone:0,origin:{x:0,y:0}},
-  ])
-
-  const [count, setCount] = useState(0)
+  const [originList, setOriginList] = useState([{x:0,y:0},{x:0,y:0}])
+  const [cardsData, moveCard, changeOrigin] = useCardHandler(initialCards)
   const [activeCard, setActiveCard] = useState(-1)
 
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
     if(!event.over) return
-    // console.log(event.over);
     const cardID = event.active.id
     const newZoneID = event.over.id
-    console.log("updating card zone:",event,cardID, newZoneID);
     moveCard(cardID, newZoneID)
+    changeOrigin([cardID], [makeCoords(600,0)])
+    console.log("updating card zone:", cardsData[cardID]);
     
     return 
   }
 
+  const cardEntries = Object.entries(cardsData)
 
   return (
     <>
-      <div className='nav'>
-        {/* {closeCard} */}
-        {/* <button>projects</button>
-        <button>aboutme</button>
-        <button>contact</button> */}
-      </div>
+      <div className='nav'></div>
           
       <div className='framerRow' style={{display:'flex'}}>
         <button onClick={     () => {setOriginList([{x:500,y:70}, {x:0,y:0}])}     }></button>
         <DndContext onDragEnd={handleDragEnd}>
           <Droppable drop_id={0}>
             <CardZone>
-                  <MotionCard origin={cardsData[0].origin}>
-                    <Draggable drag_id={cardsData[0].id}></Draggable>
-                  </MotionCard>
-              {/* <Draggable drag_id={0}>
-                {mc1}
-              </Draggable> */}
+
+              {cardEntries.map(([id, cardData]) => (
+                <MotionCard key={id} cardData={[id, cardData]}>
+                  <Draggable drag_id={id} />
+                </MotionCard>))}
+
             </CardZone>
           </Droppable>
 
