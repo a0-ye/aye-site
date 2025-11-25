@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import React, { type CSSProperties, type ReactNode } from 'react';
 import {useDraggable, type UniqueIdentifier} from '@dnd-kit/core';
 
 interface draggableProps{
@@ -17,8 +17,17 @@ export default function Draggable(props: draggableProps) {
 
   
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} style={{width:'100%',height:'100%',}}>
+    <div ref={setNodeRef} {...listeners} {...attributes} style={{...style}}>
       {props.children}
     </div>
   );
+
+  
 }
+const style: CSSProperties = {
+    width:'100%',height:'100%',
+    zIndex:100,
+    backgroundColor:'#ff4ca6ff',
+    opacity:0.0,
+    position:'absolute'
+  }

@@ -1,6 +1,8 @@
 import type { UniqueIdentifier } from "@dnd-kit/core"
 import { frame, motion, useAnimate, useSpring } from "motion/react"
 import { useEffect, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
+import { makeCoords, type CardData, type coord} from "../../../App"
+import Draggable from "../dnd-kit-wrappers/draggable"
 
 
 function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boolean) {
@@ -28,55 +30,40 @@ function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boole
 }
 
 interface CardProps{
-    cardData:
-        [UniqueIdentifier,
-        {zone: UniqueIdentifier; origin: { x: number, y: number } }
-    ];
+    cardData:CardData
 
     style?: CSSProperties;
     children?: ReactNode;
 }
-
 
 /**
  * Card that you can drag around, and always returns to its 'origin point'
  * Origin can be updated, and is updated via the origin prop. Updated 
  */
 export default function MotionCard(props: CardProps) {
-    const cardData = props.cardData[1]
+    const cardData = props.cardData
     const [ref, animate] = useAnimate();
     const [doFollow, setFollow] = useState(false)
     // const [currentOrigin, setOrigin] = useState(props.origin)
     const {x,y} = useFollowPointer(ref, doFollow)
 
-    useEffect(()=>{
-        if(doFollow) return
-        const stopFollow = () => setFollow(false)
-        window.addEventListener('pointerup',stopFollow)
-        window.addEventListener('pointercancel',stopFollow)
-        
-        return ()=> {
-            window.addEventListener('pointerup',stopFollow)
-            window.addEventListener('pointercancel',stopFollow)
-        }
-    },[doFollow])
-
-    const returnToOrigin = () => {animate(ref.current, {x:cardData.origin.x, y:cardData.origin.y})}
+    const returnToOrigin = () => { setFollow(false); animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))}
     useEffect(()=>{returnToOrigin()},[cardData.origin])    // when origin is updated, return to origin
 
     return <motion.div
-        draggable={true}
         drag
         onMouseDown={()=> setFollow(true) }
         onDragEnd={returnToOrigin}
         ref={ref}
         style={{...box, x,y, ...props.style, 
-                backgroundColor: cardData.zone? "#2f7cf8" : "#f8902fff",
                 originX:cardData.origin.x, originY:cardData.origin.y}}>
-            {/* <button onClick={()=>{
-                setOrigin({x:currentOrigin.x + 15, y:currentOrigin.y + 15 });
-                console.log("updated origin by 15",currentOrigin);
-            }}></button> */}
+            <Draggable drag_id={cardData.id}/>
+            
+            <p>ID: {cardData.id}</p>
+            <p>Zone: {cardData.zone}</p>
+           
+            <p> {cardData.origin.x} , {cardData.origin.y}</p>
+            
             {props.children}
         </motion.div>
 }
@@ -84,11 +71,12 @@ export default function MotionCard(props: CardProps) {
 /**
  * ==============   Styles   ================
  */
-
-const box = {
+const box: CSSProperties = {
     width: 100,
     height: 125,
     backgroundColor:"#2f7cf8",
     borderRadius: 10,
+    position:'relative',
 }
+
 
