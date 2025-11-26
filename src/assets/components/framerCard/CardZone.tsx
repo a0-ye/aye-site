@@ -11,7 +11,9 @@ interface ZoneProps{
 
 
 // TODO: calculate absolute coordinates relative to the viewport.
-// Translate to MotionCard offsets, or convert MotionCard to this system.
+// OPTION 1: calculate anchors (based on viewport coordinates) then convert to a MotionCard origin (based on MotionCard starting position)
+// OPTION 2: make all zones and cards positions absolute. Convert MotionCard movement to coordinates. Calculate anchor based on absolute positions
+
 function calculateAnchors(numCards:number): coord[] {
     const leftBound = 0
     const width = 400
@@ -26,7 +28,7 @@ function calculateAnchors(numCards:number): coord[] {
 export default function CardZone(props: ZoneProps) {
     const ref = useRef<HTMLDivElement>(null)
     const zoneData = props.zoneData;
-    
+
     // useEffect( ()=> {recalculate the anchor points based on num cards} , [num_of_cards_in_zone])
     useEffect( ()=>{
         const cards = zoneData.cards

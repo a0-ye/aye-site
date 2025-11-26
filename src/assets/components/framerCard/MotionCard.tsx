@@ -44,7 +44,6 @@ export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
     const [ref, animate] = useAnimate();
     const [doFollow, setFollow] = useState(false)
-    // const [currentOrigin, setOrigin] = useState(props.origin)
     const {x,y} = useFollowPointer(ref, doFollow)
 
     const returnToOrigin = () => { setFollow(false); animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))}
