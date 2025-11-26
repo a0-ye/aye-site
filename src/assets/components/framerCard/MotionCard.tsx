@@ -73,9 +73,10 @@ export default function MotionCard(props: CardProps) {
 const box: CSSProperties = {
     width: 100,
     height: 125,
+    zIndex:4,
     backgroundColor:"#2f7cf8",
     borderRadius: 10,
-    position:'relative',
+    position:'absolute',
 }
 
 

@@ -28,6 +28,6 @@ const style: CSSProperties = {
     width:'100%',height:'100%',
     zIndex:100,
     backgroundColor:'#ff4ca6ff',
-    opacity:0.0,
+    opacity:0.3,
     position:'absolute'
   }
