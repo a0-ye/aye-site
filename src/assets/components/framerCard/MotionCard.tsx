@@ -16,15 +16,20 @@ function useFollowPointer(ref: RefObject<HTMLDivElement | null>, doFollow: boole
         const handlePointerMove = (e: PointerEvent) => {
             const { clientX, clientY } = e
             const element = ref.current;
-            if (!element) return
+            const rect = ref.current?.getBoundingClientRect();
+            if (!element || !rect) return
 
             frame.read(() => {
-                x.set(clientX - element.offsetLeft - element.offsetWidth / 2)
-                y.set(clientY - element.offsetTop - element.offsetHeight / 2)
+                x.set(clientX - rect.left - element.offsetWidth / 2) // problem: element.offsetLeft is 0 compared to its parent
+                y.set(clientY - rect.top - element.offsetHeight / 2) //            need to f
+                console.log(x.get(), y.get());
+                
             })
         }
         window.addEventListener("pointermove", handlePointerMove)
-        return () => window.removeEventListener("pointermove", handlePointerMove)
+        return () => {
+            window.removeEventListener("pointermove", handlePointerMove)
+        }
     }, [doFollow, ref, x,y])
     return {x,y}
 }
@@ -38,7 +43,7 @@ interface CardProps{
 
 /**
  * Card that you can drag around, and always returns to its 'origin point'
- * Origin can be updated, and is updated via the origin prop. Updated 
+ * Origin can be updated, and is updated via the origin prop.
  */
 export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
@@ -46,13 +51,27 @@ export default function MotionCard(props: CardProps) {
     const [doFollow, setFollow] = useState(false)
     const {x,y} = useFollowPointer(ref, doFollow)
 
-    const returnToOrigin = () => { setFollow(false); animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))}
-    useEffect(()=>{returnToOrigin()},[cardData.origin])    // when origin is updated, return to origin
+    const returnToOrigin = () => { 
+        setFollow(false);
+        animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))
+    }
+
+    useEffect(()=>{
+        console.log("Origin Updated!!");
+        returnToOrigin()
+    },[cardData.origin.x, cardData.origin.y]
+    )    // when origin is updated, return to origin
+    // window.addEventListener("pointerup",returnToOrigin);
 
     return <motion.div
-        drag
-        onMouseDown={()=> setFollow(true) }
-        onDragEnd={returnToOrigin}
+        // drag
+        onMouseDown={()=> {
+                setFollow(true)
+            }
+        }
+        // onDragEnd={()=>{
+        //     console.log("drag ended");
+        //     returnToOrigin()}}
         ref={ref}
         style={{...box, x,y, ...props.style, 
                 originX:cardData.origin.x, originY:cardData.origin.y}}>
@@ -75,6 +94,7 @@ const box: CSSProperties = {
     height: 125,
     zIndex:4,
     backgroundColor:"#2f7cf8",
+    color:'black',
     borderRadius: 10,
     position:'absolute',
 }

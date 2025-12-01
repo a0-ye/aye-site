@@ -7,24 +7,25 @@ interface droppableProps {
       x:number,
       y:number,
   }
+  style?: CSSProperties,
   children?:ReactNode,
 }
+ 
 
 export default function Droppable(props: droppableProps) {
   const {isOver, setNodeRef} = useDroppable({
     id: props.drop_id,
   });
-  const style: CSSProperties = {
+   const style: CSSProperties = {
     left:props.zonePosition.x,
     top:props.zonePosition.y,
     backgroundColor: isOver ? 'green' : "#ffff65ff",
-    color:"#2f00ffff",
-    position:'absolute',
+
   };
   
   
   return (
-    <div ref={setNodeRef} style={{...style}}>
+    <div ref={setNodeRef} style={{...style, ...props.style}}>
       {props.zonePosition.x}
       {props.zonePosition.y}
       {props.children}

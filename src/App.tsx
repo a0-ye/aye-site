@@ -60,19 +60,20 @@ function useCardHandler(initialCardData: CardMap):[
 const changeOrigins = (cardIDs: UniqueIdentifier[], newOrigins: coord[]) => {
   const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
   setCards((prevCards) => {
-    const newCards = { ...prevCards };
-    zippedPairs.forEach(([cardID, newOrigin]) => {
-      const currentCard = newCards[cardID];
-      if (currentCard) {
-        newCards[cardID] = {
-          ...currentCard,
-          origin: newOrigin,
-        };
-      }
+      const newCards = { ...prevCards };
+      zippedPairs.forEach(([cardID, newOrigin]) => {
+        const currentCard = newCards[cardID];
+        if (currentCard) {
+          newCards[cardID] = {
+            ...currentCard,
+            origin: newOrigin,
+          };
+        }
+      });
+      return newCards;
     });
-    return newCards;
-  });
-};
+  };
+  console.log("origins updated!!)");
   return [cards, moveCard, changeOrigins]
 
 }
@@ -108,7 +109,7 @@ function App() {
 
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
-    console.log("handlingDragEnd...", event);
+    // console.log("handlingDragEnd...", event);
     if(!event.over) return
     const {active, over} = event;
     const cardID = active.id
@@ -133,8 +134,7 @@ function App() {
       }
     )
     moveCard(cardID, nextZoneID)
-
-    console.log("updating card zone:", cardsData[cardID]);
+    console.log("updating card zone for", cardsData[cardID]);
     
     return 
   }

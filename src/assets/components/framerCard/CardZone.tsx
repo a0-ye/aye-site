@@ -16,8 +16,8 @@ interface ZoneProps{
 // OPTION 2: make all zones and cards positions absolute. Convert MotionCard movement to coordinates. Calculate anchor based on absolute positions
 
 function calculateAnchors(numCards:number, coord: coord): coord[] {
-    const width = box.width as number;
-    const height = box.height as number;
+    const width = zoneStyle.width as number;
+    const height = zoneStyle.height as number;
     const increment = width / numCards;
     const output:coord[] = Array(numCards).fill(makeCoords(0,0))
     return output.map((_, index, )=>{
@@ -31,6 +31,7 @@ export default function CardZone(props: ZoneProps) {
     const zoneData = props.zoneData;
     const coordPosition = zoneData.position;    // position of the cardzone's top left within the parent div
     const droppableProps = {
+        style: droppableStyle,
         drop_id:zoneData.id,
         zonePosition:{
             x:coordPosition.x,
@@ -46,7 +47,7 @@ export default function CardZone(props: ZoneProps) {
     },[zoneData.cards])
 
     return <Droppable {...droppableProps}>
-                <motion.div ref={ref} style={{...box,...props.style,margin:5,padding:15}}>
+                <motion.div ref={ref} style={{...zoneStyle,...props.style,margin:5,padding:15}}>
                     <p style={{zIndex:100, position:'absolute'}}>
                         {zoneData.cards}
                     </p>
@@ -63,7 +64,7 @@ export default function CardZone(props: ZoneProps) {
  * ==============   Styles   ================
  */
 
-const box: CSSProperties = {
+const zoneStyle: CSSProperties = {
     width: 400,
     height: 250,
     // zIndex:2,
@@ -74,3 +75,7 @@ const box: CSSProperties = {
     display:'flex',
 }
 
+const droppableStyle: CSSProperties = {
+    color:"#2f00ffff",
+    position:'absolute',
+}
