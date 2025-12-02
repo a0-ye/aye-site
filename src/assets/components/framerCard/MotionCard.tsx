@@ -26,9 +26,6 @@ export default function MotionCard(props: CardProps) {
     const currentX = useSpring(targetX, springConfig);
     const currentY = useSpring(targetY, springConfig);
 
-    // const onDragPosition = useRef({x:0, y:0})
-
-
     const returnToOrigin = () => { 
         animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))
     }
@@ -41,11 +38,9 @@ export default function MotionCard(props: CardProps) {
     return <motion.div
         ref={ref}
         drag
-        onDragStart={()=>{
-            // onDragPosition.current.x = currentX.get()
-            // onDragPosition.current.y = currentY.get()
-        }}
         onDrag={(_,info)=>{
+            // info.offset is the total mouse displacement from the start of the drag
+            // using this, we can calculate the position we need to drag to via origin + offset!
             const newTargetX = cardData.origin.x + info.offset.x
             const newTargetY = cardData.origin.y + info.offset.y
             targetX.set(newTargetX)
@@ -55,8 +50,6 @@ export default function MotionCard(props: CardProps) {
         onDragEnd={()=>{
             console.log("drag ended");
             returnToOrigin()}}
-
-        
         style={{
             x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
                 ...box, ...props.style, 
