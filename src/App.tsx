@@ -1,4 +1,4 @@
-import { useState, useId, type ReactNode} from 'react'
+import { useState, useId, type ReactNode, type CSSProperties} from 'react'
 import './App.css'
 
 import PageCard from './assets/components/PageCard/PageCard'
@@ -27,6 +27,7 @@ interface CardMap {
 export interface ZoneData {
   id:UniqueIdentifier,
   cards:UniqueIdentifier[],
+  position:coord, // position of the zone within the zone
   changeOrigins: Function,
 }
 
@@ -59,19 +60,20 @@ function useCardHandler(initialCardData: CardMap):[
 const changeOrigins = (cardIDs: UniqueIdentifier[], newOrigins: coord[]) => {
   const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
   setCards((prevCards) => {
-    const newCards = { ...prevCards };
-    zippedPairs.forEach(([cardID, newOrigin]) => {
-      const currentCard = newCards[cardID];
-      if (currentCard) {
-        newCards[cardID] = {
-          ...currentCard,
-          origin: newOrigin,
-        };
-      }
+      const newCards = { ...prevCards };
+      zippedPairs.forEach(([cardID, newOrigin]) => {
+        const currentCard = newCards[cardID];
+        if (currentCard) {
+          newCards[cardID] = {
+            ...currentCard,
+            origin: newOrigin,
+          };
+        }
+      });
+      return newCards;
     });
-    return newCards;
-  });
-};
+  };
+  console.log("origins updated!!)");
   return [cards, moveCard, changeOrigins]
 
 }
@@ -85,11 +87,12 @@ function App() {
     [c1ID]:{id:c1ID, zone:0,origin:makeCoords(0,0)},
     [c2ID]:{id:c2ID,zone:0,origin:makeCoords(0,0)},
   }
+  // TODO: maybe we don't dynamically generate zones... theres only going to be like 3
   const handZoneID = useId() // store this one specially, since all cards start in the hand
   const zone2ID = useId(); // TODO: remove. is for testing
   const initialZones:Record<UniqueIdentifier, ZoneData> = {
-    [handZoneID]:{id:handZoneID, cards:[], changeOrigins:() => {}},
-    [zone2ID]:{id:zone2ID, cards:[], changeOrigins:() => {}},
+    [handZoneID]:{id:handZoneID, cards:[],position:makeCoords(0,0), changeOrigins:() => {}},
+    [zone2ID]:{id:zone2ID, cards:[],position:makeCoords(600,0), changeOrigins:() => {}},
   }
 
   //all cards go in handZone
@@ -99,17 +102,14 @@ function App() {
   }
 
   const [cardsData, moveCard, changeOrigins] = useCardHandler(initialCards);
-  for (const zoneID in initialZones){ // give the changeOrigins function to each zone
-    initialZones[zoneID].changeOrigins = changeOrigins;
-  }
+  for (const zoneID in initialZones){ initialZones[zoneID].changeOrigins = changeOrigins;}
   const [zoneData, setZoneData] = useState(initialZones);
-  
-  
+
   const [activeCard, setActiveCard] = useState(-1);
 
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
-    console.log("handlingDragEnd...", event);
+    // console.log("handlingDragEnd...", event);
     if(!event.over) return
     const {active, over} = event;
     const cardID = active.id
@@ -134,8 +134,7 @@ function App() {
       }
     )
     moveCard(cardID, nextZoneID)
-
-    console.log("updating card zone:", cardsData[cardID]);
+    console.log("updating card zone for", cardsData[cardID]);
     
     return 
   }
@@ -152,20 +151,15 @@ function App() {
   return (
     <>
       <div className='nav'></div>
-          
-      <div className='framerRow' style={{display:'flex'}}>
-        <DndContext onDragEnd={handleDragEnd}>
-          <Droppable drop_id={handZoneID}>
+      <div className='framerRow' style={{position:'relative',width:900, height:600, display:'flex', backgroundColor:"#f82f2fff"}}>
+          <DndContext onDragEnd={handleDragEnd}>
+          {generateCards()}
             <CardZone zoneData={zoneData[handZoneID]}>
-              {generateCards()}
-
             </CardZone>
-          </Droppable>
 
-          <Droppable drop_id={zone2ID}>
             <CardZone zoneData={zoneData[zone2ID]}>
             </CardZone>
-          </Droppable>
+
         </DndContext>
       </div>
 

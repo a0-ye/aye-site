@@ -1,22 +1,33 @@
-import React, { type ReactNode } from 'react';
+import React, { type CSSProperties, type ReactNode } from 'react';
 import {useDroppable, type UniqueIdentifier} from '@dnd-kit/core';
 
 interface droppableProps {
-  drop_id: UniqueIdentifier,
-  children:ReactNode,
+  drop_id:UniqueIdentifier,
+  zonePosition:{
+      x:number,
+      y:number,
+  }
+  style?: CSSProperties,
+  children?:ReactNode,
 }
+ 
 
 export default function Droppable(props: droppableProps) {
   const {isOver, setNodeRef} = useDroppable({
     id: props.drop_id,
   });
-  const style = {
-    backgroundColor: isOver ? 'green' : undefined,
+   const style: CSSProperties = {
+    left:props.zonePosition.x,
+    top:props.zonePosition.y,
+    backgroundColor: isOver ? 'green' : "#ffff65ff",
+
   };
   
   
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={{...style, ...props.style}}>
+      {props.zonePosition.x}
+      {props.zonePosition.y}
       {props.children}
     </div>
   );
