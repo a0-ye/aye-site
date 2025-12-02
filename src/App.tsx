@@ -4,74 +4,12 @@ import './App.css'
 import AboutMeContent from './assets/CardContent/AboutMe'
 import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 
-import MotionCard from './assets/components/dndMotionCards/MotionCard'
-import CardZone from './assets/components/dndMotionCards/CardZone'
+import MotionCard from './assets/components/DraggableCardKit/MotionCard'
+import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
+import { makeCoords, useCardHandler, type CardData, type ZoneData } from './assets/components/DraggableCardKit/CardKitFunctions'
 
-export interface CardData{
-  id:UniqueIdentifier;
-  zone:UniqueIdentifier;
-  origin:{x:number,y:number}
-}
-
-interface CardMap {
-  [id:UniqueIdentifier] : CardData;
-}
-
-export interface ZoneData {
-  id:UniqueIdentifier,
-  cards:UniqueIdentifier[],
-  position:coord, // position of the zone within the zone
-  changeOrigins: Function,
-}
-
-export interface coord {
-  x:number,
-  y:number
-}
-
-export function makeCoords(x:number, y:number): coord {return {x:x, y:y}}
-
-function useCardHandler(initialCardData: CardMap):[
-  CardMap,
-  (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void,
-  (cardIDs: UniqueIdentifier[], newOrigins:coord[]) => void
-]{
-  const [cards, setCards] = useState(initialCardData)
-  const moveCard = (cardID:UniqueIdentifier, newZoneID:UniqueIdentifier) => {
-    setCards(prevCards => {
-      const newCards = {...prevCards};
-      const updatedCard = {
-        ...newCards[cardID],
-        zone: newZoneID,
-      };
-      newCards[cardID] = updatedCard;
-      return newCards;
-    });
-  };
-
-// given a list of n cardIDs n Origins, matches cards and origins 1 to 1 and updates card origins
-const changeOrigins = (cardIDs: UniqueIdentifier[], newOrigins: coord[]) => {
-  const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
-  setCards((prevCards) => {
-      const newCards = { ...prevCards };
-      zippedPairs.forEach(([cardID, newOrigin]) => {
-        const currentCard = newCards[cardID];
-        if (currentCard) {
-          newCards[cardID] = {
-            ...currentCard,
-            origin: newOrigin,
-          };
-        }
-      });
-      return newCards;
-    });
-  };
-  console.log("origins updated!!)");
-  return [cards, moveCard, changeOrigins]
-
-}
 
 
 
@@ -99,8 +37,6 @@ function App() {
   const [cardsData, moveCard, changeOrigins] = useCardHandler(initialCards);
   for (const zoneID in initialZones){ initialZones[zoneID].changeOrigins = changeOrigins;}
   const [zoneData, setZoneData] = useState(initialZones);
-
-  const [activeCard, setActiveCard] = useState(-1);
 
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
@@ -145,8 +81,7 @@ function App() {
 
   return (
     <>
-      <div className='nav'></div>
-      <div className='framerRow' style={
+      <div className='CardBounds' style={
         { position:'relative', 
           // left:0, top:0, 
           width:900, height:600, display:'flex', backgroundColor:"#f82f2fff"}}>

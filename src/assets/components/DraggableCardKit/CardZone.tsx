@@ -1,8 +1,8 @@
-import type { UniqueIdentifier } from "@dnd-kit/core";
-import { frame, motion, useSpring } from "motion/react"
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
-import { makeCoords, type ZoneData, type coord} from "../../../App";
+
+import {motion } from "motion/react"
+import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
 import Droppable from "../dnd-kit-wrappers/droppable";
+import { makeCoords, type ZoneData, type coord } from "./CardKitFunctions";
 
 interface ZoneProps{
     zoneData:ZoneData,

@@ -1,8 +1,7 @@
-import type { UniqueIdentifier } from "@dnd-kit/core"
-import { frame, motion, useAnimate, useMotionValue, useSpring } from "motion/react"
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
-import { makeCoords, type CardData, type coord} from "../../../App"
+import { motion, useAnimate, useMotionValue, useSpring } from "motion/react"
+import { useEffect, type CSSProperties, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
+import { makeCoords, type CardData } from "./CardKitFunctions"
 
 
 interface CardProps{
