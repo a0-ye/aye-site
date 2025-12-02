@@ -1,16 +1,11 @@
 import { useState, useId, type ReactNode, type CSSProperties} from 'react'
 import './App.css'
 
-import PageCard from './assets/components/PageCard/PageCard'
-import SpringPageCard from './assets/components/SpringPageCard/SpringPageCard'
 import AboutMeContent from './assets/CardContent/AboutMe'
 import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 
-import Draggable from './assets/components/dnd-kit-wrappers/draggable'
-import Droppable from './assets/components/dnd-kit-wrappers/droppable'
-
-import MotionCard from './assets/components/framerCard/MotionCard'
-import CardZone from './assets/components/framerCard/CardZone'
+import MotionCard from './assets/components/dndMotionCards/MotionCard'
+import CardZone from './assets/components/dndMotionCards/CardZone'
 
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 
@@ -151,33 +146,19 @@ function App() {
   return (
     <>
       <div className='nav'></div>
-      <div className='framerRow' style={{position:'relative',width:900, height:600, display:'flex', backgroundColor:"#f82f2fff"}}>
+      <div className='framerRow' style={
+        { position:'relative', 
+          // left:0, top:0, 
+          width:900, height:600, display:'flex', backgroundColor:"#f82f2fff"}}>
           <DndContext onDragEnd={handleDragEnd}>
           {generateCards()}
-            <CardZone zoneData={zoneData[handZoneID]}>
-            </CardZone>
+          <CardZone zoneData={zoneData[handZoneID]}>
+          </CardZone>
 
-            <CardZone zoneData={zoneData[zone2ID]}>
-            </CardZone>
+          <CardZone zoneData={zoneData[zone2ID]}>
+          </CardZone>
 
         </DndContext>
-      </div>
-
-      <div className='SpringRow'> 
-        <SpringPageCard 
-          id={0} 
-          activeCard={activeCard}
-          content={AboutMeContent}
-          thumbnail={0}
-          onClick={() => setActiveCard(0)}
-          />
-        <SpringPageCard 
-          id={1} 
-          activeCard={activeCard}
-          content={<img src='src/assets/img/cow.png'/>}
-          thumbnail={1}
-          onClick={() => setActiveCard(1)}
-          />
       </div>
     </>
   )
