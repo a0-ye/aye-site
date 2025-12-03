@@ -16,10 +16,10 @@ interface ZoneProps{
 function calculateAnchors(numCards:number, zoneData:ZoneData): coord[] {
     const zonePosition = zoneData.position;
     const zoneDimensions = zoneData.dimensions;
-    const increment = zoneDimensions.width / numCards;
+    const increment = zoneDimensions.width / (1 + numCards);
     const output:coord[] = Array(numCards).fill(makeCoords(0,0))
     return output.map((_, index, )=>{
-        const x = zonePosition.x + index * increment;
+        const x = zonePosition.x + (index + 1) * increment;
         const y = zonePosition.y + (zoneDimensions.height / 2);
         return makeCoords(x,y)
     })
