@@ -35,25 +35,29 @@ export default function MotionCard(props: CardProps) {
     )
 
     return <motion.div className = "MotionCard"
-        ref={ref}
-        drag
-        onDrag={(_,info)=>{
-            // info.offset is the total mouse displacement from the start of the drag
-            // using this, we can calculate the position we need to drag to via origin + offset!
-            const newTargetX = cardData.origin.x + info.offset.x
-            const newTargetY = cardData.origin.y + info.offset.y
-            targetX.set(newTargetX)
-            targetY.set(newTargetY)
-        }}
+                ref={ref}
+                drag
+                onDrag={(_,info)=>{
+                    // info.offset is the total mouse displacement from the start of the drag
+                    // using this, we can calculate the position we need to drag to via origin + offset!
+                    const newTargetX = cardData.origin.x + info.offset.x
+                    const newTargetY = cardData.origin.y + info.offset.y
+                    targetX.set(newTargetX)
+                    targetY.set(newTargetY)
+                }}
 
-        onDragEnd={()=>{
-            console.log("drag ended");
-            returnToOrigin()}}
-        style={{
-            x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
-                ...box, ...props.style, 
-                // originX:cardData.origin.x, originY:cardData.origin.y
-                }}>
+                onDragEnd={()=>{
+                    returnToOrigin()}}
+                style={{
+                    x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
+                        ...box, ...props.style, 
+                        // originX:cardData.origin.x, originY:cardData.origin.y
+                        }}
+                initial={{
+                    translateX: '-50%', 
+                    translateY: '-50%'
+                }}  
+                >
             <Draggable drag_id={cardData.id}/>
             
             <p>ID: {cardData.id}</p>
@@ -76,7 +80,7 @@ const box: CSSProperties = {
     color:'black',
     borderRadius: 10,
     position:'absolute',
-    // transform: 'translate(-50%, -50%)',
+    // transform: 'translate(-50%, -50%)'
 }
 
 

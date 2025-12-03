@@ -66,6 +66,7 @@ export default function CardZone(props: ZoneProps) {
                 borderRadius: 50,
                 // opacity:0.5,
                 zIndex:5,
+                transform: 'translate(-50%, -50%)'
                 }}></div>
             }) 
     }
