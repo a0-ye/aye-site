@@ -27,13 +27,16 @@ function App() {
   }
   // TODO: maybe we don't dynamically generate zones... theres only going to be like 3
   const handZoneID = useId() // store this one specially, since all cards start in the hand
-  const zone2ID = useId(); // TODO: remove. is for testing
+  const jokerZoneID = useId(); // Where jokers live.. No functionality, just naming
+  const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming
   const initialZones:Record<UniqueIdentifier, ZoneData> = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(0,150),   
-                    dimensions:{width:400,height:250},  changeOrigins:() => {}},
+    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(150,700),   
+                    dimensions:{width:750,height:150},  changeOrigins:() => {}},
 
-    [zone2ID]:    { id:zone2ID,    cards:[], position:makeCoords(600,500), 
-                    dimensions:{width:100,height:250}, changeOrigins:() => {}},
+    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(200,75), 
+                    dimensions:{width:500,height:150}, changeOrigins:() => {}},
+    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(900,75), 
+                    dimensions:{width:250,height:150}, changeOrigins:() => {}},
   }
 
   //all cards go in handZone
@@ -87,17 +90,17 @@ function App() {
   return (
     <>
       <div className='CardBounds' style={{ 
-            position:'fixed', 
-            left:300, top:90, 
-            // width:900, height:600,  ONLY FOR SHOWING THE DIV BOX.
-            display:'flex', backgroundColor:"#f82f2f31"
+            
           }}>
           <DndContext onDragEnd={handleDragEnd}>
           {generateCards()}
           <CardZone zoneData={zoneData[handZoneID]}  >
           </CardZone>
 
-          <CardZone zoneData={zoneData[zone2ID]}  >
+          <CardZone zoneData={zoneData[jokerZoneID]}  >
+          </CardZone>
+          
+          <CardZone zoneData={zoneData[consumableZoneID]}  >
           </CardZone>
 
         </DndContext>

@@ -1,6 +1,17 @@
 #root {
-  /* max-width: 1280px; */
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0 0;
+  min-width: 100vw;
   text-align: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.CardBounds {
+  position:relative;
+  /* left: 30px;
+  top:90px; */
+  /* display:flex; */
+  background-color:#f82f2f31;
+  width:1200px; height:900px;
 }
