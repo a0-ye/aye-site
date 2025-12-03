@@ -15,7 +15,8 @@ interface CardMap {
 export interface ZoneData {
   id:UniqueIdentifier,
   cards:UniqueIdentifier[],
-  position:coord, // position of the zone within the zone
+  position:coord,                            // position of the zone in the dnd context
+  dimensions:{width:number, height:number},  // dimensions in width and height 
   changeOrigins: Function,
 }
 
@@ -60,7 +61,7 @@ export function useCardHandler(initialCardData: CardMap):[
         });
         return newCards;
         });
+        console.log("origins updated!");
     };
-    console.log("origins updated!!)");
     return [cards, moveCard, changeOrigins]
 }

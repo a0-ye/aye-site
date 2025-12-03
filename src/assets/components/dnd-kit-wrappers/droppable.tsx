@@ -7,6 +7,7 @@ interface droppableProps {
       x:number,
       y:number,
   }
+  zoneDimensions: {width:number, height:number},
   style?: CSSProperties,
   children?:ReactNode,
 }
@@ -25,9 +26,7 @@ export default function Droppable(props: droppableProps) {
   
   
   return (
-    <div ref={setNodeRef} style={{...style, ...props.style}}>
-      {props.zonePosition.x}
-      {props.zonePosition.y}
+    <div className="droppable-wrap" ref={setNodeRef} style={{...props.zoneDimensions, ...style, ...props.style}}>
       {props.children}
     </div>
   );

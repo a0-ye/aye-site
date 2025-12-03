@@ -34,7 +34,7 @@ export default function MotionCard(props: CardProps) {
         },[cardData.origin.x, cardData.origin.y]
     )
 
-    return <motion.div
+    return <motion.div className = "MotionCard"
         ref={ref}
         drag
         onDrag={(_,info)=>{
@@ -76,6 +76,7 @@ const box: CSSProperties = {
     color:'black',
     borderRadius: 10,
     position:'absolute',
+    // transform: 'translate(-50%, -50%)',
 }
 
 

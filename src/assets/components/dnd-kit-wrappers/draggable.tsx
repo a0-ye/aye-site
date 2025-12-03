@@ -17,7 +17,7 @@ export default function Draggable(props: draggableProps) {
 
   
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} style={{...style}}>
+    <div className='draggable-wrap' ref={setNodeRef} {...listeners} {...attributes} style={{...style}}>
       {props.children}
     </div>
   );
