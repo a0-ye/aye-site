@@ -3,6 +3,7 @@ import {useDraggable, type UniqueIdentifier} from '@dnd-kit/core';
 
 interface draggableProps{
   drag_id: UniqueIdentifier
+  style?: CSSProperties
   children?: ReactNode
 }
 
@@ -17,17 +18,17 @@ export default function Draggable(props: draggableProps) {
 
   
   return (
-    <div className='draggable-wrap' ref={setNodeRef} {...listeners} {...attributes} style={{...style}}>
+    <div className='draggable-wrap' ref={setNodeRef} {...listeners} {...attributes} style={{...props.style, ...draggableStyle}}>
       {props.children}
     </div>
   );
 
   
 }
-const style: CSSProperties = {
+const draggableStyle: CSSProperties = {
     width:'100%',height:'100%',
-    zIndex:100,
     backgroundColor:'#ff4ca6ff',
-    opacity:0.3,
-    position:'absolute'
+    opacity:0,
+    position:'absolute',
+    // pointerEvents:'none',
   }

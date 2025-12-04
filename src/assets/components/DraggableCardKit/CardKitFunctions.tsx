@@ -5,7 +5,9 @@ import { useState } from "react";
 export interface CardData{
   id:UniqueIdentifier;
   zone:UniqueIdentifier;
-  origin:{x:number,y:number}
+  origin:{x:number,y:number};
+
+
 }
 
 interface CardMap {
@@ -33,6 +35,10 @@ export function useCardHandler(initialCardData: CardMap):[
   (cardIDs: UniqueIdentifier[], newOrigins:coord[]) => void
 ]{
   const [cards, setCards] = useState(initialCardData)
+  
+
+
+
   const moveCard = (cardID:UniqueIdentifier, newZoneID:UniqueIdentifier) => {
     setCards(prevCards => {
       const newCards = {...prevCards};
