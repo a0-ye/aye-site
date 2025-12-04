@@ -72,8 +72,9 @@ function App() {
   // Effect to return a card to the original zone
   const draggedCardPrevZoneID = useRef<UniqueIdentifier | null>(null)
   useEffect(()=>{
-    if (activeCard == null){
+    if (activeCard == null && draggedCardPrevZoneID.current){
       // call the card zone update function using draggedCardPrevZoneID to reverse it
+      moveCard(zoneData[UseZoneID].cards[0], draggedCardPrevZoneID.current)
     }
 
   },[activeCard])
