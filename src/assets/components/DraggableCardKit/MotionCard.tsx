@@ -41,11 +41,14 @@ export default function MotionCard(props: CardProps) {
      * PLAN: useEffect( [activeCard]) to expand the card AND limit its drag.
      *      how can I add content to it? should it be pre-loaded and fade in? including the button?
      */
-    useEffect(()=>{
+    useEffect(()=>{ // animate to the active/inactive card styles
         if (activeCard != cardData.id){
-            animate(ref.current, cardStyle) // animate back to default style
+            animate(ref.current, cardStyle) 
+            animate('.cardContentWrap', {opacity:0})
         } else {
-            animate(ref.current, {width:500,height:900, zIndex:10})
+            animate(ref.current, openCardStyle) 
+            animate('.cardContentWrap', {opacity:1}, {duration: 1})
+
         }
 
     }, [activeCard]);
@@ -53,7 +56,7 @@ export default function MotionCard(props: CardProps) {
     return (
     <motion.div className = "MotionCard"
                 ref={ref}
-                drag
+                drag = { props.activeCard != cardData.id }
                 onDrag={(_,info)=>{
                     // info.offset is the total mouse displacement from the start of the drag
                     // using this, we can calculate the position we need to drag to via origin + offset!
@@ -67,7 +70,7 @@ export default function MotionCard(props: CardProps) {
                     returnToOrigin()}}
                 style={{
                     x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
-                    backgroundColor: props.activeCard == cardData.id ? "#f82fddff": "#2f7cf8",
+                    backgroundColor: props.activeCard == cardData.id ? "#ffffffff": "#2f7cf8",
                         ...cardStyle, ...props.style, 
                         // originX:cardData.origin.x, originY:cardData.origin.y
                         }}
@@ -77,16 +80,17 @@ export default function MotionCard(props: CardProps) {
                 }}
                 >
             <Draggable style={{pointerEvents: (activeCard == cardData.id ? 'none' : 'auto') }} drag_id={cardData.id}/>
-            
-            <p>ID: {cardData.id}</p>
-            <p>Zone: {cardData.zone}</p>
-            <p>activeCard: {props.activeCard}</p>
-            <p> {cardData.origin.x} , {cardData.origin.y}</p>
-            <button style={{zIndex:10}} onClick={()=>{
-                props.setActiveCard(null);
-            }}></button>
-            
-            {props.children}
+                <motion.div className={"cardContentWrap"} ref={ref} style={{...cardContentStyle , pointerEvents: (activeCard == cardData.id ? 'auto' : 'none')}}>
+                    <p>ID: {cardData.id}</p>
+                    <p>Zone: {cardData.zone}</p>
+                    <p>activeCard: {props.activeCard}</p>
+                    <p> {cardData.origin.x} , {cardData.origin.y}</p>
+                    <button style={{zIndex:10}} onClick={()=>{
+                        props.setActiveCard(null);
+                    }}></button>
+
+                    {props.children}
+                </motion.div>
     </motion.div>
         
     )
@@ -101,6 +105,9 @@ const cardStyle: CSSProperties = {
     zIndex:2,
     color:'black',
     borderRadius: 10,
+    borderStyle:'solid',
+    borderWidth:3,
+    borderColor:'black',
     position:'absolute',
 
     alignContent:'left',
@@ -108,4 +115,14 @@ const cardStyle: CSSProperties = {
     // padding:15 // cant do padding, risks misaligning 
 }
 
+
+const openCardStyle: CSSProperties = {
+    width:500, height:900,
+    zIndex:10,
+    opacity:1
+}
+
+const cardContentStyle: CSSProperties = {
+    
+}
 

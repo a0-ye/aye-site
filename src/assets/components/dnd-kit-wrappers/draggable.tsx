@@ -27,7 +27,7 @@ export default function Draggable(props: draggableProps) {
 }
 const draggableStyle: CSSProperties = {
     width:'100%',height:'100%',
-    backgroundColor:'#ff4ca6ff',
+    backgroundColor:'#05250aff',
     opacity:0,
     position:'absolute',
     // pointerEvents:'none',

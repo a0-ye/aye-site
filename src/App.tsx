@@ -44,8 +44,8 @@ function App() {
                     dimensions:{width:150,height:150}, changeOrigins:() => {}},
   }
 
-  // create State & Managers + load zones with changeOrigins
-  const [cardsData, zoneData, moveCard, changeOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
+  // create State & Managers + load zones
+  const [cardsData, zoneData, moveCard] = useCardHandler(initialCards, initialZones, handZoneID);
   /**
    * FLOW: card dragged to UseZone --> OnDragEndHandler sees its UseZone.
    * SPECIAL CASE! used!: setActiveCard to the one dropped in UseZone. 
@@ -98,7 +98,7 @@ function App() {
 
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
-      return (<MotionCard key={id} activeCard={activeCard} setActiveCard={setActiveCard} cardData={cardData}></MotionCard>) })
+      return (<MotionCard key={id} activeCard={activeCard} setActiveCard={setActiveCard} cardData={cardData}>{AboutMeContent}</MotionCard>) })
   }
 
   return (
@@ -118,6 +118,7 @@ function App() {
           </CardZone>
 
           <CardZone zoneData={zoneData[UseZoneID]}  >
+            active card: {activeCard}
           </CardZone>
 
         </DndContext>
