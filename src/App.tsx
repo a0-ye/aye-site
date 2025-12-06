@@ -8,7 +8,7 @@ import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { makeCoords, useCardHandler, type CardMap, type InitCards, type InitZones, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 function App() {
@@ -19,10 +19,10 @@ function App() {
   const c1ID = useId();
   const c2ID = useId();
   const c3ID = useId();
-  const initialCards: CardMap = {
-    [c1ID]: {id:c1ID,  zone:0,origin:makeCoords(0,0), },
-    [c2ID]: {id:c2ID,  zone:0,origin:makeCoords(0,0), },
-    [c3ID]: {id:c3ID,  zone:0,origin:makeCoords(0,0), },
+  const initialCards:InitCards = {
+    [c1ID]: {id:c1ID, content:AboutMeContent},
+    [c2ID]: {id:c2ID,   },
+    [c3ID]: {id:c3ID,   },
   }
 
   const handZoneID = useId() // store this one specially, since all cards start in the hand
@@ -30,22 +30,22 @@ function App() {
   const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
 
-  const initialZones:ZoneMap = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(150,700),   
-                    dimensions:{width:750,height:150},  changeOrigins:() => {}},
+  const initialZones:InitZones = {
+    [handZoneID]: { id:handZoneID, 
+                    position:makeCoords(150,700),dimensions:{width:750,height:150} },
 
-    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(200,75), 
-                    dimensions:{width:500,height:150}, changeOrigins:() => {}},
+    [jokerZoneID]:    { id:jokerZoneID, 
+                    position:makeCoords(200,75), dimensions:{width:500,height:150} },
 
-    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(900,75), 
-                    dimensions:{width:250,height:150}, changeOrigins:() => {}},
+    [consumableZoneID]:{ id:consumableZoneID, 
+                    position:makeCoords(900,75), dimensions:{width:250,height:150} },
 
-    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(600 - 150,450 - 150), 
-                    dimensions:{width:150,height:150}, changeOrigins:() => {}},
+    [UseZoneID]:{ id:UseZoneID, 
+                    position:makeCoords(600 - 150,450 - 150),dimensions:{width:150,height:150}},
   }
 
-  // create State & Managers + load zones
-  const [cardsData, zoneData, moveCard] = useCardHandler(initialCards, initialZones, handZoneID);
+  // create States & Manager
+  const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
   /**
    * FLOW: card dragged to UseZone --> OnDragEndHandler sees its UseZone.
    * SPECIAL CASE! used!: setActiveCard to the one dropped in UseZone. 
@@ -90,7 +90,7 @@ function App() {
       setActiveCard(cardID)
       console.log(cardID, " in UseZone! activeCard: ", activeCard);
     }
-    draggedCardPrevZoneID.current = cardsData[cardID].zone
+    draggedCardPrevZoneID.current = cardsData[cardID].zone as UniqueIdentifier // default value is set if none given
     
     moveCard(cardID, nextZoneID)
     // console.log("updating card zone for", cardsData[cardID]);
@@ -98,7 +98,14 @@ function App() {
 
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
-      return (<MotionCard key={id} activeCard={activeCard} setActiveCard={setActiveCard} cardData={cardData}>{AboutMeContent}</MotionCard>) })
+      return (<MotionCard key={id} 
+                          activeCard={activeCard} 
+                          setActiveCard={setActiveCard} 
+                          cardData={cardData}
+                          trySwapOrigins={trySwapOrigins}
+                          >
+                            {/** Card Children go here */}
+                            </MotionCard>) })
   }
 
   return (

@@ -47,11 +47,16 @@ export default function CardZone(props: ZoneProps) {
     }
 
     // useEffect( ()=> {recalculate the anchor points based on num cards} , [num_of_cards_in_zone])
+    const prevNumCards = useRef<number | null>(null)
     useEffect( ()=>{
         const cards = zoneData.cards
+        if (prevNumCards.current && prevNumCards.current == cards.length) {return} // if no change in card amount dont recalc
+        else {
+            prevNumCards.current = cards.length;
+        }
         const newAnchors = calculateAnchors(cards.length, zoneData);
         setOrigins(newAnchors)
-        zoneData.changeOrigins(cards, newAnchors)   // use given function to update zoneState
+        zoneData.changeOrigins(zoneData.id, cards, newAnchors)   // use given function to update zoneState
     },[zoneData.cards])
 
     function debugShowAnchors(){

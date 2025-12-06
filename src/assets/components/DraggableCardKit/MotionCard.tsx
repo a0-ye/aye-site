@@ -1,5 +1,5 @@
-import { motion, useAnimate, useMotionValue, useSpring } from "motion/react"
-import { useEffect, type CSSProperties, type ReactNode} from "react"
+import { motion, useAnimate, useMotionValue, useSpring, type PanInfo } from "motion/react"
+import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { makeCoords, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
@@ -9,6 +9,7 @@ interface CardProps{
     cardData:CardData
     activeCard: UniqueIdentifier | null;
     setActiveCard:Function;
+    trySwapOrigins:Function;
     style?: CSSProperties;
     children?: ReactNode;
 }
@@ -21,21 +22,23 @@ export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
     const activeCard = props.activeCard;
     const [ref, animate] = useAnimate();
+    const isDragging = useRef(false)
     const springConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
-    const targetX = useMotionValue(cardData.origin.x);
-    const targetY = useMotionValue(cardData.origin.y);
+    const targetX = useMotionValue(cardData.origin.x);  // x coordinate relative to 0,0
+    const targetY = useMotionValue(cardData.origin.y);  // y coordinate relative to 0,0
     const currentX = useSpring(targetX, springConfig);
     const currentY = useSpring(targetY, springConfig);
 
     const returnToOrigin = () => { 
-        animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))
+        if (isDragging.current == false) {
+            animate(ref.current, makeCoords(cardData.origin.x, cardData.origin.y))
+        }
     }
 
     useEffect(()=>{
-            returnToOrigin()
-        },[cardData.origin.x, cardData.origin.y]
-    )
+        returnToOrigin()
+    },[cardData.origin.x, cardData.origin.y])
 
     /**
      * PLAN: useEffect( [activeCard]) to expand the card AND limit its drag.
@@ -44,7 +47,7 @@ export default function MotionCard(props: CardProps) {
     useEffect(()=>{ // animate to the active/inactive card styles
         if (activeCard != cardData.id){
             animate(ref.current, cardStyle) 
-            animate('.cardContentWrap', {opacity:0})
+            animate('.cardContentWrap', {opacity:1})
         } else {
             animate(ref.current, openCardStyle) 
             animate('.cardContentWrap', {opacity:1}, {duration: 1})
@@ -53,24 +56,37 @@ export default function MotionCard(props: CardProps) {
 
     }, [activeCard]);
 
+    const preDragPosition = useRef(makeCoords(targetX.get(), targetY.get()))  // coordinates for previous position
+    const onDragStartHandler = ()=>{
+        isDragging.current = true;
+        preDragPosition.current = makeCoords(targetX.get(), targetY.get())
+        console.log('Drag Start!');
+    }
+    const onDragHandler = (_,info:PanInfo)=>{
+        /**
+         */
+        // info.offset is the total mouse displacement from the start of the drag
+        // need to calculate new position relative to drag start position so we don't suddenly change our numbers mid drag
+        const newTargetX = preDragPosition.current.x + info.offset.x
+        const newTargetY = preDragPosition.current.y + info.offset.y
+        targetX.set(newTargetX)
+        targetY.set(newTargetY)
+        props.trySwapOrigins(cardData.id, makeCoords(preDragPosition.current.x + info.offset.x, preDragPosition.current.y + info.offset.y), cardData.zone);
+    }
+
     return (
     <motion.div className = "MotionCard"
                 ref={ref}
                 drag = { props.activeCard != cardData.id }
-                onDrag={(_,info)=>{
-                    // info.offset is the total mouse displacement from the start of the drag
-                    // using this, we can calculate the position we need to drag to via origin + offset!
-                    const newTargetX = cardData.origin.x + info.offset.x
-                    const newTargetY = cardData.origin.y + info.offset.y
-                    targetX.set(newTargetX)
-                    targetY.set(newTargetY)
-                }}
+                onDragStart={onDragStartHandler}
+                onDrag={onDragHandler}
 
                 onDragEnd={()=>{
+                    isDragging.current = false;
                     returnToOrigin()}}
                 style={{
                     x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
-                    backgroundColor: props.activeCard == cardData.id ? "#ffffffff": "#2f7cf8",
+                    backgroundColor: props.activeCard == cardData.id ? "#f6ffffff": "#2f7cf8",
                         ...cardStyle, ...props.style, 
                         // originX:cardData.origin.x, originY:cardData.origin.y
                         }}
@@ -88,7 +104,7 @@ export default function MotionCard(props: CardProps) {
                     <button style={{zIndex:10}} onClick={()=>{
                         props.setActiveCard(null);
                     }}></button>
-
+                    {cardData.content}
                     {props.children}
                 </motion.div>
     </motion.div>
