@@ -34,16 +34,16 @@ function App() {
 
 
   const initialZones:ZoneMap = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(75,700),   
+    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(50,450),   
                     dimensions:{width:750,height:150},  changeOrigins:() => {}},
 
-    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(75,75), 
+    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(50,15), 
                     dimensions:{width:500,height:150}, changeOrigins:() => {}},
 
-    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(600,75), 
+    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(600,15), 
                     dimensions:{width:250,height:150}, changeOrigins:() => {}},
 
-    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(900/2 - 75,900/2 -75), 
+    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(900/2 - 75,600/2 -75), 
                     dimensions:{width:150,height:150}, changeOrigins:() => {}},
   }
 
@@ -116,43 +116,48 @@ function App() {
         <div className='left-panel'>
 
           <div className='dark-box'>
-            <div className='blind header'>Adrian Ye</div>
-            <div className='other'>
-              token, qualifications / titles. SWE, UCSD graduate.. other
+            <div id='blind-header'>Adrian Ye</div>
+            <div id='blind-body'>
+
+              token, headlineinfo. owns a nerd certificate; sexy
             </div>
           </div>
           <div id='score-box' className='dark-box'>
-            Score: 
+            <div id='score-text' className='panel-text' >Score:</div>
             <div className='grey-value'> 67</div>
           </div>
           <div id='hand-box' className='dark-box'>
-            Active Card: {activeCard}
+            <div className='panel-text'>Active Card:</div>
+            <div className='grey-value'>{activeCard ? activeCard : " Drag some cards!" }</div>
           </div>
           
           <div id='buttons-n-numbers-grid' >
             <div id='panel-button-container'>
-              <button> runinfo </button>
-              <p/>
-              <button> options </button>
+              <button className='panel-button'> runinfo </button>
+              <button className='panel-button'> options </button>
             </div>
             <div id='numbers-container'>
               <div id='hand-discard-container' className='duo-val-container'>
                 <div className='dark-box'>
-                  hands: <div className='grey-value'>4</div>
+                  <div className='panel-text'>hands:</div>
+                  <div className='grey-value'>4</div>
                 </div>
                 <div className='dark-box'>
-                  discards: <div className='grey-value'>3</div>
+                  <div className='panel-text'> discards:</div>
+                  <div className='grey-value'>3</div>
                 </div>
               </div>
               <div className='dark-box'>
-                Money:<div className='grey-value'>$22  </div>
+                <div className='grey-value' >$money</div>
               </div>
               <div id='ante-round-container' className='duo-val-container'>
                 <div className='dark-box'>
-                  Ante: <div className='grey-value'>2/8  </div>
+                  <div className='panel-text'> Ante: </div>
+                  <div className='grey-value'> 2/8  </div>
                 </div>
                 <div className='dark-box'>
-                  Round:<div className='grey-value'>1   </div>
+                  <div className='panel-text'> Round:</div>
+                  <div className='grey-value'>1   </div>
                 </div>
               </div>
               {/* hands discards money ante round */}
@@ -167,13 +172,15 @@ function App() {
             </CardZone>
 
             <CardZone zoneData={zoneData[jokerZoneID]}  >
+              maybe put links to my projects here?
             </CardZone>
             
             <CardZone zoneData={zoneData[consumableZoneID]}  >
+              maybe linkns to projects here, so you "use / consume" them haha hehe
             </CardZone>
 
             <CardZone zoneData={zoneData[UseZoneID]}  >
-              active card: {activeCard}
+              
             </CardZone>
 
           </DndContext>
