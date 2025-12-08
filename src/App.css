@@ -4,14 +4,82 @@
   text-align: center;
   display: flex; 
   justify-content: center; 
-  align-items: center;
+  align-items: stretch;
+}
+
+.flex-bounds {
+  display:flex;
+  align-items: stretch;
+  border-radius: 3px;
+  border: 3px solid #676767;
+}
+
+.left-panel {
+  align-self: stretch;
+  padding: 15px;
+  width: 300px;
+  /* height: calc(900px - padding); */
+  background-color:#3a3a3a;
+  border-right: 3px solid #676767;
+
+  display: grid;
+  grid-template-rows: [blind] 150px [score] 75px [hand1] 150px [bottom] 225px ;
+  align-items: stretch;
+  /* border-radius: 3px;
+  border: 3px solid #aaaaaa; */
 }
 
 .CardBounds {
   position:relative;
-  /* left: 30px;
-  top:90px; */
-  /* display:flex; */
   background-color:#f82f2f31;
-  width:1200px; height:900px;
+  width:900px; height:900px;
+}
+
+.dark-box{
+  border-radius: 4px;
+  margin:2px;
+  background-color: #242424;
+  align-self: stretch;
+  flex-grow: 1;
+  /* border: 3px solid #676767; */
+}
+
+.grey-value {
+  display: inline;
+  background-color: #474747;
+  border-radius: 4px;
+}
+
+#blind-box {
+  background-color: #33473a;
+}
+#score-box {
+  display: flex;
+  margin: 3px 0px 3px 0px;
+}
+#hand-box {
+  margin: 3px 0px 3px 0px;
+}
+#buttons-n-numbers-grid{
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: 1fr 2fr;
+  padding: 2px;
+
+}
+#panel-button-container{
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+#numbers-container {
+  display: grid;
+  padding: 2px;
+  grid-template-rows: 1fr 1fr 1fr;
+  align-items: stretch;
+}
+
+.duo-val-container {
+  display:flex;
+  align-items: stretch;
 }

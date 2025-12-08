@@ -34,16 +34,16 @@ function App() {
 
 
   const initialZones:ZoneMap = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(150,700),   
+    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(75,700),   
                     dimensions:{width:750,height:150},  changeOrigins:() => {}},
 
-    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(200,75), 
+    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(75,75), 
                     dimensions:{width:500,height:150}, changeOrigins:() => {}},
 
-    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(900,75), 
+    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(600,75), 
                     dimensions:{width:250,height:150}, changeOrigins:() => {}},
 
-    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(600 - 150,450 - 150), 
+    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(900/2 - 75,900/2 -75), 
                     dimensions:{width:150,height:150}, changeOrigins:() => {}},
   }
 
@@ -112,25 +112,74 @@ function App() {
 
   return (
     <>
-      <div className='CardBounds' style={{ 
-            
-          }}>
-          <DndContext onDragEnd={handleDragEnd}>
-          {generateCards()}
-          <CardZone zoneData={zoneData[handZoneID]}  >
-          </CardZone>
+      <div className='flex-bounds'>
+        <div className='left-panel'>
 
-          <CardZone zoneData={zoneData[jokerZoneID]}  >
-          </CardZone>
+          <div className='dark-box'>
+            <div className='blind header'>Adrian Ye</div>
+            <div className='other'>
+              token, qualifications / titles. SWE, UCSD graduate.. other
+            </div>
+          </div>
+          <div id='score-box' className='dark-box'>
+            Score: 
+            <div className='grey-value'> 67</div>
+          </div>
+          <div id='hand-box' className='dark-box'>
+            Active Card: {activeCard}
+          </div>
           
-          <CardZone zoneData={zoneData[consumableZoneID]}  >
-          </CardZone>
+          <div id='buttons-n-numbers-grid' >
+            <div id='panel-button-container'>
+              <button> runinfo </button>
+              <p/>
+              <button> options </button>
+            </div>
+            <div id='numbers-container'>
+              <div id='hand-discard-container' className='duo-val-container'>
+                <div className='dark-box'>
+                  hands: <div className='grey-value'>4</div>
+                </div>
+                <div className='dark-box'>
+                  discards: <div className='grey-value'>3</div>
+                </div>
+              </div>
+              <div className='dark-box'>
+                Money:<div className='grey-value'>$22  </div>
+              </div>
+              <div id='ante-round-container' className='duo-val-container'>
+                <div className='dark-box'>
+                  Ante: <div className='grey-value'>2/8  </div>
+                </div>
+                <div className='dark-box'>
+                  Round:<div className='grey-value'>1   </div>
+                </div>
+              </div>
+              {/* hands discards money ante round */}
+            </div>
+          </div>
 
-          <CardZone zoneData={zoneData[UseZoneID]}  >
-            active card: {activeCard}
-          </CardZone>
+        </div>
+        <div className='CardBounds' style={{}}>
+            <DndContext onDragEnd={handleDragEnd}>
+            {generateCards()}
+            <CardZone zoneData={zoneData[handZoneID]}  >
+            </CardZone>
 
-        </DndContext>
+            <CardZone zoneData={zoneData[jokerZoneID]}  >
+            </CardZone>
+            
+            <CardZone zoneData={zoneData[consumableZoneID]}  >
+            </CardZone>
+
+            <CardZone zoneData={zoneData[UseZoneID]}  >
+              active card: {activeCard}
+            </CardZone>
+
+          </DndContext>
+        </div>
+
+
       </div>
     </>
   )
