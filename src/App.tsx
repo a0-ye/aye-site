@@ -19,16 +19,19 @@ function App() {
   const c1ID = useId();
   const c2ID = useId();
   const c3ID = useId();
-  const initialCards: CardMap = {
-    [c1ID]: {id:c1ID,  zone:0,origin:makeCoords(0,0), },
-    [c2ID]: {id:c2ID,  zone:0,origin:makeCoords(0,0), },
-    [c3ID]: {id:c3ID,  zone:0,origin:makeCoords(0,0), },
-  }
-
   const handZoneID = useId() // store this one specially, since all cards start in the hand
   const jokerZoneID = useId(); // Where jokers live.. No functionality, just naming like balaro :drooling:
   const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
+
+
+  const initialCards: CardMap = {
+    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), },
+    [c2ID]: {id:c2ID,  zone:handZoneID ,origin:makeCoords(0,0), },
+    [c3ID]: {id:c3ID,  zone:handZoneID ,origin:makeCoords(0,0), },
+  }
+
+
 
   const initialZones:ZoneMap = {
     [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(150,700),   
@@ -45,7 +48,7 @@ function App() {
   }
 
   // create State & Managers + load zones
-  const [cardsData, zoneData, moveCard] = useCardHandler(initialCards, initialZones, handZoneID);
+  const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
   /**
    * FLOW: card dragged to UseZone --> OnDragEndHandler sees its UseZone.
    * SPECIAL CASE! used!: setActiveCard to the one dropped in UseZone. 
@@ -98,7 +101,13 @@ function App() {
 
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
-      return (<MotionCard key={id} activeCard={activeCard} setActiveCard={setActiveCard} cardData={cardData}>{AboutMeContent}</MotionCard>) })
+      return (<MotionCard 
+        key={id} 
+        activeCard={activeCard} 
+        setActiveCard={setActiveCard} 
+        cardData={cardData}
+        trySwapOrigins={trySwapOrigins}
+        >{AboutMeContent}</MotionCard>) })
   }
 
   return (

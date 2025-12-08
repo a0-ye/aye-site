@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export interface CardData{
@@ -35,37 +35,32 @@ export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, 
   CardMap,
   ZoneMap,
   (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void,
-  (cardIDs: UniqueIdentifier[], newOrigins:coord[]) => void
+  (cardID: UniqueIdentifier, point:coord, zoneID:UniqueIdentifier) =>  void
 ]{
   
-  const [cardsState, setCardsState] = useState(initialCardData)
+  const [cardsData, setCardsData] = useState(initialCardData)
   const [zoneData, setZoneData] = useState(initialZones);
 
-  //all cards go in startingZone. Perhaps this should NOT be a thing... maybe if the zone isn't set we auto set to starting zone
-  for (const cardID in initialCardData){
-    initialZones[startingZone].cards.push(cardID)
-    initialCardData[cardID].zone = startingZone
-  }
 
 
   const moveCard = (cardID:UniqueIdentifier, newZoneID:UniqueIdentifier) => {
     // remove card from current zone. Add card to new zone
     setZoneData(
-      prevState => {
-        const currZoneID = cardsState[cardID].zone
-        const newState = {...prevState} // make a copy
-        const newCurZoneDat = {...newState[currZoneID]}  // copy
+      prevZoneData => {
+        const currZoneID = cardsData[cardID].zone
+        const newZoneData = {...prevZoneData} // make a copy
+        const newCurZoneDat = {...newZoneData[currZoneID]}  // copy
         newCurZoneDat.cards = [...newCurZoneDat.cards.filter(id => id !== cardID)];
-        newState[currZoneID] = newCurZoneDat;
+        newZoneData[currZoneID] = newCurZoneDat;
 
-        const newNextZoneDat = {...newState[newZoneID]}  // copy next zone
+        const newNextZoneDat = {...newZoneData[newZoneID]}  // copy next zone
         newNextZoneDat.cards = [...newNextZoneDat.cards, cardID] // add card to next zone
-        newState[newZoneID] = newNextZoneDat // update next zone in new state
-        return newState
+        newZoneData[newZoneID] = newNextZoneDat // update next zone in new state
+        return newZoneData
       }
     )
     // Update the card state
-    setCardsState(prevCards => {
+    setCardsData(prevCards => {
       const newCards = {...prevCards};
       const updatedCard = {
         ...newCards[cardID],
@@ -77,24 +72,79 @@ export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, 
   };
 
 // given a list of n cardIDs n Origins, matches cards and origins 1 to 1 and updates card origins
-    const changeOrigins = (cardIDs: UniqueIdentifier[], newOrigins: coord[]) => {
-    const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
-    setCardsState((prevCards) => {
-        const newCards = { ...prevCards };
-        zippedPairs.forEach(([cardID, newOrigin]) => {
-            const currentCard = newCards[cardID];
-            if (currentCard) {
-            newCards[cardID] = {
-                ...currentCard,
-                origin: newOrigin,
-            };
-            }
-        });
-        return newCards;
-        });
-        console.log("origins updated!");
-    };
+  const changeOrigins = (cardIDs: UniqueIdentifier[], newOrigins: coord[]) => {
+  const zippedPairs = cardIDs.map((id, idx) => [id, newOrigins[idx]] as const);
+  setCardsData((prevCards) => {
+      const newCards = { ...prevCards };
+      zippedPairs.forEach(([cardID, newOrigin]) => {
+          const currentCard = newCards[cardID];
+          if (currentCard) {
+          newCards[cardID] = {
+              ...currentCard,
+              origin: newOrigin,
+          };
+          }
+      });
+      return newCards;
+      });
+  };
 
-    for (const zoneID in initialZones){ initialZones[zoneID].changeOrigins = changeOrigins;}
-    return [cardsState, zoneData, moveCard, changeOrigins]
+  /** 
+   * Given card ID, the current mouse coordinate point..., and the associated Zone,
+   * 1. Calculate the nearest origin point & card to the mouse pointer (based) out of all the cards in the zone
+   * 2. check if the requesting card origin is the same as the calculated origin
+   * 3. swap them
+   */
+  const nearestCard = (point:coord, cards:UniqueIdentifier[] ): UniqueIdentifier | undefined => {
+    let minDist: number = Infinity
+    let nearest:UniqueIdentifier | undefined = undefined
+    cards.forEach((cardID)=>{
+      // distance from point to origin
+      const cardOrigin = cardsData[cardID].origin
+      if (!cardOrigin) {
+        
+      } else{
+        const distance = Math.sqrt(((cardOrigin.x - point.x)**2 +(cardOrigin.y - point.y) **2))
+        if (minDist == Infinity || distance < minDist ){
+          minDist = distance
+          nearest = cardID
+        }
+      }
+    })
+    return nearest
+  }
+
+  const trySwapOrigins = (cardID: UniqueIdentifier, point:coord, zoneID:UniqueIdentifier) => {
+    const zone = zoneData[zoneID]
+    const nearest = nearestCard(point,zone.cards)
+    if (nearest == undefined) {
+      console.log("CLOSEST ERROR!!!");
+      return;
+    }
+    // do nothing if the closest origin is it's current origin
+    if (cardID == nearest) {return}
+    console.log(`swap[${cardID}]: nearest origin belongs to ${nearest}, compared from point (${point.x},${point.y})`);
+    const c1Origin = cardsData[cardID].origin
+    const c2Origin = cardsData[nearest].origin
+    setCardsData((prevCardsData) => {
+      const newCardsData = {...prevCardsData}
+      newCardsData[cardID].origin = {...c2Origin}
+      newCardsData[nearest].origin = {...c1Origin}
+      return newCardsData
+    })
+  }
+
+
+  useEffect(()=>{
+    // One Time Setup:
+    // load the changeOrigins function
+    // move cards to startingZone
+    for (const zoneID in zoneData){ zoneData[zoneID].changeOrigins = changeOrigins;}
+    for (const cardID in {...cardsData}){
+      moveCard(cardID, startingZone)
+    }
+
+  }, [])
+
+  return [cardsData, zoneData, moveCard, trySwapOrigins]
 }

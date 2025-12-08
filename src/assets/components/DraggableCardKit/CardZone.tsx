@@ -52,6 +52,7 @@ export default function CardZone(props: ZoneProps) {
         const newAnchors = calculateAnchors(cards.length, zoneData);
         setOrigins(newAnchors)
         zoneData.changeOrigins(cards, newAnchors)   // use given function to update zoneState
+        
     },[zoneData.cards])
 
     function debugShowAnchors(){
