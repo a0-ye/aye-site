@@ -1,5 +1,10 @@
+@font-face {
+  font-family: m6x11; /* set name */
+  src:url('src/assets/fonts-ico/m6x11plus.ttf');
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: m6x11, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
