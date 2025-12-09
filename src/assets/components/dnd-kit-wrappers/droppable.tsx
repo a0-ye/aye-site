@@ -1,7 +1,5 @@
 import { type CSSProperties, type ReactNode } from 'react';
 import {useDroppable, type UniqueIdentifier} from '@dnd-kit/core';
-import type { CardData } from '../DraggableCardKit/CardKitFunctions';
-import CardZone from '../DraggableCardKit/CardZone';
 
 interface droppableProps {
   drop_id:UniqueIdentifier,

@@ -1,6 +1,6 @@
 
 import {motion, useAnimate } from "motion/react"
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
+import { useEffect, useState, type CSSProperties, type ReactNode,} from "react"
 import Droppable from "../dnd-kit-wrappers/droppable";
 import { makeCoords, type ZoneData, type coord } from "./CardKitFunctions";
 import type { UniqueIdentifier } from "@dnd-kit/core";

@@ -3,7 +3,7 @@ import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { makeCoords, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
-import CardZone from "./CardZone"
+
 
 
 interface CardProps{
