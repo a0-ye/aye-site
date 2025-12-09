@@ -9,20 +9,13 @@ import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
-import { motion } from 'motion/react'
+import { motion, rgba, useMotionValue, useSpring } from 'motion/react'
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
+import { animate } from 'motion'
 
 
 function App() {
-  window.onresize = function() {
-    let scale = Math.min(
-        window.innerWidth / 1200, 
-        window.innerHeight / 900
-    );
-    document.documentElement.style.setProperty("--appscale", scale.toString());
-    console.log("resize!", scale);
-}
 
   // ======= INIT ==========================================
   const [activeCard, setActiveCard] = useState<UniqueIdentifier | null>(null) // needs to be here to give props to cards
@@ -37,11 +30,26 @@ function App() {
 
 
   const initialCards: CardMap = {
-    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), },
+    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), conetent:AboutMeContent},
     [c2ID]: {id:c2ID,  zone:handZoneID ,origin:makeCoords(0,0), },
     [c3ID]: {id:c3ID,  zone:handZoneID ,origin:makeCoords(0,0), },
   }
 
+  const colorMap: Record<UniqueIdentifier,string> = {
+    [c1ID]: '#a0ffef',
+    [c2ID]: '#a00043',
+    [c3ID]: '#ffd13a',
+  }
+  const DEFAULT_COLOR = '#33473a';
+
+  useEffect(()=>{
+    if (activeCard){
+      animate("div",{'--boss-blind-color':colorMap[activeCard]});
+      
+    } else {
+      animate("div",{'--boss-blind-color':DEFAULT_COLOR});
+    }
+  },[activeCard])
 
 
   const initialZones:ZoneMap = {
@@ -60,26 +68,7 @@ function App() {
 
   // create State & Managers + load zones
   const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
-  /**
-   * FLOW: card dragged to UseZone --> OnDragEndHandler sees its UseZone.
-   * SPECIAL CASE! used!: setActiveCard to the one dropped in UseZone. 
-   *                      Create an event(originZoneID, cardID), watches for activeCard == None, 
-   *                        when it changes to none, move card back to originZone.   *                    
-   *                    
-   * CARD FUNCTIONALITY: Every card has a reference to activeCard and SetActiveCard.
-   *        if self.ID == activeCard, then WE are active!
-   *        we do our active thing. We flip, grow in size to show our content.
-   *        CLOSE BUTTON: 
-   *                Fade content, Shrink in size, Flip around.
-   *                Closes self via SetActiveCard(None).
-   *
-   *  const [activeCard , setActiveCard] = useState(UniqueID | None), where we use card IDs.
-   *  
-   * 
-   * onDragStart: make the Use zone change colors or show up or something
-   * 
-   */
-
+  
   // ======== END INIT ==========================================================
 
 
@@ -110,8 +99,6 @@ function App() {
     // console.log("updating card zone for", cardsData[cardID]);
   }
 
-  const scaleWrapRef = useRef(null)
-
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
       return (<MotionCard 
@@ -120,7 +107,9 @@ function App() {
         setActiveCard={setActiveCard} 
         cardData={cardData}
         trySwapOrigins={trySwapOrigins}
-        >{AboutMeContent}</MotionCard>) })
+        >
+          {cardData.conetent}
+        </MotionCard>) })
   }
 
   return (

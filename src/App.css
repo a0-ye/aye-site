@@ -14,7 +14,7 @@
   justify-content: center;
 
   height:100vh;
-  background-color: var(--left-panel-bkg-color);
+  background-color: color-mix(in srgb,var(--left-panel-bkg-color) , var(--boss-blind-color) 20%);
   border-right: 3px solid #676767;
   border-left: 3px solid #676767;
   

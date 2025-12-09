@@ -1,11 +1,12 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 
 export interface CardData{
   id:UniqueIdentifier;
   zone:UniqueIdentifier;
   origin:{x:number,y:number};
+  conetent?:ReactNode;
 }
 
 export interface ZoneData {

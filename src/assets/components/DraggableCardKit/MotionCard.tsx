@@ -51,6 +51,7 @@ export default function MotionCard(props: CardProps) {
     )
 
     useEffect(()=>{ // animate to the active/inactive card styles
+        // TODO: Change to Motion Variants pattern
         if (activeCard != cardData.id){
             animate(ref.current, cardStyle) 
             animate('.cardContentWrap', {opacity:0})

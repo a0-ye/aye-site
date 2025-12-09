@@ -19,7 +19,7 @@
 
   --boss-blind-color: #33473a;
 
-  --left-panel-bkg-color: color-mix(in srgb, #474747 , var(--boss-blind-color) 20%);
+  --left-panel-bkg-color: #474747;
 
 }
 

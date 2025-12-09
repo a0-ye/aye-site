@@ -5,7 +5,7 @@
   padding: 15px;
   width: 250px;
   /* height: calc(900px - padding); */
-  background-color: color-mix(in srgb, #474747 , var(--boss-blind-color) 20%);
+  background-color: color-mix(in srgb,var(--left-panel-bkg-color) , var(--boss-blind-color) 20%);
   /* border-right: 3px solid #676767; */
 
   display: grid;
