@@ -16,6 +16,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --boss-blind-color: #33473a;
+
+  --left-panel-bkg-color: color-mix(in srgb, #474747 , var(--boss-blind-color) 20%);
+
 }
 
 a {

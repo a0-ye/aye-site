@@ -9,9 +9,20 @@ import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { motion } from 'motion/react'
+
+import LeftPanel from './assets/components/left-panel/LeftPanel'
 
 
 function App() {
+  window.onresize = function() {
+    let scale = Math.min(
+        window.innerWidth / 1200, 
+        window.innerHeight / 900
+    );
+    document.documentElement.style.setProperty("--appscale", scale.toString());
+    console.log("resize!", scale);
+}
 
   // ======= INIT ==========================================
   const [activeCard, setActiveCard] = useState<UniqueIdentifier | null>(null) // needs to be here to give props to cards
@@ -99,6 +110,8 @@ function App() {
     // console.log("updating card zone for", cardsData[cardID]);
   }
 
+  const scaleWrapRef = useRef(null)
+
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
       return (<MotionCard 
@@ -112,59 +125,10 @@ function App() {
 
   return (
     <>
-      <div className='flex-bounds'>
-        <div className='left-panel'>
-
-          <div className='dark-box'>
-            <div id='blind-header'>Adrian Ye</div>
-            <div id='blind-body'>
-
-              token, headlineinfo. owns a nerd certificate; sexy
-            </div>
-          </div>
-          <div id='score-box' className='dark-box'>
-            <div id='score-text' className='panel-text' >Score:</div>
-            <div className='grey-value'> 67</div>
-          </div>
-          <div id='hand-box' className='dark-box'>
-            <div className='panel-text'>Active Card:</div>
-            <div className='grey-value'>{activeCard ? activeCard : " Drag some cards!" }</div>
-          </div>
-          
-          <div id='buttons-n-numbers-grid' >
-            <div id='panel-button-container'>
-              <button className='panel-button'> runinfo </button>
-              <button className='panel-button'> options </button>
-            </div>
-            <div id='numbers-container'>
-              <div id='hand-discard-container' className='duo-val-container'>
-                <div className='dark-box'>
-                  <div className='panel-text'>hands:</div>
-                  <div className='grey-value'>4</div>
-                </div>
-                <div className='dark-box'>
-                  <div className='panel-text'> discards:</div>
-                  <div className='grey-value'>3</div>
-                </div>
-              </div>
-              <div className='dark-box'>
-                <div className='grey-value' >$money</div>
-              </div>
-              <div id='ante-round-container' className='duo-val-container'>
-                <div className='dark-box'>
-                  <div className='panel-text'> Ante: </div>
-                  <div className='grey-value'> 2/8  </div>
-                </div>
-                <div className='dark-box'>
-                  <div className='panel-text'> Round:</div>
-                  <div className='grey-value'>1   </div>
-                </div>
-              </div>
-              {/* hands discards money ante round */}
-            </div>
-          </div>
-
-        </div>
+      <div id='leftcol' >
+        <LeftPanel activeCard={activeCard}></LeftPanel>
+      </div>
+      <div id='centercol'>
         <div className='CardBounds' style={{}}>
             <DndContext onDragEnd={handleDragEnd}>
             {generateCards()}
@@ -185,8 +149,6 @@ function App() {
 
           </DndContext>
         </div>
-
-
       </div>
     </>
   )

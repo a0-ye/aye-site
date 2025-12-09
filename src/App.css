@@ -1,132 +1,35 @@
 #root {
-  margin: 0 0;
-  min-width: 100%;
-  text-align: center;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-
-
-  --score-height: 35px;
-}
-
-.flex-bounds {
-  max-width: 1200px;
-  /* max-height: 600px; */
-  display:flex;
-  align-items: stretch;
-  border-radius: 3px;
-  border: 3px solid #676767;
-}
-
-.left-panel {
-  align-self: stretch;
-  padding: 15px;
-  width: 250px;
-  /* height: calc(900px - padding); */
-  background-color:#3a3a3a;
-  border-right: 3px solid #676767;
-
   display: grid;
-  grid-template-rows: [blind] 150px [score] 75px [hand1] 150px [bottom] 1fr ;
-  /* grid-template-rows: [blind] 1fr [score] 50px [hand1] 1fr [bottom] 1fr ; */
-  align-items: stretch;
+  grid-template-columns: [left] 300px [center] 600px [right] 300px;
+  text-align: center;
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#leftcol {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  height:100vh;
+  background-color: var(--left-panel-bkg-color);
+  border-right: 3px solid #676767;
+  border-left: 3px solid #676767;
+  
+}
+
+#centercol {
+  height:100vh;
+  align-content: center;
+  justify-content: center;
 }
 
 .CardBounds {
-  position:relative;
-  background-color:#f82f2f31;
-  width:900px; height:auto;
-}
-
-.dark-box{
-  border-radius: 4px;
-  margin:1px;
-  background-color: #242424;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  /* border: 3px solid #676767; */
-}
-
-.grey-value {
-  /* max-height: 35px; */
-  display: inline;
-  font-size:xx-large;
-  background-color: #474747;
-  border-radius: 4px;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  flex-grow: 1;
-  margin: 4px 4px 4px 4px;
-}
-
-.panel-text {
-  font-size: x-large;
-  max-height: 1em;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  /* margin: 4px 4px 4px 4px; */
-
-}
-
-.panel-button {
-  width: 75px;
-  height: 100px;
-}
-
-#blind-header {
-  font-size:x-large;
-  margin: 2px 4px 2px 4px;
-  border-radius: 4px;
-  background-color: #33473a;
-}
-#blind-body {
-  font-size:x-large;
-  margin: 2px 4px 4px 4px;
-  border-radius: 4px;
-  background-color: #2a3a2f;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-}
-#score-box {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  margin: 3px 0px 3px 0px;
-}
-
-#score-text {
   align-self: center;
-  font-size:x-large;
+  position:relative;
+  /* background-color:#f82f2f31; */
+  width:900px; height: 650px;;
 }
 
-#hand-box {
-  margin: 3px 0px 3px 0px;
-}
-#buttons-n-numbers-grid{
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: 1fr 2fr;
-  padding: 2px;
-
-}
-#panel-button-container{
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
-#numbers-container {
-  display: grid;
-  padding: 2px;
-  grid-template-rows: 1fr 1fr 1fr;
-  align-items: stretch;
-}
-
-.duo-val-container {
-  display:flex;
-  align-items: stretch;
-}
