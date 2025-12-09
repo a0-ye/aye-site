@@ -51,9 +51,13 @@ function App() {
     }
   },[activeCard])
 
+  const cardBounds = {
+    width:900,
+    height:650,
+  }
 
   const initialZones:ZoneMap = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords(50,450),   
+    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords((cardBounds.width-750) / 2,450),   
                     dimensions:{width:750,height:150},  changeOrigins:() => {}},
 
     [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(50,15), 
@@ -62,7 +66,7 @@ function App() {
     [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(600,15), 
                     dimensions:{width:250,height:150}, changeOrigins:() => {}},
 
-    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(900/2 - 75,600/2 -75), 
+    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(cardBounds.width/2 - 75,cardBounds.height/2 -75), 
                     dimensions:{width:150,height:150}, changeOrigins:() => {}},
   }
 
