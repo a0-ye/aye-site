@@ -1,15 +1,14 @@
-import { useState, useId, type ReactNode, type CSSProperties, useEffect, useRef, act} from 'react'
+import { useState, useId, type ReactNode, useEffect, useRef} from 'react'
 import './App.css'
 
 import AboutMeContent from './assets/CardContent/AboutMe'
-import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 
 import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
-import { motion, rgba, useMotionValue, useSpring } from 'motion/react'
+import { makeCoords, useCardHandler, type CardData, type CardMap} from './assets/components/DraggableCardKit/CardKitFunctions'
+
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
 import { animate } from 'motion'
