@@ -1,5 +1,7 @@
 import { type CSSProperties, type ReactNode } from 'react';
 import {useDroppable, type UniqueIdentifier} from '@dnd-kit/core';
+import type { CardData } from '../DraggableCardKit/CardKitFunctions';
+import CardZone from '../DraggableCardKit/CardZone';
 
 interface droppableProps {
   drop_id:UniqueIdentifier,
@@ -8,6 +10,7 @@ interface droppableProps {
       y:number,
   }
   zoneDimensions: {width:number, height:number},
+  disableFlag?:boolean,
   style?: CSSProperties,
   children?:ReactNode,
 }
@@ -16,17 +19,20 @@ interface droppableProps {
 export default function Droppable(props: droppableProps) {
   const {isOver, setNodeRef} = useDroppable({
     id: props.drop_id,
-  });
+  });  
+
+
    const style: CSSProperties = {
+    position:'absolute',
     left:props.zonePosition.x,
     top:props.zonePosition.y,
-    backgroundColor: isOver ? 'green' : "#ffff65ff",
-
+    backgroundColor: (isOver) ? props.style?.backgroundColor : undefined,
+    borderRadius:10,
   };
   
   
   return (
-    <div className="droppable-wrap" ref={setNodeRef} style={{...props.zoneDimensions, ...style, ...props.style}}>
+    <div className="droppable-wrap" ref={setNodeRef} style={{...props.zoneDimensions, ...style}}>
       {props.children}
     </div>
   );

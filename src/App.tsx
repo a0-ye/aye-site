@@ -7,7 +7,7 @@ import { AboutMeThumbnail } from './assets/CardContent/AboutMe'
 import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
-import { DndContext, type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
+import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
 import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
 import { motion, rgba, useMotionValue, useSpring } from 'motion/react'
 
@@ -18,7 +18,7 @@ import { animate } from 'motion'
 function App() {
 
   // ======= INIT ==========================================
-  const [activeCard, setActiveCard] = useState<UniqueIdentifier | null>(null) // needs to be here to give props to cards
+  const [activeCard, setActiveCard] = useState<CardData | null>(null) // needs to be here to give props to cards
 
   const c1ID = useId();
   const c2ID = useId();
@@ -44,7 +44,7 @@ function App() {
 
   useEffect(()=>{
     if (activeCard){
-      animate("div",{'--boss-blind-color':colorMap[activeCard]});
+      animate("div",{'--boss-blind-color':colorMap[activeCard.id]});
       
     } else {
       animate("div",{'--boss-blind-color':DEFAULT_COLOR});
@@ -66,7 +66,7 @@ function App() {
                     dimensions:{width:150,height:150}, changeOrigins:() => {}},
   }
 
-  // create State & Managers + load zones
+  // create Card State & Managers + load zones
   const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
   
   // ======== END INIT ==========================================================
@@ -82,15 +82,39 @@ function App() {
 
   },[activeCard])
 
+  const [disableZoneFlag, setDisableZoneFlag] = useState(true)
+  const [draggedCardStartZone, setDraggedCardStartZone] = useState<UniqueIdentifier|null>(null)
+  const handleDragStart = (event:DragStartEvent) => {
+    setDisableZoneFlag(false);
+    setDraggedCardStartZone(event.active.data.current?.origin_zone)
+
+    console.log('drag start:');
+  }
+
+  const handleOnDragOver = (event:DragOverEvent)=>{
+    console.log(
+      // over is the zone, active is the card
+      // draggedCardStartZone,
+      event.over?.id,
+      event.active.id,
+    );
+
+    
+
+  }
+
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
+    setDisableZoneFlag(true);
+    // console.log(disableUseZone.current);
+    
     if(!event.over) return
     const {active, over} = event;
     const cardID = active.id
     const nextZoneID = over.id
     if (cardsData[cardID].zone === nextZoneID) return;
     if (nextZoneID === UseZoneID){
-      setActiveCard(cardID)
+      setActiveCard(cardsData[cardID])
       console.log(cardID, " in UseZone! activeCard: ", activeCard);
     }
     draggedCardPrevZoneID.current = cardsData[cardID].zone
@@ -99,11 +123,12 @@ function App() {
     // console.log("updating card zone for", cardsData[cardID]);
   }
 
+
   function generateCards(): ReactNode {
     return Object.entries(cardsData).map(([id, cardData]) => {
       return (<MotionCard 
         key={id} 
-        activeCard={activeCard} 
+        activeCard={activeCard? activeCard.id : null} 
         setActiveCard={setActiveCard} 
         cardData={cardData}
         trySwapOrigins={trySwapOrigins}
@@ -115,24 +140,27 @@ function App() {
   return (
     <>
       <div id='leftcol' >
-        <LeftPanel activeCard={activeCard}></LeftPanel>
+        <LeftPanel activeCard={activeCard? activeCard.id : null}></LeftPanel>
       </div>
       <div id='centercol'>
         <div className='CardBounds' style={{}}>
-            <DndContext onDragEnd={handleDragEnd}>
+            <DndContext onDragEnd={handleDragEnd} 
+                        onDragStart={handleDragStart}
+                        onDragOver={handleOnDragOver}
+                        >
             {generateCards()}
-            <CardZone zoneData={zoneData[handZoneID]}  >
+            <CardZone zoneData={zoneData[handZoneID]}  draggedCardStartZone={draggedCardStartZone}>
             </CardZone>
 
-            <CardZone zoneData={zoneData[jokerZoneID]}  >
+            <CardZone zoneData={zoneData[jokerZoneID]}  draggedCardStartZone={draggedCardStartZone}>
               maybe put links to my projects here?
             </CardZone>
             
-            <CardZone zoneData={zoneData[consumableZoneID]}  >
+            <CardZone zoneData={zoneData[consumableZoneID]}  draggedCardStartZone={draggedCardStartZone}>
               maybe linkns to projects here, so you "use / consume" them haha hehe
             </CardZone>
 
-            <CardZone zoneData={zoneData[UseZoneID]}  >
+            <CardZone zoneData={zoneData[UseZoneID]}draggedCardStartZone={draggedCardStartZone} disableFlag={disableZoneFlag}  >
               
             </CardZone>
 

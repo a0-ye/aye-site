@@ -1,11 +1,15 @@
 
-import {motion } from "motion/react"
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode} from "react"
+import {motion, useAnimate } from "motion/react"
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject} from "react"
 import Droppable from "../dnd-kit-wrappers/droppable";
 import { makeCoords, type ZoneData, type coord } from "./CardKitFunctions";
+import type { UniqueIdentifier } from "@dnd-kit/core";
 
 interface ZoneProps{
     zoneData:ZoneData,
+    // disableFlagRef?:RefObject<boolean | undefined>,
+    disableFlag?:boolean
+    draggedCardStartZone: UniqueIdentifier | null;
     style?: CSSProperties;
     children?: ReactNode;
 }
@@ -31,13 +35,15 @@ function calculateAnchors(numCards:number, zoneData:ZoneData): coord[] {
  * Position of where the div lives is based on the ZoneData.position
  */
 export default function CardZone(props: ZoneProps) {
-    const ref = useRef<HTMLDivElement>(null)
+    const [scope, animate] = useAnimate();
     const [currentOrigins, setOrigins] = useState([makeCoords(0,0)])
     const zoneData = props.zoneData;
     const zonePosition = zoneData.position;    // position of the cardzone's top left within the parent div
     const zoneDimensions = zoneData.dimensions;
     const droppableProps = {
-        style: droppableStyle,
+        style: {
+            backgroundColor: props.draggedCardStartZone != zoneData.id ? "#2f00ffff" : undefined,
+        },
         drop_id:zoneData.id,
         zonePosition:{
             x:zonePosition.x,
@@ -72,11 +78,27 @@ export default function CardZone(props: ZoneProps) {
             }) 
     }
 
+    useEffect(()=>{
+        if (props.disableFlag){
+            animate([
+                [scope.current, zoneVariants.disabled, {duration:0.1}]
+            ])
+        } else {
+            animate([
+                [scope.current, zoneVariants.initial, {duration:0.1}]
+            ])
+        }
+    },[props.disableFlag])
+
+
     // droppable inherently has nothing in it. It flexes to the size of the children,
     // here being whatever width/height our motion.div is
     // Position the Div using Droppable Wrap
     return <Droppable {...droppableProps}>
-                <motion.div className="CardZone" ref={ref} style={{...zoneDimensions, ...zoneStyle,...props.style}}>
+                <motion.div className="CardZone" 
+                ref={scope} 
+                initial={'initial'}
+                style={{...zoneDimensions, ...zoneStyle,...props.style}}>
                     {debugShowAnchors()}
                     <p style={{zIndex:100, position:'absolute'}}>
                         {zoneData.cards}
@@ -91,17 +113,26 @@ export default function CardZone(props: ZoneProps) {
  * ==============   Styles   ================
  */
 
+const zoneVariants = {
+    initial:{
+        opacity:1,
+    },
+    active:{
+        opacity:1,
+
+    },
+    disabled:{
+        opacity:0,
+    }
+}
+
+
 const zoneStyle: CSSProperties = {
     position:'absolute',
     // width: 400,
     // height: 250,
-    backgroundColor: "#f5f3ddff",
+    backgroundColor: "#29292957",
     color:'black',
     borderRadius: 10,
     display:'flex',
-}
-
-const droppableStyle: CSSProperties = {
-    color:"#2f00ffff",
-    position:'absolute',
 }

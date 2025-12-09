@@ -1,8 +1,10 @@
 import { type CSSProperties, type ReactNode } from 'react';
 import {useDraggable, type UniqueIdentifier} from '@dnd-kit/core';
+import type { CardData } from '../DraggableCardKit/CardKitFunctions';
 
 interface draggableProps{
   drag_id: UniqueIdentifier
+  cardData:CardData
   style?: CSSProperties
   children?: ReactNode
 }
@@ -14,6 +16,9 @@ interface draggableProps{
 export default function Draggable(props: draggableProps) {
   const {attributes, listeners, setNodeRef} = useDraggable({
     id: props.drag_id,
+    data:{
+      origin_zone: props.cardData.zone
+    }
   });
 
   

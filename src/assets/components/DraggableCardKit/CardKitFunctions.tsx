@@ -124,7 +124,7 @@ export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, 
     }
     // do nothing if the closest origin is it's current origin
     if (cardID == nearest) {return}
-    console.log(`swap[${cardID}]: nearest origin belongs to ${nearest}, compared from point (${point.x},${point.y})`);
+    // console.log(`swap[${cardID}]: nearest origin belongs to ${nearest}, compared from point (${point.x},${point.y})`);
     const c1Origin = cardsData[cardID].origin
     const c2Origin = cardsData[nearest].origin
     setCardsData((prevCardsData) => {
