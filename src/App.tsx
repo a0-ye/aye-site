@@ -7,7 +7,7 @@ import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { makeCoords, useCardHandler, type CardData, type CardMap} from './assets/components/DraggableCardKit/CardKitFunctions'
+import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
