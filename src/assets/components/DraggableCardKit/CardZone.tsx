@@ -1,6 +1,6 @@
 
 import {motion, useAnimate } from "motion/react"
-import { useEffect, useState, type CSSProperties, type ReactNode,} from "react"
+import { useEffect, /** useState , */ type CSSProperties, type ReactNode,} from "react"
 import Droppable from "../dnd-kit-wrappers/droppable";
 import { makeCoords, type ZoneData, type coord } from "./CardKitFunctions";
 import type { UniqueIdentifier } from "@dnd-kit/core";
@@ -36,7 +36,7 @@ function calculateAnchors(numCards:number, zoneData:ZoneData): coord[] {
  */
 export default function CardZone(props: ZoneProps) {
     const [scope, animate] = useAnimate();
-    const [currentOrigins, setOrigins] = useState([makeCoords(0,0)])
+    // const [currentOrigins, setOrigins] = useState([makeCoords(0,0)])
     const zoneData = props.zoneData;
     const zonePosition = zoneData.position;    // position of the cardzone's top left within the parent div
     const zoneDimensions = zoneData.dimensions;
@@ -56,27 +56,27 @@ export default function CardZone(props: ZoneProps) {
     useEffect( ()=>{
         const cards = zoneData.cards
         const newAnchors = calculateAnchors(cards.length, zoneData);
-        setOrigins(newAnchors)
+        // setOrigins(newAnchors)
         zoneData.changeOrigins(cards, newAnchors)   // use given function to update zoneState
         
     },[zoneData.cards])
 
-    function debugShowAnchors(){
-        return currentOrigins.map(
-            (coord) => { return <div style={{   
-                position: 'absolute',
-                left:coord.x - zonePosition.x,
-                top: coord.y - zonePosition.y,
-                width: 10,
-                height: 10,
-                backgroundColor:"#ff00eaff" , 
-                borderRadius: 50,
-                // opacity:0.5,
-                zIndex:5,
-                transform: 'translate(-50%, -50%)'
-                }}></div>
-            }) 
-    }
+    // function debugShowAnchors(){
+    //     return currentOrigins.map(
+    //         (coord) => { return <div style={{   
+    //             position: 'absolute',
+    //             left:coord.x - zonePosition.x,
+    //             top: coord.y - zonePosition.y,
+    //             width: 10,
+    //             height: 10,
+    //             backgroundColor:"#ff00eaff" , 
+    //             borderRadius: 50,
+    //             opacity:0,
+    //             zIndex:5,
+    //             transform: 'translate(-50%, -50%)'
+    //             }}></div>
+    //         }) 
+    // }
 
     useEffect(()=>{
         if (props.disableFlag){

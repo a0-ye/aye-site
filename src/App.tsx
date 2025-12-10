@@ -7,7 +7,7 @@ import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData, type CardMap, type InitCardData, type InitZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData , type InitCardData, type InitZoneData, } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
@@ -83,8 +83,7 @@ function App() {
   }
 
   const handleOnDragOver = (event:DragOverEvent)=>{
-  
-
+    event.active
   }
 
   const handleDragEnd = (event:DragEndEvent) => {

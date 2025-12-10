@@ -199,7 +199,7 @@ export function useCardHandler(initialCardData: InitCardData[], initialZones: In
     // move cards to startingZone
     for (const zoneID in zoneData){ zoneData[zoneID].changeOrigins = changeOrigins;}
     for (const cardID in {...cardsData}){
-      moveCard(cardID, startingZone)
+      moveCard(cardID, cardsData[cardID].zone)
     }
 
   }, [])
