@@ -24,6 +24,14 @@ export interface ZoneData {
   changeOrigins: Function,
 }
 
+export interface InitZoneData {
+  id:UniqueIdentifier,
+  cards?:UniqueIdentifier[],
+  position:coord,                            // position of the zone in the dnd context
+  dimensions:{width:number, height:number},  // dimensions in width and height 
+  changeOrigins?: Function,
+}
+
 export interface CardMap {
   [id:UniqueIdentifier] : CardData;
 }
@@ -37,21 +45,30 @@ export interface coord {
   y:number
 }
 
-export const BLANK_CARD_DATA = {
+export const BLANK_CARD_DATA: CardData = {
   id: "" as UniqueIdentifier,
   zone: "BLANK" as UniqueIdentifier,
   origin: {x:0,y:0}
 }
 
+const BLANK_ZONE_DATA: ZoneData = {
+  id: "" as UniqueIdentifier,
+  cards: [],
+  position: {x:0,y:0},
+  dimensions:{width:0,height:0},
+  changeOrigins:()=>{console.error("changeOrigins not set!!");
+  }
+}
+
 export function makeCoords(x:number, y:number): coord {return {x:x, y:y}}
 
-export function useCardHandler(initialCardData: InitCardData[], initialZones: ZoneMap, startingZone: UniqueIdentifier):[
+export function useCardHandler(initialCardData: InitCardData[], initialZones: InitZoneData[], startingZone: UniqueIdentifier):[
   CardMap,
   ZoneMap,
   (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void,
   (cardID: UniqueIdentifier, point:coord, zoneID:UniqueIdentifier) =>  void
 ]{
-  const loadedCardData = initialCardData.reduce((acc: CardMap, currCard)=>{
+  const loadedCardData: CardMap = initialCardData.reduce((acc: CardMap, currCard)=>{
     const outputCardData = {...BLANK_CARD_DATA}
     Object.assign(outputCardData,currCard); // attempt to override from init
     if (!currCard.zone){
@@ -63,8 +80,15 @@ export function useCardHandler(initialCardData: InitCardData[], initialZones: Zo
     acc[currCard.id] = outputCardData
     return acc
   }, {} )
+
+  const loadedZoneData: ZoneMap = initialZones.reduce((acc: ZoneMap, currZone)=>{
+    const outputZoneData = {...BLANK_ZONE_DATA}
+    Object.assign(outputZoneData, currZone)
+    acc[outputZoneData.id] = outputZoneData
+    return acc
+  }, {})
   const [cardsData, setCardsData] = useState<CardMap>(loadedCardData)
-  const [zoneData, setZoneData] = useState<ZoneMap>(initialZones);
+  const [zoneData, setZoneData] = useState<ZoneMap>(loadedZoneData);
 
 
 

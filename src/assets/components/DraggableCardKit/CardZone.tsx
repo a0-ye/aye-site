@@ -100,8 +100,8 @@ export default function CardZone(props: ZoneProps) {
                 ref={scope} 
                 initial={'initial'}
                 style={{...zoneDimensions, ...mergedStyle}}>
-                    {debugShowAnchors()}
-                    <p style={{zIndex:100, }}>{zoneData.cards}</p>
+                    {/* {debugShowAnchors()}
+                    <p style={{zIndex:100, }}>{zoneData.cards}</p> */}
                     {props.children}
                 </motion.div>
             </Droppable>

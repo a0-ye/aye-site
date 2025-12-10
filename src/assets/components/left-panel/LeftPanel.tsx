@@ -27,7 +27,6 @@ export default function LeftPanel (props: panelProps) {
                             backgroundRepeat:'no-repeat',
                             backgroundPosition:'center',
                             backgroundSize:'contain',
-
                         }}
                     >
                         {/* <img src="public/img/sprout-token.png"></img> */}

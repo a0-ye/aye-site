@@ -7,7 +7,7 @@ import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData, type CardMap, type InitCardData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData, type CardMap, type InitCardData, type InitZoneData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
@@ -51,19 +51,13 @@ function App() {
     height:650,
   }
 
-  const initialZones:ZoneMap = {
-    [handZoneID]: { id:handZoneID, cards:[], position:makeCoords((cardBounds.width-750) / 2,450),   
-                    dimensions:{width:750,height:150},  changeOrigins:() => {}},
+  const initialZones: InitZoneData[] = [
+    { id:handZoneID, position:makeCoords((cardBounds.width-750) / 2,450),dimensions:{width:750,height:150},},
+    { id:jokerZoneID,position:makeCoords(50,15), dimensions:{width:500,height:150},},
+    { id:consumableZoneID,position:makeCoords(600,15), dimensions:{width:250,height:150}},
+    { id:UseZoneID, position:makeCoords(cardBounds.width/2 - 75,cardBounds.height/2 -75),dimensions:{width:150,height:150}},
+  ]
 
-    [jokerZoneID]:    { id:jokerZoneID,    cards:[], position:makeCoords(50,15), 
-                    dimensions:{width:500,height:150}, changeOrigins:() => {}},
-
-    [consumableZoneID]:{ id:consumableZoneID,cards:[], position:makeCoords(600,15), 
-                    dimensions:{width:250,height:150}, changeOrigins:() => {}},
-
-    [UseZoneID]:{ id:UseZoneID,cards:[], position:makeCoords(cardBounds.width/2 - 75,cardBounds.height/2 -75), 
-                    dimensions:{width:150,height:150}, changeOrigins:() => {}},
-  }
 
   // create Card State & Managers + load zones
   const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
