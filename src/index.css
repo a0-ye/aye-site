@@ -1,6 +1,6 @@
 @font-face {
   font-family: m6x11; /* set name */
-  src:url('src/assets/fonts-ico/m6x11plus.ttf');
+  src:url('public/fonts/m6x11plus.ttf');
 }
 
 :root {
