@@ -10,7 +10,7 @@ export default function LeftPanel (props: panelProps) {
     return <div className='left-panel'>
         
         <div className='panel-box'>
-            <div id='blind-header'>Adrian Ye</div>
+            <div id='blind-header'>hello! THIS IS A WIP</div>
             <div id='blind-body'>
                 token, headlineinfo. owns a nerd certificate; sexy
             </div>
