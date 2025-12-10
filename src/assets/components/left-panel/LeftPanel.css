@@ -64,10 +64,20 @@
   margin: 2px 4px 4px 4px;
   border-radius: 4px;
   background-color: color-mix(in srgb, var(--boss-blind-color), black 20%);
-  display: flex;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
+  
   flex-grow: 1;
 }
+
+#token-container{
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+}
+
 #score-box {
   display: grid;
   grid-template-columns: 1fr 2fr;

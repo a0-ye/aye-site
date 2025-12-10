@@ -1,18 +1,40 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import './LeftPanel.css'
+import MotionCard from "../DraggableCardKit/MotionCard";
+import { useId } from "react";
 
 interface panelProps {
     activeCard:UniqueIdentifier | null
 }
-
 export default function LeftPanel (props: panelProps) {
+    const tokenID = useId();
     const activeCard = props.activeCard
     return <div className='left-panel'>
         
         <div className='panel-box'>
             <div id='blind-header'>hello! THIS IS A WIP</div>
             <div id='blind-body'>
-                token, headlineinfo. owns a nerd certificate; sexy
+                <div id="token-container">
+                    <MotionCard
+                        cardData={{id:tokenID, zone:tokenID, origin:{x:0,y:0}}}
+                        style={{top:"50%",left:'50%',
+                            width:75,
+                            height:75,
+                            backgroundColor:'transparent',
+                            borderRadius:50,
+                            borderColor:'transparent',
+                            backgroundImage:'url("img/sprout-token.png")',
+                            backgroundRepeat:'no-repeat',
+                            backgroundPosition:'center',
+                            backgroundSize:'contain',
+                        }}
+                    >
+                        {/* <img src="public/img/sprout-token.png"></img> */}
+                    </MotionCard>
+                </div>
+                <div className="panel-text">
+                    headlineinfo. owns a nerd certificate
+                </div>
             </div>
         </div>
 
@@ -59,4 +81,8 @@ export default function LeftPanel (props: panelProps) {
         </div>
 
     </div>
+}
+
+function useID() {
+    throw new Error("Function not implemented.");
 }

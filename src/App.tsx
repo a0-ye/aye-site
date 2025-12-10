@@ -1,4 +1,4 @@
-import { useState, useId, type ReactNode, useEffect, useRef} from 'react'
+import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties} from 'react'
 import './App.css'
 
 import AboutMeContent from './assets/CardContent/AboutMe'
@@ -29,12 +29,12 @@ function App() {
 
 
   const initialCards: CardMap = {
-    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), conetent:AboutMeContent},
+    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), content:AboutMeContent},
     [c2ID]: {id:c2ID,  zone:handZoneID ,origin:makeCoords(0,0), },
     [c3ID]: {id:c3ID,  zone:handZoneID ,origin:makeCoords(0,0), },
   }
 
-  const colorMap: Record<UniqueIdentifier,string> = {
+  const blindColorMap: Record<UniqueIdentifier,string> = {
     [c1ID]: '#a0ffef',
     [c2ID]: '#a00043',
     [c3ID]: '#ffd13a',
@@ -42,12 +42,8 @@ function App() {
   const DEFAULT_COLOR = '#33473a';
 
   useEffect(()=>{
-    if (activeCard){
-      animate("div",{'--boss-blind-color':colorMap[activeCard.id]});
-      
-    } else {
-      animate("div",{'--boss-blind-color':DEFAULT_COLOR});
-    }
+    if (activeCard){animate("#leftcol",{'--boss-blind-color':blindColorMap[activeCard.id]});}
+     else {animate("#leftcol",{'--boss-blind-color':DEFAULT_COLOR});}
   },[activeCard])
 
   const cardBounds = {
@@ -90,26 +86,16 @@ function App() {
   const handleDragStart = (event:DragStartEvent) => {
     setDisableZoneFlag(false);
     setDraggedCardStartZone(event.active.data.current?.origin_zone)
-
-    console.log('drag start:');
   }
 
   const handleOnDragOver = (event:DragOverEvent)=>{
-    console.log(
-      // over is the zone, active is the card
-      // draggedCardStartZone,
-      event.over?.id,
-      event.active.id,
-    );
-
-    
+  
 
   }
 
   const handleDragEnd = (event:DragEndEvent) => {
     // over contains the ID of the droppable zone
     setDisableZoneFlag(true);
-    // console.log(disableUseZone.current);
     
     if(!event.over) return
     const {active, over} = event;
@@ -118,26 +104,24 @@ function App() {
     if (cardsData[cardID].zone === nextZoneID) return;
     if (nextZoneID === UseZoneID){
       setActiveCard(cardsData[cardID])
-      console.log(cardID, " in UseZone! activeCard: ", activeCard);
     }
     draggedCardPrevZoneID.current = cardsData[cardID].zone
     
     moveCard(cardID, nextZoneID)
-    // console.log("updating card zone for", cardsData[cardID]);
   }
 
-
-  function generateCards(): ReactNode {
-    return Object.entries(cardsData).map(([id, cardData]) => {
-      return (<MotionCard 
-        key={id} 
-        activeCard={activeCard? activeCard.id : null} 
-        setActiveCard={setActiveCard} 
-        cardData={cardData}
-        trySwapOrigins={trySwapOrigins}
-        >
-          {cardData.conetent}
-        </MotionCard>) })
+  function generateCard(cardID:UniqueIdentifier, cardStyle:CSSProperties): ReactNode {
+    return (
+      <MotionCard
+      activeCard={activeCard? activeCard.id : null} 
+      setActiveCard={setActiveCard} 
+      cardData={cardsData[cardID]}
+      trySwapOrigins={trySwapOrigins}
+      style={{...cardStyle}}
+      >
+        {cardsData[cardID].content}
+      </MotionCard>
+    )
   }
 
   return (
@@ -151,7 +135,9 @@ function App() {
                         onDragStart={handleDragStart}
                         onDragOver={handleOnDragOver}
                         >
-            {generateCards()}
+              {generateCard(c1ID, {backgroundImage:'url("img/Jimbo.png")'})}
+              {generateCard(c2ID, {backgroundImage:'url("img/michel.png")'})}
+              {generateCard(c3ID, {backgroundImage:'url("img/andrew.png")'})}
             <CardZone zoneData={zoneData[handZoneID]}  draggedCardStartZone={draggedCardStartZone}>
             </CardZone>
 
@@ -159,11 +145,26 @@ function App() {
               maybe put links to my projects here?
             </CardZone>
             
-            <CardZone zoneData={zoneData[consumableZoneID]}  draggedCardStartZone={draggedCardStartZone}>
+            <CardZone zoneData={zoneData[consumableZoneID]}  
+                      
+                      draggedCardStartZone={draggedCardStartZone}>
               maybe linkns to projects here, so you "use / consume" them haha hehe
             </CardZone>
 
-            <CardZone zoneData={zoneData[UseZoneID]}draggedCardStartZone={draggedCardStartZone} disableFlag={disableZoneFlag}  >
+            <CardZone zoneData={zoneData[UseZoneID]}
+                      draggedCardStartZone={draggedCardStartZone} 
+                      disableFlag={disableZoneFlag}  
+                      style={{
+                        backgroundColor:'#00b158ce',
+                        borderColor:'#ffffffff',
+                        borderRadius:'5px',
+                        borderStyle: 'solid',
+                        color:'#ffffffb0',
+                        fontSize:'60pt'
+                      }}
+                      >
+
+              USE
               
             </CardZone>
 

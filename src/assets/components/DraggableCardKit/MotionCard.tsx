@@ -8,9 +8,9 @@ import type { UniqueIdentifier } from "@dnd-kit/core"
 
 interface CardProps{
     cardData:CardData
-    activeCard: UniqueIdentifier | null;
-    setActiveCard:Function;
-    trySwapOrigins:Function;
+    activeCard?: UniqueIdentifier | null;
+    setActiveCard?:Function;
+    trySwapOrigins?:Function;
     style?: CSSProperties;
     children?: ReactNode;
 }
@@ -71,7 +71,7 @@ export default function MotionCard(props: CardProps) {
         targetX.set(newTargetX)
         targetY.set(newTargetY)
         if (isDragging.current){    // necessary. onDragHandler runs ONCE before onDragStart runs, so use it as a semaphore
-            props.trySwapOrigins(cardData.id, makeCoords(newTargetX, newTargetY), cardData.zone)
+            props.trySwapOrigins?.(cardData.id, makeCoords(newTargetX, newTargetY), cardData.zone)
         }
     }
     const onDragEndHandler = ()=>{
@@ -94,9 +94,67 @@ export default function MotionCard(props: CardProps) {
             }
         },[isOpen.current]
     )
+    /**
+     * ==============   Styles   ================
+     */
+
+
+    const cardStyle: CSSProperties = {
+        width: 100,
+        height: 125,
+        zIndex:2,
+        display:'flex',
+
+        color:'black',
+        borderRadius: 10,
+        borderStyle:'solid',
+        borderWidth:3,
+        borderColor:'black',
+        position:'absolute',
+
+        backgroundColor:"#4649ff",
+        backgroundRepeat:'no-repeat',
+        backgroundPosition:'center',
+        backgroundSize:'contain',
+
+        alignContent:'left',
+        textAlign:'left',
+        // padding:15 // cant do padding, risks misaligning 
+    }
+    const mergedStyle = Object.assign(cardStyle, props.style) // override props in cardStyle if exists
+
+    const cardVariantStyles = {
+        initial:{
+            ...mergedStyle
+        },
+        open:   {
+            width:850, height:600,
+            zIndex:10,
+            opacity:1,
+            backgroundColor:"#ffffff",
+            backgroundImage:''
+        }
+    }
+
+    const cardContentStyle: CSSProperties = {
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'center',
+        alignItems: 'center',
+        flexGrow:1,
+    }
+
+    const contentVariants = {
+        initial:{
+            opacity:0,
+            duration: 0.5},
+        open:{
+            zIndex:10,
+            opacity:1
+        }
+    }
 
     
-
     return (
     <motion.div className = "MotionCard"
                 ref={scope}
@@ -109,8 +167,7 @@ export default function MotionCard(props: CardProps) {
                     x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
                     translateX: '-50%', 
                     translateY: '-50%',
-                    ...cardStyle, ...props.style, 
-                    backgroundColor: isOpen.current ? "#ffffffff": "#2f7cf8",
+                    ...mergedStyle,
                     // originX:cardData.origin.x, originY:cardData.origin.y
                     }}
                 >
@@ -123,65 +180,12 @@ export default function MotionCard(props: CardProps) {
         initial={contentVariants.initial} 
         style={{...cardContentStyle , pointerEvents: (isOpen.current ? 'auto' : 'none')}}
         >
-            <p>ID: {cardData.id}</p>
-            <p>Zone: {cardData.zone}</p>
-            <p>activeCard: {props.activeCard}</p>
-            <p> {cardData.origin.x} , {cardData.origin.y}</p>
-            <button style={{zIndex:10}} onClick={()=>{
-                props.setActiveCard(null);
-            }}></button>
+            <button style={{zIndex:10}} onClick={()=>{props.setActiveCard?.(null);}}> Close Card</button>
 
             {props.children}
         </motion.div>
     </motion.div>
         
     )
-}
-
-/**
- * ==============   Styles   ================
- */
-
-
-const cardStyle: CSSProperties = {
-    width: 100,
-    height: 125,
-    zIndex:2,
-
-    color:'black',
-    borderRadius: 10,
-    borderStyle:'solid',
-    borderWidth:3,
-    borderColor:'black',
-    position:'absolute',
-
-    alignContent:'left',
-    textAlign:'left',
-    // padding:15 // cant do padding, risks misaligning 
-}
-
-const cardContentStyle: CSSProperties = {
-    
-}
-
-const cardVariantStyles = {
-    initial:{
-        width: 100,
-        height: 125,
-        zIndex:2,
-    },
-    open:   {
-        width:850, height:600,
-        zIndex:10,
-        opacity:1
-    }
-}
-
-const contentVariants = {
-    initial:{opacity:0, duration: 0.5},
-    open:{
-        zIndex:10,
-        opacity:1
-    }
 }
 

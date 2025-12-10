@@ -90,6 +90,7 @@ export default function CardZone(props: ZoneProps) {
         }
     },[props.disableFlag])
 
+    const mergedStyle = Object.assign({...zoneStyle}, props.style) // override props if exists
 
     // droppable inherently has nothing in it. It flexes to the size of the children,
     // here being whatever width/height our motion.div is
@@ -98,11 +99,9 @@ export default function CardZone(props: ZoneProps) {
                 <motion.div className="CardZone" 
                 ref={scope} 
                 initial={'initial'}
-                style={{...zoneDimensions, ...zoneStyle,...props.style}}>
+                style={{...zoneDimensions, ...mergedStyle}}>
                     {debugShowAnchors()}
-                    <p style={{zIndex:100, position:'absolute'}}>
-                        {zoneData.cards}
-                    </p>
+                    <p style={{zIndex:100, }}>{zoneData.cards}</p>
                     {props.children}
                 </motion.div>
             </Droppable>
@@ -129,10 +128,14 @@ const zoneVariants = {
 
 const zoneStyle: CSSProperties = {
     position:'absolute',
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+
     // width: 400,
     // height: 250,
     backgroundColor: "#29292957",
     color:'black',
     borderRadius: 10,
-    display:'flex',
+    
 }

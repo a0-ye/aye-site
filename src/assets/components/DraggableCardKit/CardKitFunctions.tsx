@@ -6,7 +6,7 @@ export interface CardData{
   id:UniqueIdentifier;
   zone:UniqueIdentifier;
   origin:{x:number,y:number};
-  conetent?:ReactNode;
+  content?:ReactNode;
 }
 
 export interface ZoneData {
