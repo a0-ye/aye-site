@@ -1,7 +1,7 @@
 import { motion, useAnimate, useMotionValue, useSpring, type PanInfo } from "motion/react"
 import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
-import { makeCoords, type CardData } from "./CardKitFunctions"
+import { BLANK_CARD_DATA, makeCoords, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
 
 
@@ -180,7 +180,7 @@ export default function MotionCard(props: CardProps) {
         initial={contentVariants.initial} 
         style={{...cardContentStyle , pointerEvents: (isOpen.current ? 'auto' : 'none')}}
         >
-            <button style={{zIndex:10}} onClick={()=>{props.setActiveCard?.(null);}}> Close Card</button>
+            <button style={{zIndex:10}} onClick={()=>{props.setActiveCard?.(BLANK_CARD_DATA);}}> Close Card</button>
 
             {props.children}
         </motion.div>

@@ -4,7 +4,7 @@ import MotionCard from "../DraggableCardKit/MotionCard";
 import { useId } from "react";
 
 interface panelProps {
-    activeCard:UniqueIdentifier | null
+    activeCard:UniqueIdentifier
 }
 export default function LeftPanel (props: panelProps) {
     const tokenID = useId();
@@ -27,6 +27,7 @@ export default function LeftPanel (props: panelProps) {
                             backgroundRepeat:'no-repeat',
                             backgroundPosition:'center',
                             backgroundSize:'contain',
+
                         }}
                     >
                         {/* <img src="public/img/sprout-token.png"></img> */}
@@ -45,7 +46,7 @@ export default function LeftPanel (props: panelProps) {
 
         <div id='hand-box' className='panel-box'>
             <div className='panel-text'>Active Card:</div>
-            <div className='panel-value'>{activeCard ? activeCard : " Drag some cards!" }</div>
+            <div className='panel-value'>{activeCard != "" ? activeCard : " Drag some cards!" }</div>
         </div>
         
         <div id='buttons-n-numbers-grid' >
@@ -81,8 +82,4 @@ export default function LeftPanel (props: panelProps) {
         </div>
 
     </div>
-}
-
-function useID() {
-    throw new Error("Function not implemented.");
 }

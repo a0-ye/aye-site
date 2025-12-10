@@ -9,6 +9,13 @@ export interface CardData{
   content?:ReactNode;
 }
 
+export interface InitCardData{
+  id:UniqueIdentifier;
+  zone?:UniqueIdentifier;
+  origin?:{x:number,y:number};
+  content?:ReactNode;
+}
+
 export interface ZoneData {
   id:UniqueIdentifier,
   cards:UniqueIdentifier[],
@@ -30,17 +37,34 @@ export interface coord {
   y:number
 }
 
+export const BLANK_CARD_DATA = {
+  id: "" as UniqueIdentifier,
+  zone: "BLANK" as UniqueIdentifier,
+  origin: {x:0,y:0}
+}
+
 export function makeCoords(x:number, y:number): coord {return {x:x, y:y}}
 
-export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, startingZone: UniqueIdentifier):[
+export function useCardHandler(initialCardData: InitCardData[], initialZones: ZoneMap, startingZone: UniqueIdentifier):[
   CardMap,
   ZoneMap,
   (cardID: UniqueIdentifier, newZoneID: UniqueIdentifier) => void,
   (cardID: UniqueIdentifier, point:coord, zoneID:UniqueIdentifier) =>  void
 ]{
-  
-  const [cardsData, setCardsData] = useState(initialCardData)
-  const [zoneData, setZoneData] = useState(initialZones);
+  const loadedCardData = initialCardData.reduce((acc: CardMap, currCard)=>{
+    const outputCardData = {...BLANK_CARD_DATA}
+    Object.assign(outputCardData,currCard); // attempt to override from init
+    if (!currCard.zone){
+      outputCardData.zone = startingZone;
+    }
+    if (!currCard.origin){
+      outputCardData.origin = makeCoords(0,0);
+    }
+    acc[currCard.id] = outputCardData
+    return acc
+  }, {} )
+  const [cardsData, setCardsData] = useState<CardMap>(loadedCardData)
+  const [zoneData, setZoneData] = useState<ZoneMap>(initialZones);
 
 
 
@@ -48,18 +72,27 @@ export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, 
     // remove card from current zone. Add card to new zone
     setZoneData(
       prevZoneData => {
-        const currZoneID = cardsData[cardID].zone
-        const newZoneData = {...prevZoneData} // make a copy
-        const newCurZoneDat = {...newZoneData[currZoneID]}  // copy
-        newCurZoneDat.cards = [...newCurZoneDat.cards.filter(id => id !== cardID)];
-        newZoneData[currZoneID] = newCurZoneDat;
+        if (prevZoneData[newZoneID].cards.includes(cardID)) {
+            console.log(cardID, " already exists in ", newZoneID, "; cancel moveCard");
+            return prevZoneData; // return the old state
+        }
 
-        const newNextZoneDat = {...newZoneData[newZoneID]}  // copy next zone
-        newNextZoneDat.cards = [...newNextZoneDat.cards, cardID] // add card to next zone
-        newZoneData[newZoneID] = newNextZoneDat // update next zone in new state
-        return newZoneData
+        const currZoneID = cardsData[cardID].zone
+        return {
+          ...prevZoneData,  // make a copy
+          [currZoneID]: { // override the currentZone
+            ...prevZoneData[currZoneID],
+            cards: prevZoneData[currZoneID].cards.filter(id=> id !== cardID)
+          },
+
+          [newZoneID]:{ // override the newZone
+            ...prevZoneData[newZoneID],
+            cards: [...prevZoneData[newZoneID].cards, cardID]
+          }
+        }
       }
-    )
+    );
+
     // Update the card state
     setCardsData(prevCards => {
       const newCards = {...prevCards};
@@ -137,7 +170,7 @@ export function useCardHandler(initialCardData: CardMap, initialZones: ZoneMap, 
 
 
   useEffect(()=>{
-    // One Time Setup:
+    // Init setup:
     // load the changeOrigins function
     // move cards to startingZone
     for (const zoneID in zoneData){ zoneData[zoneID].changeOrigins = changeOrigins;}

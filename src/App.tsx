@@ -7,7 +7,7 @@ import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { makeCoords, useCardHandler, type CardData, type CardMap, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData, type CardMap, type InitCardData, type ZoneMap } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
@@ -17,7 +17,7 @@ import { animate } from 'motion'
 function App() {
 
   // ======= INIT ==========================================
-  const [activeCard, setActiveCard] = useState<CardData | null>(null) // needs to be here to give props to cards
+  const [activeCard, setActiveCard] = useState<CardData>(BLANK_CARD_DATA) // needs to be here to give props to cards
 
   const c1ID = useId();
   const c2ID = useId();
@@ -28,22 +28,22 @@ function App() {
   const UseZoneID = useId();
 
 
-  const initialCards: CardMap = {
-    [c1ID]: {id:c1ID,  zone:handZoneID ,origin:makeCoords(0,0), content:AboutMeContent},
-    [c2ID]: {id:c2ID,  zone:handZoneID ,origin:makeCoords(0,0), },
-    [c3ID]: {id:c3ID,  zone:handZoneID ,origin:makeCoords(0,0), },
-  }
+  const initialCards: InitCardData[] = [
+    {id:c1ID,  zone:jokerZoneID ,origin:makeCoords(0,0), content:AboutMeContent},
+    {id:c2ID,  zone:jokerZoneID ,origin:makeCoords(0,0), },
+    {id:c3ID,  zone:jokerZoneID ,origin:makeCoords(0,0), },
+  ]
 
+  const DEFAULT_COLOR = '#33473a';
   const blindColorMap: Record<UniqueIdentifier,string> = {
+    [""]  : DEFAULT_COLOR,
     [c1ID]: '#a0ffef',
     [c2ID]: '#a00043',
     [c3ID]: '#ffd13a',
   }
-  const DEFAULT_COLOR = '#33473a';
 
   useEffect(()=>{
-    if (activeCard){animate("#leftcol",{'--boss-blind-color':blindColorMap[activeCard.id]});}
-     else {animate("#leftcol",{'--boss-blind-color':DEFAULT_COLOR});}
+      animate("#leftcol",{'--boss-blind-color':blindColorMap[activeCard.id]})
   },[activeCard])
 
   const cardBounds = {
@@ -74,7 +74,7 @@ function App() {
   // Effect to return a card to the original zone
   const draggedCardPrevZoneID = useRef<UniqueIdentifier | null>(null)
   useEffect(()=>{
-    if (activeCard == null && draggedCardPrevZoneID.current){
+    if ((activeCard == null || activeCard.id == "") && draggedCardPrevZoneID.current){
       // call the card zone update function using draggedCardPrevZoneID to reverse it
       moveCard(zoneData[UseZoneID].cards[0], draggedCardPrevZoneID.current)
     }
@@ -113,7 +113,7 @@ function App() {
   function generateCard(cardID:UniqueIdentifier, cardStyle:CSSProperties): ReactNode {
     return (
       <MotionCard
-      activeCard={activeCard? activeCard.id : null} 
+      activeCard={activeCard.id} 
       setActiveCard={setActiveCard} 
       cardData={cardsData[cardID]}
       trySwapOrigins={trySwapOrigins}
@@ -127,7 +127,7 @@ function App() {
   return (
     <>
       <div id='leftcol' >
-        <LeftPanel activeCard={activeCard? activeCard.id : null}></LeftPanel>
+        <LeftPanel activeCard={activeCard.id}></LeftPanel>
       </div>
       <div id='centercol'>
         <div className='CardBounds' style={{}}>
