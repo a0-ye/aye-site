@@ -11,6 +11,7 @@ interface CardProps{
     activeCard?: UniqueIdentifier | null;
     setActiveCard?:Function;
     trySwapOrigins?:Function;
+    cardBack?:string;
     style?: MotionStyle;
     children?: ReactNode;
 }
@@ -31,15 +32,15 @@ export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
     const activeCard = props.activeCard;
     const [scope, animate] = useAnimate();
-    const springConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
+    const dragSpringConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
     const isDragging = useRef(false)
     const isOpen = useRef(false)
 
     const targetX = useMotionValue(cardData.origin.x);
     const targetY = useMotionValue(cardData.origin.y);
-    const currentX = useSpring(targetX, springConfig);
-    const currentY = useSpring(targetY, springConfig);
+    const currentX = useSpring(targetX, dragSpringConfig);
+    const currentY = useSpring(targetY, dragSpringConfig);
 
     const velocityX = useVelocity(targetX)
     const smoothVelocityX = useSpring(velocityX,{
@@ -101,17 +102,26 @@ export default function MotionCard(props: CardProps) {
         returnToOrigin();
     }
 
-    useEffect(()=>{isOpen.current = activeCard == cardData.id;},[activeCard])
+    useEffect(()=>{isOpen.current = (activeCard == cardData.id);},[activeCard])
     useEffect(()=>{
             if (isOpen.current){
                 animate([
-                    [scope.current, cardVariantStyles.open],
-                    ['.cardContentWrap', contentVariants.open]
+                    [scope.current, {rotateY:90}, {duration:0.1}],
+                    ['.cardBackImg', {display:'none'},{duration:0.1}],
+                    [scope.current, {rotateY:0}, {duration:0.1}],
+                    [scope.current, cardVariantStyles.open, {duration:0.2}],
+                    ['.cardContentWrap', contentVariants.open,]
                 ])
             } else {
+                console.log('closing: fade content and resize');
+                
                 animate([
                     ['.cardContentWrap', contentVariants.initial, {duration:0.1}],
-                    [scope.current, cardVariantStyles.initial,{duration:0.1}],
+                    [scope.current, {width: 93,height: 125,}, {duration:0.1}],
+                    [scope.current, {rotateY:90}, {duration:0.1}],
+                    ['.cardBackImg', {display:'block'},{duration:0.1,}],
+                    [scope.current, {rotateY:0}, {duration:0.1}],
+                    [scope.current, cardVariantStyles.initial,{duration:0.1,}],
                 ])
             }
         },[isOpen.current]
@@ -122,44 +132,39 @@ export default function MotionCard(props: CardProps) {
 
 
     const cardStyle: MotionStyle = {
-        width: 100,
+        width: 93,
         height: 125,
         zIndex:2,
         display:'flex',
 
-
         color:'black',
         borderRadius: 10,
         borderStyle:'solid',
-        borderWidth:3,
+        borderWidth:1,
         borderColor:'black',
         position:'absolute',
 
-        backgroundColor:"#4649ff",
-        backgroundRepeat:'no-repeat',
-        backgroundPosition:'center',
-        backgroundSize:'contain',
-
+        backgroundColor:'#FFFFFF',
+        
         alignContent:'left',
         textAlign:'left',
-        // padding:15 // cant do padding, risks misaligning 
     }
-    const mergedStyle = {...cardStyle, ...props.style} // override props in cardStyle if exists
 
+    const mergedStyle = {...cardStyle, ...props.style} // override props in cardStyle if exists
     const cardVariantStyles = {
         initial:{
-            ...mergedStyle
+            ...mergedStyle,
         },
         open:   {
             width:850, height:600,
             zIndex:10,
             opacity:1,
-            backgroundColor:"#ffffff",
-            backgroundImage:''
+            backgroundColor:'#FFFFFF',
         }
     }
 
     const cardContentStyle: MotionStyle = {
+        margin:5,
         display:'flex',
         flexDirection:'column',
         justifyContent:'center',
@@ -169,10 +174,12 @@ export default function MotionCard(props: CardProps) {
 
     const contentVariants = {
         initial:{
+            display: 'none',
             opacity:0,
-            duration: 0.5},
+        },
         open:{
             zIndex:10,
+            display:'block',
             opacity:1
         }
     }
@@ -203,6 +210,7 @@ export default function MotionCard(props: CardProps) {
                     drag_id={cardData.id}
                     cardData={cardData}
                     />
+            <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>
         <motion.div 
         className={"cardContentWrap"}
         initial={contentVariants.initial} 

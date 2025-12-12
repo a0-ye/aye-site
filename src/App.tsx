@@ -103,13 +103,14 @@ function App() {
     moveCard(cardID, nextZoneID)
   }
 
-  function generateCard(cardID:UniqueIdentifier, cardStyle:CSSProperties): ReactNode {
+  function generateCard(cardID:UniqueIdentifier,cardBack:string, cardStyle?:CSSProperties): ReactNode {
     return (
       <MotionCard
+      cardData={cardsData[cardID]}
       activeCard={activeCard.id} 
       setActiveCard={setActiveCard} 
-      cardData={cardsData[cardID]}
       trySwapOrigins={trySwapOrigins}
+      cardBack={cardBack}
       style={{...cardStyle}}
       >
         {cardsData[cardID].content}
@@ -128,9 +129,9 @@ function App() {
                         onDragStart={handleDragStart}
                         onDragOver={handleOnDragOver}
                         >
-              {generateCard(c1ID, {backgroundImage:'url("img/Jimbo.png")'})}
-              {generateCard(c2ID, {backgroundImage:'url("img/michel.png")'})}
-              {generateCard(c3ID, {backgroundImage:'url("img/andrew.png")'})}
+              {generateCard(c1ID, "img/Jimbo.png", {})}
+              {generateCard(c2ID, "img/michel.png", {})}
+              {generateCard(c3ID, "img/andrew.png", {})}
             <CardZone zoneData={zoneData[handZoneID]}  draggedCardStartZone={draggedCardStartZone}>
             </CardZone>
 

@@ -17,16 +17,13 @@ export default function LeftPanel (props: panelProps) {
                 <div id="token-container">
                     <MotionCard
                         cardData={{id:tokenID, zone:tokenID, origin:{x:0,y:0}}}
+                        cardBack="img/sprout-token.png"
                         style={{top:"50%",left:'50%',
                             width:75,
                             height:75,
                             backgroundColor:'transparent',
                             borderRadius:50,
                             borderColor:'transparent',
-                            backgroundImage:'url("img/sprout-token.png")',
-                            backgroundRepeat:'no-repeat',
-                            backgroundPosition:'center',
-                            backgroundSize:'contain',
                         }}
                     >
                         {/* <img src="public/img/sprout-token.png"></img> */}
