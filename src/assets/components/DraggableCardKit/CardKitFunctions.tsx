@@ -69,8 +69,7 @@ export function useCardHandler(initialCardData: InitCardData[], initialZones: In
   (cardID: UniqueIdentifier, point:coord, zoneID:UniqueIdentifier) =>  void
 ]{
   const loadedCardData: CardMap = initialCardData.reduce((acc: CardMap, currCard)=>{
-    const outputCardData = {...BLANK_CARD_DATA}
-    Object.assign(outputCardData,currCard); // attempt to override from init
+    const outputCardData = {...BLANK_CARD_DATA, ...currCard}
     if (!currCard.zone){
       outputCardData.zone = startingZone;
     }
@@ -82,8 +81,7 @@ export function useCardHandler(initialCardData: InitCardData[], initialZones: In
   }, {} )
 
   const loadedZoneData: ZoneMap = initialZones.reduce((acc: ZoneMap, currZone)=>{
-    const outputZoneData = {...BLANK_ZONE_DATA}
-    Object.assign(outputZoneData, currZone)
+    const outputZoneData = {...BLANK_ZONE_DATA, ...currZone}
     acc[outputZoneData.id] = outputZoneData
     return acc
   }, {})
@@ -194,9 +192,6 @@ export function useCardHandler(initialCardData: InitCardData[], initialZones: In
 
 
   useEffect(()=>{
-    // Init setup:
-    // load the changeOrigins function
-    // move cards to startingZone
     for (const zoneID in zoneData){ zoneData[zoneID].changeOrigins = changeOrigins;}
     for (const cardID in {...cardsData}){
       moveCard(cardID, cardsData[cardID].zone)

@@ -1,4 +1,4 @@
-import { motion, useAnimate, useMotionValue, useSpring, type PanInfo } from "motion/react"
+import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
 import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { BLANK_CARD_DATA, makeCoords, type CardData } from "./CardKitFunctions"
@@ -11,14 +11,13 @@ interface CardProps{
     activeCard?: UniqueIdentifier | null;
     setActiveCard?:Function;
     trySwapOrigins?:Function;
-    style?: CSSProperties;
+    style?: MotionStyle;
     children?: ReactNode;
 }
 
 /**
  * Card that you can drag around, and always returns to its 'origin point'
  * Origin can be updated, and is updated via the origin prop.
- * 
  * 
  * TODOs
  *  - make card flip animation
@@ -41,6 +40,29 @@ export default function MotionCard(props: CardProps) {
     const targetY = useMotionValue(cardData.origin.y);
     const currentX = useSpring(targetX, springConfig);
     const currentY = useSpring(targetY, springConfig);
+
+    const velocityX = useVelocity(targetX)
+    const smoothVelocityX = useSpring(velocityX,{
+        stiffness: 2000,
+        damping: 20,
+        mass: 0.1,
+    })
+    const angle = useTransform(smoothVelocityX, (v)=>{
+        const VELOCITY_DAMP = 8000
+        const rotationMaximum = 75; // degrees? is what im assuming this represents
+        const rotationMinimum = 6;
+        const rotation = (Math.min(rotationMaximum, Math.abs(rotationMaximum * (v / VELOCITY_DAMP)))) * Math.sign(v)
+        return Math.abs(rotation) <= rotationMinimum ? rotation : rotation
+    })
+    const angleSpring = useSpring(angle, {
+        stiffness: 200,
+        damping:20,
+        mass:1,
+    })
+    // smoothVelocityX.on('change',(latest)=>{
+    //     console.log(latest);
+    // })
+    
 
     const returnToOrigin = () => { 
         if (isDragging.current == false) {
@@ -99,11 +121,12 @@ export default function MotionCard(props: CardProps) {
      */
 
 
-    const cardStyle: CSSProperties = {
+    const cardStyle: MotionStyle = {
         width: 100,
         height: 125,
         zIndex:2,
         display:'flex',
+
 
         color:'black',
         borderRadius: 10,
@@ -121,7 +144,7 @@ export default function MotionCard(props: CardProps) {
         textAlign:'left',
         // padding:15 // cant do padding, risks misaligning 
     }
-    const mergedStyle = Object.assign(cardStyle, props.style) // override props in cardStyle if exists
+    const mergedStyle = {...cardStyle, ...props.style} // override props in cardStyle if exists
 
     const cardVariantStyles = {
         initial:{
@@ -136,7 +159,7 @@ export default function MotionCard(props: CardProps) {
         }
     }
 
-    const cardContentStyle: CSSProperties = {
+    const cardContentStyle: MotionStyle = {
         display:'flex',
         flexDirection:'column',
         justifyContent:'center',
@@ -167,6 +190,11 @@ export default function MotionCard(props: CardProps) {
                     x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
                     translateX: '-50%', 
                     translateY: '-50%',
+        rotate: angleSpring,
+                    originX:'50%%',
+                    originY:'-20%',
+                    // rotateX: rotateX ,
+                    // rotate: angleSpring,
                     ...mergedStyle,
                     // originX:cardData.origin.x, originY:cardData.origin.y
                     }}
