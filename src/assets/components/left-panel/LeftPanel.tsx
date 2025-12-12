@@ -30,7 +30,7 @@ export default function LeftPanel (props: panelProps) {
                     </MotionCard>
                 </div>
                 <div className="panel-text">
-                    headlineinfo. owns a nerd certificate
+                    B.S. Computer Science & Engineering
                 </div>
             </div>
         </div>

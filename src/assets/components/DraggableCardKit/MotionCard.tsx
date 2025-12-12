@@ -12,6 +12,7 @@ interface CardProps{
     setActiveCard?:Function;
     trySwapOrigins?:Function;
     cardBack?:string;
+    cardHoverInfo?:string;
     style?: MotionStyle;
     children?: ReactNode;
 }
@@ -61,9 +62,6 @@ export default function MotionCard(props: CardProps) {
         damping:20,
         mass:1,
     })
-    // smoothVelocityX.on('change',(latest)=>{
-    //     console.log(latest);
-    // })
     
 
     const returnToOrigin = () => { 
@@ -81,6 +79,8 @@ export default function MotionCard(props: CardProps) {
 
     const onDragStartingPoint = useRef({...cardData.origin})
     const onDragStartHandler = ()=>{
+        animate(scope.current, {zIndex:3})
+        animate('.hoverInfo', {opacity:0}, {duration:0.1})
         isDragging.current = true;
         onDragStartingPoint.current = {...cardData.origin}
         // console.log(`starting drag from ${onDragStartingPoint.current}`);
@@ -100,6 +100,7 @@ export default function MotionCard(props: CardProps) {
     }
     const onDragEndHandler = ()=>{
         isDragging.current = false;
+        if(!isOpen.current){animate(scope.current, {zIndex:1})}
         returnToOrigin();
     }
 
@@ -108,6 +109,7 @@ export default function MotionCard(props: CardProps) {
             if (!tokenFlag){
                     if (isOpen.current){
                         animate([
+                            // ['.hoverInfo', {opacity:0}, {duration:0.1}],
                             [scope.current, {rotateY:90}, {duration:0.1}],
                             ['.cardBackImg', {display:'none'},{duration:0.1}],
                             [scope.current, {rotateY:0}, {duration:0.1}],
@@ -124,6 +126,7 @@ export default function MotionCard(props: CardProps) {
                             ['.cardBackImg', {display:'block'},{duration:0.1,}],
                             [scope.current, {rotateY:0}, {duration:0.1}],
                             [scope.current, cardVariantStyles.initial,{duration:0.1,}],
+                            [scope.current, {zIndex:2}, {duration:0.1}],
                         ])
                         const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
                         const wiggleDuration = 10;
@@ -144,7 +147,7 @@ export default function MotionCard(props: CardProps) {
     const cardStyle: MotionStyle = {
         width: 93,
         height: 125,
-        zIndex:2,
+        zIndex:1,
         display:'flex',
 
         color:'black',
@@ -168,7 +171,7 @@ export default function MotionCard(props: CardProps) {
         },
         open:   {
             width:850, height:600,
-            zIndex:10,
+            zIndex:11,
             opacity:1,
             backgroundColor:'#FFFFFF',
             boxShadow:'7px 7px 15px black',
@@ -194,7 +197,6 @@ export default function MotionCard(props: CardProps) {
             opacity:0,
         },
         open:{
-            zIndex:10,
             display:'block',
             opacity:1
         }
@@ -205,11 +207,23 @@ export default function MotionCard(props: CardProps) {
     <motion.div className = "MotionCard"
                 ref={scope}
                 whileHover={ isOpen.current || tokenFlag ? {} : {scale:1.05, boxShadow:'3px 6px 3px black'} }
-                onHoverStart={ event => {
-                    // do a little wiggle
-                    event
+                onHoverStart={ () => {
+                    if (!isOpen.current){
+                        animate('.hoverInfo', {opacity:1}, {duration:0.1})
+                        animate(scope.current, {rotate:[-15,0],  zIndex:3 }, {duration:0.1})
+                    }
                 } }
+                onHoverEnd={()=>{
+                    animate('.hoverInfo', {opacity:0}, {duration:0.1})
+                    animate(scope.current, {zIndex: isOpen.current ? 10 : [3,1] }, {duration:0.1})
+                }}
                 whileTap={ isOpen.current ? {} : {scale:0.99, rotate:2}}
+                onTap={()=>{
+                    if (!isDragging.current){
+                        console.log("clickah!");
+                    }
+                    
+                }}
                 drag = { props.activeCard != cardData.id }
                 onDragStart={onDragStartHandler}
                 onDrag={onDragHandler}
@@ -232,6 +246,21 @@ export default function MotionCard(props: CardProps) {
                     cardData={cardData}
                     />
             <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>
+            <motion.div className="hoverInfo" style={{
+                display: tokenFlag? 'none': 'flex',
+                justifyContent:"center", alignItems:'center', alignSelf:'center',
+                opacity:0,
+                backgroundColor:'#7e7e7eff',
+                borderRadius:6,
+                position:'absolute',
+                fontSize:'small', textAlign:'center',
+                right:'100%', top:'50%',  translateY: '-50%',
+                width:60, minHeight: '3em', height: 'auto',
+                pointerEvents:'none'
+                }}> 
+                {props.cardHoverInfo}
+            </motion.div>
+
         <motion.div 
         className={"cardContentWrap"}
         initial={contentVariants.initial} 
