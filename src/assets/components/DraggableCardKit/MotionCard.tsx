@@ -179,6 +179,8 @@ export default function MotionCard(props: CardProps) {
 
     const cardContentStyle: MotionStyle = {
         margin:5,
+        overflow:'auto',
+
         display:'flex',
         flexDirection:'column',
         justifyContent:'center',
