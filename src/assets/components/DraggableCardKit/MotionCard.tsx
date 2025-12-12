@@ -104,6 +104,14 @@ export default function MotionCard(props: CardProps) {
         returnToOrigin();
     }
 
+    const startWiggle = ()=>{
+        const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
+        const wiggleDuration = 10;
+            animate(scope.current,  {   rotate: [0,wiggleAmount,-wiggleAmount,0]},
+                                    {   duration:wiggleDuration, ease:'easeInOut', repeat: Infinity,
+                                        repeatType: 'loop', delay: Math.random() * 3
+                                    }
+    )}
     useEffect(()=>{isOpen.current = (activeCard == cardData.id);},[activeCard])
     useEffect(()=>{
             if (!tokenFlag){
@@ -117,8 +125,6 @@ export default function MotionCard(props: CardProps) {
                             ['.cardContentWrap', contentVariants.open,]
                         ])
                     } else {
-                        console.log('closing: fade content and resize');
-                        
                         animate([
                             ['.cardContentWrap', contentVariants.initial, {duration:0.1}],
                             [scope.current, {width: 93,height: 125,}, {duration:0.1}],
@@ -128,13 +134,7 @@ export default function MotionCard(props: CardProps) {
                             [scope.current, cardVariantStyles.initial,{duration:0.1,}],
                             [scope.current, {zIndex:2}, {duration:0.1}],
                         ])
-                        const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
-                        const wiggleDuration = 10;
-                        animate(scope.current,  {rotate: [0,wiggleAmount,-wiggleAmount,0]},
-                                                {duration:wiggleDuration, ease:'easeInOut', repeat: Infinity,
-                                                    repeatType: 'loop', delay: Math.random() * 3
-                                                }
-                        )
+                        startWiggle()
                     }
                 }
             },[isOpen.current]
@@ -216,6 +216,7 @@ export default function MotionCard(props: CardProps) {
                 onHoverEnd={()=>{
                     animate('.hoverInfo', {opacity:0}, {duration:0.1})
                     animate(scope.current, {zIndex: isOpen.current ? 10 : [3,1] }, {duration:0.1})
+                    startWiggle();
                 }}
                 whileTap={ isOpen.current ? {} : {scale:0.99, rotate:2}}
                 onTap={()=>{
