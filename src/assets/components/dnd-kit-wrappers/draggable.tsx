@@ -35,6 +35,5 @@ const draggableStyle: CSSProperties = {
     backgroundColor:'#05250aff',
     opacity:0,
     position:'absolute',
-    cursor:'pointer'
     // pointerEvents:'none',
   }

@@ -1,5 +1,5 @@
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
-import { useEffect, useRef, type CSSProperties, type ReactNode} from "react"
+import { useEffect, useRef, type ReactNode} from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { BLANK_CARD_DATA, makeCoords, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
@@ -160,6 +160,7 @@ export default function MotionCard(props: CardProps) {
             zIndex:10,
             opacity:1,
             backgroundColor:'#FFFFFF',
+            boxShadow:'7px 7px 15px black'
         }
     }
 
@@ -188,7 +189,12 @@ export default function MotionCard(props: CardProps) {
     return (
     <motion.div className = "MotionCard"
                 ref={scope}
-                                
+                whileHover={ isOpen.current || cardData.id == cardData.zone ? {} : {scale:1.05, boxShadow:'3px 3px 3px black'} }
+                onHoverStart={ event => {
+                    // do a little wiggle
+                    event
+                } }
+                whileTap={ {scale:0.99, rotate:2}}
                 drag = { props.activeCard != cardData.id }
                 onDragStart={onDragStartHandler}
                 onDrag={onDragHandler}
