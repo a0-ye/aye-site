@@ -129,9 +129,9 @@ function App() {
                         onDragStart={handleDragStart}
                         onDragOver={handleOnDragOver}
                         >
-              {generateCard(c1ID, "img/Jimbo.png", {cursor:'pointer'})}
-              {generateCard(c2ID, "img/michel.png", {cursor:'pointer'})}
-              {generateCard(c3ID, "img/andrew.png", {cursor:'pointer'})}
+              {generateCard(c1ID, "img/Jimbo.png", {cursor:'grab'})}
+              {generateCard(c2ID, "img/michel.png", {cursor:'grab'})}
+              {generateCard(c3ID, "img/andrew.png", {cursor:'grab'})}
             <CardZone zoneData={zoneData[handZoneID]}  draggedCardStartZone={draggedCardStartZone}>
             </CardZone>
 

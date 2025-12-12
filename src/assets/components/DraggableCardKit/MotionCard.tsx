@@ -31,6 +31,7 @@ interface CardProps{
 export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
     const activeCard = props.activeCard;
+    const tokenFlag = (cardData.id == cardData.zone)
     const [scope, animate] = useAnimate();
     const dragSpringConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
@@ -104,27 +105,36 @@ export default function MotionCard(props: CardProps) {
 
     useEffect(()=>{isOpen.current = (activeCard == cardData.id);},[activeCard])
     useEffect(()=>{
-            if (isOpen.current){
-                animate([
-                    [scope.current, {rotateY:90}, {duration:0.1}],
-                    ['.cardBackImg', {display:'none'},{duration:0.1}],
-                    [scope.current, {rotateY:0}, {duration:0.1}],
-                    [scope.current, cardVariantStyles.open, {duration:0.2}],
-                    ['.cardContentWrap', contentVariants.open,]
-                ])
-            } else {
-                console.log('closing: fade content and resize');
-                
-                animate([
-                    ['.cardContentWrap', contentVariants.initial, {duration:0.1}],
-                    [scope.current, {width: 93,height: 125,}, {duration:0.1}],
-                    [scope.current, {rotateY:90}, {duration:0.1}],
-                    ['.cardBackImg', {display:'block'},{duration:0.1,}],
-                    [scope.current, {rotateY:0}, {duration:0.1}],
-                    [scope.current, cardVariantStyles.initial,{duration:0.1,}],
-                ])
-            }
-        },[isOpen.current]
+            if (!tokenFlag){
+                    if (isOpen.current){
+                        animate([
+                            [scope.current, {rotateY:90}, {duration:0.1}],
+                            ['.cardBackImg', {display:'none'},{duration:0.1}],
+                            [scope.current, {rotateY:0}, {duration:0.1}],
+                            [scope.current, cardVariantStyles.open, {duration:0.2}],
+                            ['.cardContentWrap', contentVariants.open,]
+                        ])
+                    } else {
+                        console.log('closing: fade content and resize');
+                        
+                        animate([
+                            ['.cardContentWrap', contentVariants.initial, {duration:0.1}],
+                            [scope.current, {width: 93,height: 125,}, {duration:0.1}],
+                            [scope.current, {rotateY:90}, {duration:0.1}],
+                            ['.cardBackImg', {display:'block'},{duration:0.1,}],
+                            [scope.current, {rotateY:0}, {duration:0.1}],
+                            [scope.current, cardVariantStyles.initial,{duration:0.1,}],
+                        ])
+                        const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
+                        const wiggleDuration = 10;
+                        animate(scope.current,  {rotate: [0,wiggleAmount,-wiggleAmount,0]},
+                                                {duration:wiggleDuration, ease:'easeInOut', repeat: Infinity,
+                                                    repeatType: 'loop', delay: Math.random() * 3
+                                                }
+                        )
+                    }
+                }
+            },[isOpen.current]
     )
     /**
      * ==============   Styles   ================
@@ -145,6 +155,7 @@ export default function MotionCard(props: CardProps) {
         position:'absolute',
 
         backgroundColor:'#FFFFFF',
+        boxShadow:'1px 4px 3px black',
         
         alignContent:'left',
         textAlign:'left',
@@ -160,7 +171,9 @@ export default function MotionCard(props: CardProps) {
             zIndex:10,
             opacity:1,
             backgroundColor:'#FFFFFF',
-            boxShadow:'7px 7px 15px black'
+            boxShadow:'7px 7px 15px black',
+            cursor:'auto'
+            
         }
     }
 
@@ -189,12 +202,12 @@ export default function MotionCard(props: CardProps) {
     return (
     <motion.div className = "MotionCard"
                 ref={scope}
-                whileHover={ isOpen.current || cardData.id == cardData.zone ? {} : {scale:1.05, boxShadow:'3px 3px 3px black'} }
+                whileHover={ isOpen.current || tokenFlag ? {} : {scale:1.05, boxShadow:'3px 6px 3px black'} }
                 onHoverStart={ event => {
                     // do a little wiggle
                     event
                 } }
-                whileTap={ {scale:0.99, rotate:2}}
+                whileTap={ isOpen.current ? {} : {scale:0.99, rotate:2}}
                 drag = { props.activeCard != cardData.id }
                 onDragStart={onDragStartHandler}
                 onDrag={onDragHandler}
