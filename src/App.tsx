@@ -1,13 +1,13 @@
-import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties} from 'react'
+import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties, type JSX} from 'react'
 import './App.css'
 
-import AboutMeContent from './assets/CardContent/AboutMe'
+import AboutMe from './assets/CardContent/AboutMe'
 
 import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
 
 import { DndContext, type DragEndEvent, type DragOverEvent, type DragStartEvent, type UniqueIdentifier } from '@dnd-kit/core'
-import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardData , type InitCardData, type InitZoneData, } from './assets/components/DraggableCardKit/CardKitFunctions'
+import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardContent, type CardData , type InitCardData, type InitZoneData, } from './assets/components/DraggableCardKit/CardKitFunctions'
 
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
@@ -27,11 +27,25 @@ function App() {
   const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
 
+  const aboutMeContent: CardContent = {
+    cardContent:AboutMe,
+    cardBack: "img/Jimbo.png", 
+    cardHoverInfo:'About Me!',
+  }
+  const c2Content: CardContent = {
+    cardBack:"img/michel.png",
+    cardHoverInfo:'hello!' 
+  }
+  const c3Content: CardContent = {
+    cardBack:"img/andrew.png",
+    // cardHoverInfo:'hello!' 
+  }
 
   const initialCards: InitCardData[] = [
-    {id:c1ID,  zone:jokerZoneID ,origin:makeCoords(0,0), content:AboutMeContent},
-    {id:c2ID,  zone:jokerZoneID ,origin:makeCoords(0,0), },
-    {id:c3ID,  zone:jokerZoneID ,origin:makeCoords(0,0), },
+    {id:c1ID,  zone:jokerZoneID ,origin:makeCoords(0,0), 
+      cardContent:aboutMeContent},
+    {id:c2ID,  zone:jokerZoneID ,origin:makeCoords(0,0), cardContent:c2Content},
+    {id:c3ID,  zone:jokerZoneID ,origin:makeCoords(0,0), cardContent:c3Content},
   ]
 
   const DEFAULT_COLOR = '#33473a';
@@ -103,18 +117,18 @@ function App() {
     moveCard(cardID, nextZoneID)
   }
 
-  function generateCard(cardID:UniqueIdentifier,cardBack:string, hoverInfo?:string , cardStyle?:CSSProperties): ReactNode {
+  function generateCard(cardID:UniqueIdentifier, cardStyle?:CSSProperties): ReactNode {
     return (
       <MotionCard
       cardData={cardsData[cardID]}
       activeCard={activeCard.id} 
       setActiveCard={setActiveCard} 
       trySwapOrigins={trySwapOrigins}
-      cardBack={cardBack}
-      cardHoverInfo={hoverInfo}
+      cardBack={cardsData[cardID].cardContent.cardBack}
+      cardHoverInfo={cardsData[cardID].cardContent.cardHoverInfo}
       style={{...cardStyle}}
       >
-        {cardsData[cardID].content}
+        {cardsData[cardID].cardContent.cardContent}
       </MotionCard>
     )
   }
@@ -122,7 +136,7 @@ function App() {
   return (
     <>
       <div id='leftcol' >
-        <LeftPanel activeCard={activeCard.id}></LeftPanel>
+        <LeftPanel activeCard={activeCard.id} cardsData={cardsData}></LeftPanel>
       </div>
       <div id='centercol'>
         <div className='CardBounds' style={{}}>
@@ -130,9 +144,9 @@ function App() {
                         onDragStart={handleDragStart}
                         onDragOver={handleOnDragOver}
                         >
-              {generateCard(c1ID, "img/Jimbo.png", 'About Me!' ,{cursor:'grab'})}
-              {generateCard(c2ID, "img/michel.png", 'hello!' ,{cursor:'grab'})}
-              {generateCard(c3ID, "img/andrew.png", 'hello!' ,{cursor:'grab'})}
+              {generateCard(c1ID,{cursor:'grab'})}
+              {generateCard(c2ID,{cursor:'grab'})}
+              {generateCard(c3ID,{cursor:'grab'})}
             <CardZone zoneData={zoneData[handZoneID]}  draggedCardStartZone={draggedCardStartZone}>
             </CardZone>
 

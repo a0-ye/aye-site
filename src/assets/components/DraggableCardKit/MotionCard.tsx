@@ -77,10 +77,15 @@ export default function MotionCard(props: CardProps) {
         },[cardData.origin.x, cardData.origin.y]
     )
 
+    const showHoverInfo = (flag:boolean)=>{
+        if (!props.cardHoverInfo) return;
+        animate('.hoverInfo', {opacity:flag?1:0}, {duration:0.1})
+    }
+
     const onDragStartingPoint = useRef({...cardData.origin})
     const onDragStartHandler = ()=>{
         animate(scope.current, {zIndex:3})
-        animate('.hoverInfo', {opacity:0}, {duration:0.1})
+        showHoverInfo(false)
         isDragging.current = true;
         onDragStartingPoint.current = {...cardData.origin}
         // console.log(`starting drag from ${onDragStartingPoint.current}`);
@@ -117,7 +122,6 @@ export default function MotionCard(props: CardProps) {
             if (!tokenFlag){
                     if (isOpen.current){
                         animate([
-                            // ['.hoverInfo', {opacity:0}, {duration:0.1}],
                             [scope.current, {rotateY:90}, {duration:0.1}],
                             ['.cardBackImg', {display:'none'},{duration:0.1}],
                             [scope.current, {rotateY:0}, {duration:0.1}],
@@ -209,12 +213,12 @@ export default function MotionCard(props: CardProps) {
                 whileHover={ isOpen.current || tokenFlag ? {} : {scale:1.05, boxShadow:'3px 6px 3px black'} }
                 onHoverStart={ () => {
                     if (!isOpen.current){
-                        animate('.hoverInfo', {opacity:1}, {duration:0.1})
+                        showHoverInfo(true)
                         animate(scope.current, {rotate:[-15,0],  zIndex:3 }, {duration:0.1})
                     }
                 } }
                 onHoverEnd={()=>{
-                    animate('.hoverInfo', {opacity:0}, {duration:0.1})
+                    showHoverInfo(false)
                     animate(scope.current, {zIndex: isOpen.current ? 10 : [3,1] }, {duration:0.1})
                     startWiggle();
                 }}
@@ -246,7 +250,7 @@ export default function MotionCard(props: CardProps) {
                     drag_id={cardData.id}
                     cardData={cardData}
                     />
-            <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>
+            <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>  
             <motion.div className="hoverInfo" style={{
                 display: tokenFlag? 'none': 'flex',
                 justifyContent:"center", alignItems:'center', alignSelf:'center',

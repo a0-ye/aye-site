@@ -1,19 +1,25 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type JSX, type ReactNode } from "react";
 
 
 export interface CardData{
   id:UniqueIdentifier;
   zone:UniqueIdentifier;
   origin:{x:number,y:number};
-  content?:ReactNode;
+  cardContent:CardContent;
 }
+
+export interface CardContent {
+    cardContent?:JSX.Element | undefined,
+    cardBack:string,
+    cardHoverInfo?:string,
+  }
 
 export interface InitCardData{
   id:UniqueIdentifier;
   zone?:UniqueIdentifier;
   origin?:{x:number,y:number};
-  content?:ReactNode;
+  cardContent:CardContent;
 }
 
 export interface ZoneData {
@@ -48,7 +54,10 @@ export interface coord {
 export const BLANK_CARD_DATA: CardData = {
   id: "" as UniqueIdentifier,
   zone: "BLANK" as UniqueIdentifier,
-  origin: {x:0,y:0}
+  origin: {x:0,y:0},
+  cardContent: {
+    cardBack:''
+  }
 }
 
 const BLANK_ZONE_DATA: ZoneData = {
