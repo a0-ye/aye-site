@@ -230,7 +230,7 @@ export default function MotionCard(props: CardProps) {
                     }
                     
                 }}
-                drag
+                drag = {!isOpen.current}
                 onDragStart={onDragStartHandler}
                 onDrag={onDragHandler}
                 onDragEnd={onDragEndHandler}
