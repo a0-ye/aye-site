@@ -32,7 +32,7 @@ interface CardProps{
 export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
     const activeCard = props.activeCard;
-    const tokenFlag = (cardData.id == cardData.zone)
+    const tokenFlag = (cardData == BLANK_CARD_DATA)
     const [scope, animate] = useAnimate();
     const dragSpringConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
@@ -110,6 +110,7 @@ export default function MotionCard(props: CardProps) {
     }
 
     const startWiggle = ()=>{
+        if(isOpen.current) return;  // no wiggle while open
         const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
         const wiggleDuration = 10;
             animate(scope.current,  {   rotate: [0,wiggleAmount,-wiggleAmount,0]},
@@ -229,7 +230,7 @@ export default function MotionCard(props: CardProps) {
                     }
                     
                 }}
-                drag = { props.activeCard != cardData.id }
+                drag
                 onDragStart={onDragStartHandler}
                 onDrag={onDragHandler}
                 onDragEnd={onDragEndHandler}
@@ -253,9 +254,11 @@ export default function MotionCard(props: CardProps) {
             <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>  
             <motion.div className="hoverInfo" style={{
                 display: tokenFlag? 'none': 'flex',
+                marginRight: '4%',
                 justifyContent:"center", alignItems:'center', alignSelf:'center',
                 opacity:0,
                 backgroundColor:'#7e7e7eff',
+                color:'#ffffff',
                 borderRadius:6,
                 position:'absolute',
                 fontSize:'small', textAlign:'center',
@@ -271,7 +274,11 @@ export default function MotionCard(props: CardProps) {
         initial={contentVariants.initial} 
         style={{...cardContentStyle , pointerEvents: (isOpen.current ? 'auto' : 'none')}}
         >
-            <button style={{zIndex:10}} onClick={()=>{props.setActiveCard?.(BLANK_CARD_DATA);}}> Close Card</button>
+            <motion.button style={{zIndex:10,
+                            position:'absolute', margin:15,
+                            top:'100%', left:'50%',
+                            translateX:'-50%'
+            }} onClick={()=>{props.setActiveCard?.(BLANK_CARD_DATA);}}> Close Card</motion.button>
 
             {props.children}
         </motion.div>

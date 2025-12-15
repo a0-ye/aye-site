@@ -1,5 +1,5 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
-import { useEffect, useState, type JSX, type ReactNode } from "react";
+import { useEffect, useState, type JSX,} from "react";
 
 
 export interface CardData{

@@ -1,4 +1,4 @@
-import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties, type JSX} from 'react'
+import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties} from 'react'
 import './App.css'
 
 import AboutMe from './assets/CardContent/AboutMe'
@@ -12,6 +12,8 @@ import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardContent, type Car
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
 import { animate } from 'motion'
+import { Projects } from './assets/CardContent/Projects'
+import { motion } from 'motion/react'
 
 
 function App() {
@@ -34,7 +36,8 @@ function App() {
   }
   const c2Content: CardContent = {
     cardBack:"img/michel.png",
-    cardHoverInfo:'hello!' 
+    cardHoverInfo:'Things I\'ve done!' ,
+    cardContent:Projects,
   }
   const c3Content: CardContent = {
     cardBack:"img/andrew.png",
@@ -180,6 +183,30 @@ function App() {
           </DndContext>
         </div>
       </div>
+
+
+      <motion.div id='TransitionBlock'
+      transition={{
+        duration:0.8,
+        ease:'easeOut'
+      }}
+      initial={{
+          zIndex:100,
+          position:'absolute',
+          backgroundColor: '#1684c4ff',
+          top:'50%', left:'50%',
+          rotate:27,
+          translateX:'-50%', translateY:'-50%',
+          width: '200vw', height:'200vw',
+
+        }
+      }
+      animate={{
+        width:0, height:0
+      }}
+
+      >
+      </motion.div>
     </>
   )
 }

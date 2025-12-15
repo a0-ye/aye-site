@@ -1,7 +1,6 @@
 import type { UniqueIdentifier } from "@dnd-kit/core";
 import './LeftPanel.css'
 import MotionCard from "../DraggableCardKit/MotionCard";
-import { useId } from "react";
 import { BLANK_CARD_DATA, type CardMap } from "../DraggableCardKit/CardKitFunctions";
 
 interface panelProps {
@@ -9,7 +8,6 @@ interface panelProps {
     cardsData:CardMap,
 }
 export default function LeftPanel (props: panelProps) {
-    const tokenID = useId();
     const activeCard = props.activeCard
     return <div className='left-panel'>
         
@@ -54,27 +52,27 @@ export default function LeftPanel (props: panelProps) {
             </div>
             <div id='numbers-container'>
                 <div id='hand-discard-container' className='duo-val-container'>
-                <div className='panel-box'>
-                    <div className='panel-text'>hands:</div>
-                    <div className='panel-value'>4</div>
+                    <div className='panel-box'>
+                        <div className='panel-text'>hands:</div>
+                        <div className='panel-value'>4</div>
+                    </div>
+                    <div className='panel-box'>
+                        <div className='panel-text'>    discards:  </div>
+                        <div className='panel-value'>   3          </div>
+                    </div>
                 </div>
                 <div className='panel-box'>
-                    <div className='panel-text'> discards:</div>
-                    <div className='panel-value'>3</div>
-                </div>
-                </div>
-                <div className='panel-box'>
-                <div className='panel-value' >$money</div>
+                    <div className='panel-value' >$broke :sob: </div>
                 </div>
                 <div id='ante-round-container' className='duo-val-container'>
-                <div className='panel-box'>
-                    <div className='panel-text'> Ante: </div>
-                    <div className='panel-value'> 2/8  </div>
-                </div>
-                <div className='panel-box'>
-                    <div className='panel-text'> Round:</div>
-                    <div className='panel-value'>1   </div>
-                </div>
+                    <div className='panel-box'>
+                        <div className='panel-text'> GPA: </div>
+                        <div className='panel-value'> 3.65  </div>
+                    </div>
+                    <div className='panel-box'>
+                        <div className='panel-text'> Round: </div>
+                        <div className='panel-value'>1      </div>
+                    </div>
                 </div>
             </div>
         </div>

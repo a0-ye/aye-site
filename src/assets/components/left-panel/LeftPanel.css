@@ -36,6 +36,7 @@
   align-items: center;
   flex-grow: 1;
   margin: 4px 4px 4px 4px;
+  text-shadow: color-mix(in srgb, #1d1d1d , var(--boss-blind-color) 20%) 2px 5px;
 }
 
 .panel-text {
