@@ -1,5 +1,5 @@
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
-import { useEffect, useRef, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { BLANK_CARD_DATA, makeCoords, type CardContent, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
@@ -34,7 +34,7 @@ export default function MotionCard(props: CardProps) {
     const dragSpringConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
     const isDragging = useRef(false)
-    const isOpen = useRef(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     const targetX = useMotionValue(cardData.origin.x);
     const targetY = useMotionValue(cardData.origin.y);
@@ -101,13 +101,17 @@ export default function MotionCard(props: CardProps) {
         }
     }
     const onDragEndHandler = () => {
-        isDragging.current = false;
-        if (!isOpen.current) { animate(scope.current, { zIndex: 1 }) }
-        returnToOrigin();
+        isDragging.current = (false);
+        if (!isOpen) {  // dont want to return to origin if open. This lets it go to the center
+            animate(scope.current, { zIndex: 1 })
+            returnToOrigin();
+        }
+        else{
+        }
     }
 
     const startWiggle = () => {
-        if (isOpen.current) {
+        if (isOpen) {
             console.log('no wiggle ', cardData.id, activeCard);
             return
         };  // no wiggle while open
@@ -121,31 +125,43 @@ export default function MotionCard(props: CardProps) {
             }
         )
     }
-    useEffect(() => { isOpen.current = (activeCard == cardData.id); }, [activeCard])
+    useEffect(() => { setIsOpen(activeCard == cardData.id); }, [activeCard])
     useEffect(() => {
-        if (!tokenFlag) {
-            if (isOpen.current) {
-                animate([
-                    [scope.current, { rotateY: 90 }, { duration: 0.1 }],
-                    ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
-                    [scope.current, { rotateY: 0 }, { duration: 0.1 }],
-                    [scope.current, cardVariantStyles.open, { duration: 0.2 }],
-                    ['.cardContentWrap', contentVariants.open,]
-                ])
-            } else {
-                animate([
-                    ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
-                    [scope.current, { width: 93, height: 125, }, { duration: 0.1 }],
-                    [scope.current, { rotateY: 90 }, { duration: 0.1 }],
-                    ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],
-                    [scope.current, { rotateY: 0 }, { duration: 0.1 }],
-                    [scope.current, cardVariantStyles.initial, { duration: 0.1, }],
-                    [scope.current, { zIndex: 2 }, { duration: 0.1 }],
-                ])
-                startWiggle()
+        const doAnimation = async () => {
+            if (!tokenFlag) {
+                if (isOpen) {
+                    // TODO. need to translate left by the leftPanel width + its margin
+                    // const rect = scope.current.getBoundingClientRect();
+                    const leftPanelWidth = document.getElementById('leftcol')?.getBoundingClientRect().width || 0;
+                    const centeredX = ((window.innerWidth - leftPanelWidth) / 2) ;
+                    const centeredY = (window.innerHeight / 2) ;
+                    console.log( "window center: ", centeredX, centeredY, leftPanelWidth);
+                    
+                    animate([//animate OPEN
+                        [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4}],
+
+                        [scope.current, { rotateY: 90 }, { duration: 0.1}],
+                        ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
+                        [scope.current, { rotateY: 0 }, { duration: 0.1 }],
+                        [scope.current, cardVariantStyles.open, { duration: 0.2 }],
+                        // ['.cardContentWrap', contentVariants.open,]
+                    ])
+                } else {
+                    animate([
+                        ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
+                        [scope.current, { width: 93, height: 125, }, { duration: 0.1 }],
+                        [scope.current, { rotateY: 90 }, { duration: 0.1 }],
+                        ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],
+                        [scope.current, { rotateY: 0 }, { duration: 0.1 }],
+                        [scope.current, cardVariantStyles.initial, { duration: 0.1, }],
+                        [scope.current, { zIndex: 2 }, { duration: 0.1 }],
+                    ])
+                    startWiggle()
+                }
             }
         }
-    }, [isOpen.current]
+        doAnimation();
+    }, [isOpen]
     )
     /**
      * ==============   Styles   ================
@@ -214,26 +230,26 @@ export default function MotionCard(props: CardProps) {
     return (
         <motion.div className="MotionCard"
             ref={scope}
-            whileHover={isOpen.current || tokenFlag ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
+            whileHover={isOpen || tokenFlag ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
             onHoverStart={() => {
-                if (!isOpen.current) {
+                if (!isOpen) {
                     showHoverInfo(true)
                     animate(scope.current, { rotate: [-15, 0], zIndex: 3 }, { duration: 0.1 })
                 }
             }}
             onHoverEnd={() => {
                 showHoverInfo(false)
-                animate(scope.current, { zIndex: isOpen.current ? 10 : [3, 1] }, { duration: 0.1 })
+                animate(scope.current, { zIndex: isOpen ? 10 : [3, 1] }, { duration: 0.1 })
                 startWiggle();
             }}
-            whileTap={isOpen.current ? {} : { scale: 0.99, rotate: 2 }}
+            whileTap={isOpen ? {} : { scale: 0.99, rotate: 2 }}
             onTap={() => {
                 if (!isDragging.current) {
                     console.log("clickah!");
                 }
 
             }}
-            drag={!isOpen.current}
+            drag={!isOpen}
             onDragStart={onDragStartHandler}
             onDrag={onDragHandler}
             onDragEnd={onDragEndHandler}
@@ -250,7 +266,7 @@ export default function MotionCard(props: CardProps) {
                 // originX:cardData.origin.x, originY:cardData.origin.y
             }}
         >
-            <Draggable style={{ pointerEvents: (isOpen.current ? 'none' : 'auto') }}
+            <Draggable style={{ pointerEvents: (isOpen ? 'none' : 'auto') }}
                 drag_id={cardData.id}
                 cardData={cardData}
             />
@@ -275,7 +291,7 @@ export default function MotionCard(props: CardProps) {
             <motion.div
                 className={"cardContentWrap"}
                 initial={contentVariants.initial}
-                style={{ ...cardContentStyle, pointerEvents: (isOpen.current ? 'auto' : 'none') }}
+                style={{ ...cardContentStyle, pointerEvents: (isOpen ? 'auto' : 'none') }}
             >
                 <motion.button style={{
                     zIndex: 10,

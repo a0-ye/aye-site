@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import './AboutMe.css'
+import { motion } from 'motion/react';
 
 
 // more professional. More consice / straight to the point
@@ -25,7 +26,7 @@ interface AboutMeProps {
 export default function AboutMe(props:AboutMeProps){
 
 return (
-    <div id='main'>
+    <motion.div id='main'>
 
         <h1 id='banner'>
             About Me
@@ -95,7 +96,7 @@ return (
         <img src='img/all-in.jpg'></img>
 
         {}
-    </div>
+    </motion.div>
 
     )
 

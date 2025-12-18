@@ -29,9 +29,9 @@ function App() {
   const c1ID = useId();
   const c2ID = useId();
   const c3ID = useId();
-  const handZoneID = useId() // store this one specially, since all cards start in the hand
+  // const handZoneID = useId() // store this one specially, since all cards start in the hand
   const jokerZoneID = useId(); // Where jokers live.. No functionality, just naming like balaro :drooling:
-  const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
+  // const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
 
   const aboutMeContent: CardContent = {
@@ -78,15 +78,15 @@ function App() {
   }
 
   const initialZones: InitZoneData[] = [
-    { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
-    { id: jokerZoneID, position: makeCoords(50, -200), dimensions: { width: 500, height: 150 }, },
-    { id: consumableZoneID, position: makeCoords(600, 15), dimensions: { width: 250, height: 150 } },
-    { id: UseZoneID, position: makeCoords(-300 / 2 - 75, -120 / 2 - 75), dimensions: { width: 150, height: 150 } },
+    // { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
+    { id: jokerZoneID, position: makeCoords(50, 0), dimensions: { width: 500, height: 150 }, },
+    // { id: consumableZoneID, position: makeCoords(600, 15), dimensions: { width: 250, height: 150 } },
+    { id: UseZoneID, position: makeCoords( 600, 0 ), dimensions: { width: 150, height: 150 } },
   ]
 
 
   // create Card State & Managers + load zones
-  const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, handZoneID);
+  const [cardsData, zoneData, moveCard, trySwapOrigins] = useCardHandler(initialCards, initialZones, jokerZoneID);
 
   // ======== END INIT ==========================================================
 
@@ -159,17 +159,8 @@ function App() {
             {generateCard(c1ID, { cursor: 'grab' })}
             {generateCard(c2ID, { cursor: 'grab' })}
             {generateCard(c3ID, { cursor: 'grab' })}
-            <CardZone zoneData={zoneData[handZoneID]} draggedCardStartZone={draggedCardStartZone}>
-            </CardZone>
-
             <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
-              maybe put links to my projects here?
-            </CardZone>
-
-            <CardZone zoneData={zoneData[consumableZoneID]}
-
-              draggedCardStartZone={draggedCardStartZone}>
-              maybe linkns to projects here, so you "use / consume" them haha hehe
+              Info about myself. about me, projects, etc
             </CardZone>
 
             <CardZone zoneData={zoneData[UseZoneID]}
@@ -199,6 +190,12 @@ function App() {
             </PopupPanel>}
           </AnimatePresence>
         </div>
+
+        <motion.div id='content-display' style={{}}
+        
+        >
+          {activeCard.cardContent.cardContent}
+        </motion.div>
 
       </div>
 
