@@ -1,18 +1,17 @@
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
-import { useEffect, useRef, type ReactNode} from "react"
+import { useEffect, useRef, type ReactNode } from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
-import { BLANK_CARD_DATA, makeCoords, type CardData } from "./CardKitFunctions"
+import { BLANK_CARD_DATA, makeCoords, type CardContent, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
 
 
 
-interface CardProps{
-    cardData:CardData
+interface CardProps {
+    cardData: CardData
     activeCard?: UniqueIdentifier | null;
-    setActiveCard?:Function;
-    trySwapOrigins?:Function;
-    cardBack?:string;
-    cardHoverInfo?:string;
+    setActiveCard?: Function;
+    trySwapOrigins?: Function;
+    cardContent: CardContent;
     style?: MotionStyle;
     children?: ReactNode;
 }
@@ -21,16 +20,14 @@ interface CardProps{
  * Card that you can drag around, and always returns to its 'origin point'
  * Origin can be updated, and is updated via the origin prop.
  * 
- * TODOs
- *  - make card flip animation
- *  - make card content fade first, THEN shrink. looks nicer
+ * TODO: there are 200 lines in this one function. do some readability refactoring
  * 
- * KNOWN BUG: stuttering when starting a drag for the first time. I believe it has to do with the targetX and targetY still being 0 from
- *              the default cardData origin being 0,0
- *              Once i decouple that logic for initialization, it might be fixed, as well as the onDrag
+ * KNOWN ISSUES:
+ *  sometimes the wiggle breaks and continues to wiggle while open. Not sure why, possibly a motion animation queue issue
  */
 export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
+    const cardContent = props.cardContent;
     const activeCard = props.activeCard;
     const tokenFlag = (cardData == BLANK_CARD_DATA)
     const [scope, animate] = useAnimate();
@@ -45,12 +42,12 @@ export default function MotionCard(props: CardProps) {
     const currentY = useSpring(targetY, dragSpringConfig);
 
     const velocityX = useVelocity(targetX)
-    const smoothVelocityX = useSpring(velocityX,{
+    const smoothVelocityX = useSpring(velocityX, {
         stiffness: 2000,
         damping: 20,
         mass: 0.1,
     })
-    const angle = useTransform(smoothVelocityX, (v)=>{
+    const angle = useTransform(smoothVelocityX, (v) => {
         const VELOCITY_DAMP = 8000
         const rotationMaximum = 75; // degrees? is what im assuming this represents
         const rotationMinimum = 6;
@@ -59,12 +56,12 @@ export default function MotionCard(props: CardProps) {
     })
     const angleSpring = useSpring(angle, {
         stiffness: 200,
-        damping:20,
-        mass:1,
+        damping: 20,
+        mass: 1,
     })
-    
 
-    const returnToOrigin = () => { 
+
+    const returnToOrigin = () => {
         if (isDragging.current == false) {
             targetX.set(cardData.origin.x)
             targetY.set(cardData.origin.y)
@@ -72,77 +69,83 @@ export default function MotionCard(props: CardProps) {
         }
     }
 
-    useEffect(()=>{
-            returnToOrigin()
-        },[cardData.origin.x, cardData.origin.y]
+    useEffect(() => {
+        returnToOrigin()
+    }, [cardData.origin.x, cardData.origin.y]
     )
 
-    const showHoverInfo = (flag:boolean)=>{
-        if (!props.cardHoverInfo) return;
-        animate('.hoverInfo', {opacity:flag?1:0}, {duration:0.1})
+    const showHoverInfo = (flag: boolean) => {
+        if (!cardContent.cardHoverInfo) return;
+        animate('.hoverInfo', { opacity: flag ? 1 : 0 }, { duration: 0.1 })
     }
 
-    const onDragStartingPoint = useRef({...cardData.origin})
-    const onDragStartHandler = ()=>{
-        animate(scope.current, {zIndex:3})
+    const onDragStartingPoint = useRef({ ...cardData.origin })
+    const onDragStartHandler = () => {
+        animate(scope.current, { zIndex: 3 })
         showHoverInfo(false)
         isDragging.current = true;
-        onDragStartingPoint.current = {...cardData.origin}
+        onDragStartingPoint.current = { ...cardData.origin }
         // console.log(`starting drag from ${onDragStartingPoint.current}`);
-        
+
     }
 
-    const onDragHandler = (_:PointerEvent, info:PanInfo)=>{
+    const onDragHandler = (_: PointerEvent, info: PanInfo) => {
         // info.offset is the total mouse displacement from the start of the drag
         // using this, we can calculate the position we need to drag to via origin + offset!
         const newTargetX = onDragStartingPoint.current.x + info.offset.x
         const newTargetY = onDragStartingPoint.current.y + info.offset.y
         targetX.set(newTargetX)
         targetY.set(newTargetY)
-        if (isDragging.current){    // necessary. onDragHandler runs ONCE before onDragStart runs, so use it as a semaphore
+        if (isDragging.current) {    // necessary. onDragHandler runs ONCE before onDragStart runs, so use it as a semaphore
             props.trySwapOrigins?.(cardData.id, makeCoords(newTargetX, newTargetY), cardData.zone)
         }
     }
-    const onDragEndHandler = ()=>{
+    const onDragEndHandler = () => {
         isDragging.current = false;
-        if(!isOpen.current){animate(scope.current, {zIndex:1})}
+        if (!isOpen.current) { animate(scope.current, { zIndex: 1 }) }
         returnToOrigin();
     }
 
-    const startWiggle = ()=>{
-        if(isOpen.current) return;  // no wiggle while open
+    const startWiggle = () => {
+        if (isOpen.current) {
+            console.log('no wiggle ', cardData.id, activeCard);
+            return
+        };  // no wiggle while open
+        console.log('wigglign! ', cardData.id, activeCard);
         const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
         const wiggleDuration = 10;
-            animate(scope.current,  {   rotate: [0,wiggleAmount,-wiggleAmount,0]},
-                                    {   duration:wiggleDuration, ease:'easeInOut', repeat: Infinity,
-                                        repeatType: 'loop', delay: Math.random() * 3
-                                    }
-    )}
-    useEffect(()=>{isOpen.current = (activeCard == cardData.id);},[activeCard])
-    useEffect(()=>{
-            if (!tokenFlag){
-                    if (isOpen.current){
-                        animate([
-                            [scope.current, {rotateY:90}, {duration:0.1}],
-                            ['.cardBackImg', {display:'none'},{duration:0.1}],
-                            [scope.current, {rotateY:0}, {duration:0.1}],
-                            [scope.current, cardVariantStyles.open, {duration:0.2}],
-                            ['.cardContentWrap', contentVariants.open,]
-                        ])
-                    } else {
-                        animate([
-                            ['.cardContentWrap', contentVariants.initial, {duration:0.1}],
-                            [scope.current, {width: 93,height: 125,}, {duration:0.1}],
-                            [scope.current, {rotateY:90}, {duration:0.1}],
-                            ['.cardBackImg', {display:'block'},{duration:0.1,}],
-                            [scope.current, {rotateY:0}, {duration:0.1}],
-                            [scope.current, cardVariantStyles.initial,{duration:0.1,}],
-                            [scope.current, {zIndex:2}, {duration:0.1}],
-                        ])
-                        startWiggle()
-                    }
-                }
-            },[isOpen.current]
+        animate(scope.current, { rotate: [0, wiggleAmount, -wiggleAmount, 0] },
+            {
+                duration: wiggleDuration, ease: 'easeInOut', repeat: Infinity,
+                repeatType: 'loop', delay: Math.random() * 3
+            }
+        )
+    }
+    useEffect(() => { isOpen.current = (activeCard == cardData.id); }, [activeCard])
+    useEffect(() => {
+        if (!tokenFlag) {
+            if (isOpen.current) {
+                animate([
+                    [scope.current, { rotateY: 90 }, { duration: 0.1 }],
+                    ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
+                    [scope.current, { rotateY: 0 }, { duration: 0.1 }],
+                    [scope.current, cardVariantStyles.open, { duration: 0.2 }],
+                    ['.cardContentWrap', contentVariants.open,]
+                ])
+            } else {
+                animate([
+                    ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
+                    [scope.current, { width: 93, height: 125, }, { duration: 0.1 }],
+                    [scope.current, { rotateY: 90 }, { duration: 0.1 }],
+                    ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],
+                    [scope.current, { rotateY: 0 }, { duration: 0.1 }],
+                    [scope.current, cardVariantStyles.initial, { duration: 0.1, }],
+                    [scope.current, { zIndex: 2 }, { duration: 0.1 }],
+                ])
+                startWiggle()
+            }
+        }
+    }, [isOpen.current]
     )
     /**
      * ==============   Styles   ================
@@ -152,138 +155,139 @@ export default function MotionCard(props: CardProps) {
     const cardStyle: MotionStyle = {
         width: 93,
         height: 125,
-        zIndex:1,
-        display:'flex',
+        zIndex: 1,
+        display: 'flex',
 
-        color:'black',
+        color: 'black',
         borderRadius: 10,
-        borderStyle:'solid',
-        borderWidth:1,
-        borderColor:'black',
-        position:'absolute',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: 'black',
+        position: 'absolute',
 
-        backgroundColor:'#FFFFFF',
-        boxShadow:'1px 4px 3px black',
-        
-        alignContent:'left',
-        textAlign:'left',
+        backgroundColor: '#FFFFFF',
+        boxShadow: '1px 4px 3px black',
+
+        alignContent: 'left',
+        textAlign: 'left',
     }
 
-    const mergedStyle = {...cardStyle, ...props.style} // override props in cardStyle if exists
+    const mergedStyle = { ...cardStyle, ...props.style } // override props in cardStyle if exists
     const cardVariantStyles = {
-        initial:{
+        initial: {
             ...mergedStyle,
         },
-        open:   {
-            width:850, height:600,
-            zIndex:11,
-            opacity:1,
-            backgroundColor:'#FFFFFF',
-            boxShadow:'7px 7px 15px black',
-            cursor:'auto'
-            
+        open: {
+            width: 1200, height: 1000,
+            zIndex: 11,
+            opacity: 1,
+            backgroundColor: '#FFFFFF',
+            boxShadow: '7px 7px 15px black',
+            cursor: 'auto'
+
         }
     }
 
     const cardContentStyle: MotionStyle = {
-        margin:5,
-        overflow:'auto',
+        margin: 5,
+        overflow: 'auto',
 
-        display:'flex',
-        flexDirection:'column',
-        justifyContent:'center',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: 'center',
-        flexGrow:1,
+        flexGrow: 1,
     }
 
     const contentVariants = {
-        initial:{
+        initial: {
             display: 'none',
-            opacity:0,
+            opacity: 0,
         },
-        open:{
-            display:'block',
-            opacity:1
+        open: {
+            display: 'block',
+            opacity: 1
         }
     }
 
-    
+
     return (
-    <motion.div className = "MotionCard"
-                ref={scope}
-                whileHover={ isOpen.current || tokenFlag ? {} : {scale:1.05, boxShadow:'3px 6px 3px black'} }
-                onHoverStart={ () => {
-                    if (!isOpen.current){
-                        showHoverInfo(true)
-                        animate(scope.current, {rotate:[-15,0],  zIndex:3 }, {duration:0.1})
-                    }
-                } }
-                onHoverEnd={()=>{
-                    showHoverInfo(false)
-                    animate(scope.current, {zIndex: isOpen.current ? 10 : [3,1] }, {duration:0.1})
-                    startWiggle();
-                }}
-                whileTap={ isOpen.current ? {} : {scale:0.99, rotate:2}}
-                onTap={()=>{
-                    if (!isDragging.current){
-                        console.log("clickah!");
-                    }
-                    
-                }}
-                drag = {!isOpen.current}
-                onDragStart={onDragStartHandler}
-                onDrag={onDragHandler}
-                onDragEnd={onDragEndHandler}
-                style={{
-                    x:currentX, y:currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
-                    translateX: '-50%', 
-                    translateY: '-50%',
-        rotate: angleSpring,
-                    originX:'50%%',
-                    originY:'-20%',
-                    // rotateX: rotateX ,
-                    // rotate: angleSpring,
-                    ...mergedStyle,
-                    // originX:cardData.origin.x, originY:cardData.origin.y
-                    }}
-                >
-        <Draggable  style={{pointerEvents: (isOpen.current ? 'none' : 'auto') }} 
-                    drag_id={cardData.id}
-                    cardData={cardData}
-                    />
-            <motion.img src={props.cardBack} className = 'cardBackImg' style={{}}/>  
+        <motion.div className="MotionCard"
+            ref={scope}
+            whileHover={isOpen.current || tokenFlag ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
+            onHoverStart={() => {
+                if (!isOpen.current) {
+                    showHoverInfo(true)
+                    animate(scope.current, { rotate: [-15, 0], zIndex: 3 }, { duration: 0.1 })
+                }
+            }}
+            onHoverEnd={() => {
+                showHoverInfo(false)
+                animate(scope.current, { zIndex: isOpen.current ? 10 : [3, 1] }, { duration: 0.1 })
+                startWiggle();
+            }}
+            whileTap={isOpen.current ? {} : { scale: 0.99, rotate: 2 }}
+            onTap={() => {
+                if (!isDragging.current) {
+                    console.log("clickah!");
+                }
+
+            }}
+            drag={!isOpen.current}
+            onDragStart={onDragStartHandler}
+            onDrag={onDragHandler}
+            onDragEnd={onDragEndHandler}
+            style={{
+                x: currentX, y: currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
+                translateX: '-50%',
+                translateY: '-50%',
+                rotate: angleSpring,
+                originX: '50%%',
+                originY: '-20%',
+                // rotateX: rotateX ,
+                // rotate: angleSpring,
+                ...mergedStyle,
+                // originX:cardData.origin.x, originY:cardData.origin.y
+            }}
+        >
+            <Draggable style={{ pointerEvents: (isOpen.current ? 'none' : 'auto') }}
+                drag_id={cardData.id}
+                cardData={cardData}
+            />
+            <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{}} />
             <motion.div className="hoverInfo" style={{
-                display: tokenFlag? 'none': 'flex',
+                display: tokenFlag ? 'none' : 'flex',
                 marginRight: '4%',
-                justifyContent:"center", alignItems:'center', alignSelf:'center',
-                opacity:0,
-                backgroundColor:'#7e7e7eff',
-                color:'#ffffff',
-                borderRadius:6,
-                position:'absolute',
-                fontSize:'small', textAlign:'center',
-                right:'100%', top:'50%',  translateY: '-50%',
-                width:60, minHeight: '3em', height: 'auto',
-                pointerEvents:'none'
-                }}> 
-                {props.cardHoverInfo}
+                justifyContent: "center", alignItems: 'center', alignSelf: 'center',
+                opacity: 0,
+                backgroundColor: '#7e7e7eff',
+                color: '#ffffff',
+                borderRadius: 6,
+                position: 'absolute',
+                fontSize: 'small', textAlign: 'center',
+                right: '100%', top: '50%', translateY: '-50%',
+                width: 60, minHeight: '3em', height: 'auto',
+                pointerEvents: 'none'
+            }}>
+                {cardContent?.cardHoverInfo}
             </motion.div>
 
-        <motion.div 
-        className={"cardContentWrap"}
-        initial={contentVariants.initial} 
-        style={{...cardContentStyle , pointerEvents: (isOpen.current ? 'auto' : 'none')}}
-        >
-            <motion.button style={{zIndex:10,
-                            position:'absolute', margin:15,
-                            top:'100%', left:'50%',
-                            translateX:'-50%'
-            }} onClick={()=>{props.setActiveCard?.(BLANK_CARD_DATA);}}> Close Card</motion.button>
-
-            {props.children}
+            <motion.div
+                className={"cardContentWrap"}
+                initial={contentVariants.initial}
+                style={{ ...cardContentStyle, pointerEvents: (isOpen.current ? 'auto' : 'none') }}
+            >
+                <motion.button style={{
+                    zIndex: 10,
+                    position: 'absolute', margin: 15,
+                    top: '100%', left: '50%',
+                    translateX: '-50%'
+                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</motion.button>
+                {cardContent?.cardContent}
+                {props.children}
+            </motion.div>
         </motion.div>
-    </motion.div>
-        
+
     )
 }
 

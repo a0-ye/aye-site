@@ -6,18 +6,21 @@ import { BLANK_CARD_DATA, type CardMap } from "../DraggableCardKit/CardKitFuncti
 interface panelProps {
     activeCard:UniqueIdentifier,
     cardsData:CardMap,
+    setShowSettings:Function,
+    setShowInfo:Function,
 }
+
 export default function LeftPanel (props: panelProps) {
     const activeCard = props.activeCard
     return <div className='left-panel'>
         
         <div className='panel-box'>
-            <div id='blind-header'>hello! THIS IS A WIP</div>
+            <div id='blind-header'>Adrian Ye</div>
             <div id='blind-body'>
                 <div id="token-container">
                     <MotionCard
                         cardData={BLANK_CARD_DATA}
-                        cardBack="img/sprout-token.png"
+                        cardContent={{cardBack:"img/sprout-token.png"}}
                         style={{top:"50%",left:'50%',
                             width:75,
                             height:75,
@@ -47,8 +50,8 @@ export default function LeftPanel (props: panelProps) {
         
         <div id='buttons-n-numbers-grid' >
             <div id='panel-button-container'>
-                <button className='panel-button'> runinfo </button>
-                <button className='panel-button'> options </button>
+                <button className='panel-button' onClick={()=>props.setShowInfo(true)}> runinfo </button>
+                <button className='panel-button' onClick={()=>props.setShowSettings(true)}> options </button>
             </div>
             <div id='numbers-container'>
                 <div id='hand-discard-container' className='duo-val-container'>

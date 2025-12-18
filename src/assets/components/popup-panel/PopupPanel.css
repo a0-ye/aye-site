@@ -1,0 +1,10 @@
+
+.popup-panel {
+  background-color:#ff9292;
+  width:850px; height:600px;
+  z-index:11;
+  position:absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left:50%;
+}
