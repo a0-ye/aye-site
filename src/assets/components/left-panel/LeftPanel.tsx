@@ -6,6 +6,7 @@ import { BLANK_CARD_DATA, type CardMap } from "../DraggableCardKit/CardKitFuncti
 interface panelProps {
     activeCard:UniqueIdentifier,
     cardsData:CardMap,
+    setActiveCard:Function
     setShowSettings:Function,
     setShowInfo:Function,
 }
@@ -13,9 +14,11 @@ interface panelProps {
 export default function LeftPanel (props: panelProps) {
     const activeCard = props.activeCard
     return <div className='left-panel'>
-        
+        <button style={{
+                    zIndex: 10,
+                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> DEBUG Close Card</button>
         <div className='panel-box'>
-            <div id='blind-header'>Adrian Ye</div>
+            <div className='blind-header'>Adrian Ye</div>
             <div id='blind-body'>
                 <div id="token-container">
                     <MotionCard

@@ -9,6 +9,8 @@ interface PanelProps {
 }
 
 
+
+//TODO: make this a Modal.
 export default function PopupPanel (props:PanelProps) {
     return (<motion.div  key={'INFO_PANEL'} className='popup-panel'
                                     initial={{ opacity: 0, top:'50%', left:'50%',translateX:'-50%', translateY:'150%'}}

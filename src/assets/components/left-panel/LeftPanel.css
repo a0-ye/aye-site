@@ -54,12 +54,7 @@
   height: 100px;
 }
 
-#blind-header {
-  font-size:x-large;
-  margin: 2px 4px 2px 4px;
-  border-radius: 4px;
-  background-color: var(--boss-blind-color);
-}
+
 #blind-body {
   font-size:x-large;
   margin: 2px 4px 4px 4px;

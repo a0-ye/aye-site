@@ -1,3 +1,4 @@
+import './MotionCard.css'
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
@@ -125,7 +126,10 @@ export default function MotionCard(props: CardProps) {
             }
         )
     }
-    useEffect(() => { setIsOpen(activeCard == cardData.id); }, [activeCard])
+
+    useEffect(() => { 
+        setIsOpen(activeCard == cardData.id); 
+    }, [activeCard])
     useEffect(() => {
         const doAnimation = async () => {
             if (!tokenFlag) {
@@ -136,6 +140,8 @@ export default function MotionCard(props: CardProps) {
                     const centeredX = ((window.innerWidth - leftPanelWidth) / 2) ;
                     const centeredY = (window.innerHeight / 2) ;
                     console.log( "window center: ", centeredX, centeredY, leftPanelWidth);
+
+                    const contentDisplayBox = document.getElementById('content-display')?.getBoundingClientRect()
                     
                     animate([//animate OPEN
                         [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4}],
@@ -143,13 +149,13 @@ export default function MotionCard(props: CardProps) {
                         [scope.current, { rotateY: 90 }, { duration: 0.1}],
                         ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
                         [scope.current, { rotateY: 0 }, { duration: 0.1 }],
-                        [scope.current, cardVariantStyles.open, { duration: 0.2 }],
-                        // ['.cardContentWrap', contentVariants.open,]
+                        [scope.current, {...cardVariantStyles.open, /**width:contentDisplayBox?.width || 10, height:contentDisplayBox?.height || 10*/}, { duration: 0.2 }],
+                        ['.cardContentWrap', contentVariants.open,]
                     ])
                 } else {
                     animate([
                         ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
-                        [scope.current, { width: 93, height: 125, }, { duration: 0.1 }],
+                        [scope.current, { width: 93, height: 125, opacity:1 }, { duration: 0.1 }],
                         [scope.current, { rotateY: 90 }, { duration: 0.1 }],
                         ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],
                         [scope.current, { rotateY: 0 }, { duration: 0.1 }],
@@ -169,8 +175,8 @@ export default function MotionCard(props: CardProps) {
 
 
     const cardStyle: MotionStyle = {
-        width: 93,
-        height: 125,
+        width: 93, height: 125,
+        opacity:1,
         zIndex: 1,
         display: 'flex',
 
@@ -193,28 +199,18 @@ export default function MotionCard(props: CardProps) {
         initial: {
             ...mergedStyle,
         },
-        open: {
+        open: { // fades out
             width: 1200, height: 1000,
             zIndex: 11,
-            opacity: 1,
+            opacity: 0,
+            PointerEvent:false,
             backgroundColor: '#FFFFFF',
-            boxShadow: '7px 7px 15px black',
+            borderColor:'transparent',
+            // boxShadow: '7px 7px 15px black',
             cursor: 'auto'
 
         }
     }
-
-    const cardContentStyle: MotionStyle = {
-        margin: 5,
-        overflow: 'auto',
-
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexGrow: 1,
-    }
-
     const contentVariants = {
         initial: {
             display: 'none',
@@ -273,17 +269,7 @@ export default function MotionCard(props: CardProps) {
             <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{}} />
             <motion.div className="hoverInfo" style={{
                 display: tokenFlag ? 'none' : 'flex',
-                marginRight: '4%',
-                justifyContent: "center", alignItems: 'center', alignSelf: 'center',
-                opacity: 0,
-                backgroundColor: '#7e7e7eff',
-                color: '#ffffff',
-                borderRadius: 6,
-                position: 'absolute',
-                fontSize: 'small', textAlign: 'center',
                 right: '100%', top: '50%', translateY: '-50%',
-                width: 60, minHeight: '3em', height: 'auto',
-                pointerEvents: 'none'
             }}>
                 {cardContent?.cardHoverInfo}
             </motion.div>
@@ -291,7 +277,7 @@ export default function MotionCard(props: CardProps) {
             <motion.div
                 className={"cardContentWrap"}
                 initial={contentVariants.initial}
-                style={{ ...cardContentStyle, pointerEvents: (isOpen ? 'auto' : 'none') }}
+                style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
             >
                 <motion.button style={{
                     zIndex: 10,
@@ -299,7 +285,7 @@ export default function MotionCard(props: CardProps) {
                     top: '100%', left: '50%',
                     translateX: '-50%'
                 }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</motion.button>
-                {cardContent?.cardContent}
+                {/* { isOpen && cardContent?.cardContent} */}
                 {props.children}
             </motion.div>
         </motion.div>

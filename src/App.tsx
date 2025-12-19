@@ -16,6 +16,7 @@ import Projects from './assets/CardContent/Projects'
 import { AnimatePresence, motion } from 'motion/react'
 import { Papers } from './assets/CardContent/Papers'
 import PopupPanel from './assets/components/popup-panel/PopupPanel'
+import ContentWrap from './assets/CardContent/ContentWrap'
 
 
 function App() {
@@ -42,7 +43,7 @@ function App() {
   const c2Content: CardContent = {
     cardBack: "img/michel.png",
     cardHoverInfo: 'Things I\'ve done!',
-    cardContent: <Projects/>,
+    cardContent: <Projects />,
   }
   const c3Content: CardContent = {
     cardBack: "img/andrew.png",
@@ -81,7 +82,7 @@ function App() {
     // { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
     { id: jokerZoneID, position: makeCoords(50, 0), dimensions: { width: 500, height: 150 }, },
     // { id: consumableZoneID, position: makeCoords(600, 15), dimensions: { width: 250, height: 150 } },
-    { id: UseZoneID, position: makeCoords( 600, 0 ), dimensions: { width: 150, height: 150 } },
+    { id: UseZoneID, position: makeCoords(600, 0), dimensions: { width: 150, height: 150 } },
   ]
 
 
@@ -122,6 +123,10 @@ function App() {
     const nextZoneID = over.id
     if (cardsData[cardID].zone === nextZoneID) return;
     if (nextZoneID === UseZoneID) {
+      zoneData[UseZoneID].cards.forEach((cardID) => {
+        moveCard(cardID, draggedCardPrevZoneID.current || jokerZoneID)
+      })
+
       setActiveCard(cardsData[cardID])
     }
     draggedCardPrevZoneID.current = cardsData[cardID].zone
@@ -145,42 +150,42 @@ function App() {
   return (
     <>
       <div id='leftcol' >
-        <LeftPanel activeCard={activeCard.id} cardsData={cardsData}
+        <LeftPanel activeCard={activeCard.id} setActiveCard={setActiveCard} cardsData={cardsData}
           setShowSettings={setShowSettings} setShowInfo={setShowInfo}>
 
         </LeftPanel>
       </div>
       <div id='centercol'>
-        <div className='CardBounds' style={{}}>
-          <DndContext onDragEnd={handleDragEnd}
-            onDragStart={handleDragStart}
-            onDragOver={handleOnDragOver}
-          >
-            {generateCard(c1ID, { cursor: 'grab' })}
-            {generateCard(c2ID, { cursor: 'grab' })}
-            {generateCard(c3ID, { cursor: 'grab' })}
-            <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
-              Info about myself. about me, projects, etc
-            </CardZone>
-
-            <CardZone zoneData={zoneData[UseZoneID]}
-              draggedCardStartZone={draggedCardStartZone}
-              disableFlag={disableZoneFlag}
-              style={{
-                backgroundColor: '#00b158ce',
-                borderColor: '#ffffffff',
-                borderRadius: '5px',
-                borderStyle: 'solid',
-                color: '#ffffffb0',
-                fontSize: '60pt'
-              }}
+        <AnimatePresence>
+          <div className='CardBounds' style={{}}>
+            <DndContext onDragEnd={handleDragEnd}
+              onDragStart={handleDragStart}
+              onDragOver={handleOnDragOver}
             >
+              {generateCard(c1ID, { cursor: 'grab' })}
+              {generateCard(c2ID, { cursor: 'grab' })}
+              {generateCard(c3ID, { cursor: 'grab' })}
+              <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
+                Info about myself. about me, projects, etc
+              </CardZone>
 
-              USE
+              <CardZone zoneData={zoneData[UseZoneID]}
+                draggedCardStartZone={draggedCardStartZone}
+                disableFlag={disableZoneFlag}
+                style={{
+                  backgroundColor: '#00b158ce',
+                  borderColor: '#ffffffff',
+                  borderRadius: '5px',
+                  borderStyle: 'solid',
+                  color: '#ffffffb0',
+                  fontSize: '60pt'
+                }}
+              >
 
-            </CardZone>
-          </DndContext>
-          <AnimatePresence>
+                USE
+
+              </CardZone>
+            </DndContext>
             {showInfo && <PopupPanel setFunction={setShowInfo}>
               <div>Hello this is the Info Panel {showInfo}</div>
             </PopupPanel>}
@@ -188,15 +193,13 @@ function App() {
               <div>Hello this is the Settings Panel </div>
               <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
             </PopupPanel>}
-          </AnimatePresence>
-        </div>
+          </div>
 
-        <motion.div id='content-display' style={{}}
-        
-        >
-          {activeCard.cardContent.cardContent}
-        </motion.div>
-
+          <motion.div id='content-display' style={{}}>
+            {activeCard != BLANK_CARD_DATA &&
+              <ContentWrap>{activeCard.cardContent.cardContent}</ContentWrap>}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
 
@@ -219,7 +222,6 @@ function App() {
         animate={{
           width: 0, height: 0
         }}
-
       >
       </motion.div>
     </>

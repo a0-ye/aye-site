@@ -24,7 +24,7 @@
 }
 
 #centercol {
-  background-color:#f8c32f31;
+  /* background-color:#f8c32f31; */
   height:100vh;
   /* align-content: center; */
   /* justify-content: center; */
@@ -38,12 +38,13 @@
 .CardBounds {
   align-self: center;
   position:relative;
-  background-color:#f82f2f31;
+  /* background-color:#f82f2f31; */
   height: 100%;
   border-bottom: #676767;
   border-bottom-style: solid;
 }
 
 #content-display{
-  z-index: 11;
+  z-index: -1;
+  position:relative;
 }
