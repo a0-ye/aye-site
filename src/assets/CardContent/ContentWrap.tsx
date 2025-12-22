@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 
 
@@ -9,7 +9,20 @@ interface ContentWrapProps {
 
 export default function ContentWrap(props: ContentWrapProps) {
 
-    const openStages = {
+    const transitionStages = {
+        s0: {
+            opacity: 0,
+            zIndex: -1,
+            position: 'absolute',
+            backgroundColor: '#ffffffff',
+            borderColor: 'black',
+            borderStyle: 'solid',
+            // borderWidth: ,
+            top: '50%', left: '50%',
+            // rotate: 27,
+            translateX: '-50%', translateY: '-50%',
+            width: 0, height: 0
+        },
         s1: {
             opacity: 1,
             width: '0%',
@@ -20,6 +33,12 @@ export default function ContentWrap(props: ContentWrapProps) {
             width: '100%',
             height: '100%',
             transition: { duration: 0.75, delay: 0.1 }
+        },
+        sExit: {
+            width: 0, height: 0,
+            opacity:0,
+            transition: { duration: 0.1, }
+
         }
     }
     const variants = {
@@ -51,24 +70,11 @@ export default function ContentWrap(props: ContentWrapProps) {
                 // delay: 0.8,
                 ease: 'easeIn'
             }}
-            variants={openStages}
+            variants={transitionStages}
 
-            initial={{
-                opacity: 0,
-                zIndex: -1,
-                position: 'absolute',
-                backgroundColor: '#ffffffff',
-                borderColor: 'black',
-                borderStyle: 'solid',
-                borderWidth: 40,
-                top: '50%', left: '50%',
-                // rotate: 27,
-                translateX: '-50%', translateY: '-50%',
-                width: 0, height: 0
-
-            }}
-            animate={['s1', 's2']}
-            exit={{ width: 0, height: 0 }}
+            initial={'s0'}
+            animate={['s0', 's1', 's2']}
+            exit={'sExit'}
         />
     </>)
 }

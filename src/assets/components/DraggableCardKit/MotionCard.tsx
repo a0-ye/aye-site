@@ -150,11 +150,13 @@ export default function MotionCard(props: CardProps) {
                         ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
                         [scope.current, { rotateY: 0 }, { duration: 0.1 }],
                         [scope.current, {...cardVariantStyles.open, /**width:contentDisplayBox?.width || 10, height:contentDisplayBox?.height || 10*/}, { duration: 0.2 }],
-                        ['.cardContentWrap', contentVariants.open,]
+                        ['.cardContentWrap', contentVariants.open,],
+                        [scope.current, {width:0, height:0},{ duration: 0 }],
                     ])
                 } else {
                     animate([
                         ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
+                        [scope.current, {...cardVariantStyles.open},{ duration: 0 }],
                         [scope.current, { width: 93, height: 125, opacity:1 }, { duration: 0.1 }],
                         [scope.current, { rotateY: 90 }, { duration: 0.1 }],
                         ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],

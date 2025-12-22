@@ -25,30 +25,24 @@ interface AboutMeProps {
 }
 export default function AboutMe(props: AboutMeProps) {
 
-
-
     return (
-        <motion.div id='main'
+        <motion.div id='main'>
 
-        >
-
-            <div className='blind-header'>
+            <div id='aboutme-header'>
                 About Me
             </div>
-            <div className='content-grid'>
+            <div className='aboutme-content-grid'>
                 {props.currSettings.beSerious ? section1Text.type2 : section1Text.type1}
-                <button style={{ backgroundColor: props.currSettings.beSerious ? 'blue' : 'orange' }}></button>
-                <img className='about-img' src='img/all-in.jpg'></img>
+                {/* <button style={{ backgroundColor: props.currSettings.beSerious ? 'blue' : 'orange' }}></button> */}
+                <img className='about-img' src='img/all-in.jpg' alt="where is my picture?"></img>
 
             </div>
 
             <p>
-                Avid computer and videogame enthusiast. Also mediocre on the piano.
+                Avid computer and videogame enthusiast. Also mediocre on the piano. [Maybe in a Hobby section?]
             </p>
 
-            <div className='content-grid'>
-
-
+            <div className='aboutme-content-grid'>
                 <ul style={{ textAlign: 'left' }}>
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
                         Values:
@@ -86,19 +80,6 @@ export default function AboutMe(props: AboutMeProps) {
             <p>This is my epic website that is inspired by one of my favorite games, Balatro! I hope you also think it is epic.</p>
             <p></p>
             <p />
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-            <img src='img/all-in.jpg'></img>
-
             { }
             
     </motion.div>

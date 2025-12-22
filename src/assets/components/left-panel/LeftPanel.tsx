@@ -14,9 +14,6 @@ interface panelProps {
 export default function LeftPanel (props: panelProps) {
     const activeCard = props.activeCard
     return <div className='left-panel'>
-        <button style={{
-                    zIndex: 10,
-                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> DEBUG Close Card</button>
         <div className='panel-box'>
             <div className='blind-header'>Adrian Ye</div>
             <div id='blind-body'>
@@ -42,8 +39,8 @@ export default function LeftPanel (props: panelProps) {
         </div>
 
         <div id='score-box' className='panel-box'>
-            <div id='score-text' className='panel-text' >Score:</div>
-            <div className='panel-value'> 67</div>
+            <div id='score-text' className='panel-text' >GPA:</div>
+            <div className='panel-value'> 3.65 </div>
         </div>
 
         <div id='hand-box' className='panel-box'>
@@ -53,7 +50,7 @@ export default function LeftPanel (props: panelProps) {
         
         <div id='buttons-n-numbers-grid' >
             <div id='panel-button-container'>
-                <button className='panel-button' onClick={()=>props.setShowInfo(true)}> runinfo </button>
+                <button className='panel-button' onClick={()=>props.setShowInfo(true)}> Contact </button>
                 <button className='panel-button' onClick={()=>props.setShowSettings(true)}> options </button>
             </div>
             <div id='numbers-container'>
@@ -72,8 +69,6 @@ export default function LeftPanel (props: panelProps) {
                 </div>
                 <div id='ante-round-container' className='duo-val-container'>
                     <div className='panel-box'>
-                        <div className='panel-text'> GPA: </div>
-                        <div className='panel-value'> 3.65  </div>
                     </div>
                     <div className='panel-box'>
                         <div className='panel-text'> Round: </div>
@@ -81,6 +76,9 @@ export default function LeftPanel (props: panelProps) {
                     </div>
                 </div>
             </div>
+                    <button style={{
+                    zIndex: 10,
+                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> DEBUG Close Card</button>
         </div>
 
     </div>

@@ -80,9 +80,9 @@ function App() {
 
   const initialZones: InitZoneData[] = [
     // { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
-    { id: jokerZoneID, position: makeCoords(50, 0), dimensions: { width: 500, height: 150 }, },
+    { id: jokerZoneID, position: makeCoords(50, 25), dimensions: { width: 500, height: 150 }, },
     // { id: consumableZoneID, position: makeCoords(600, 15), dimensions: { width: 250, height: 150 } },
-    { id: UseZoneID, position: makeCoords(600, 0), dimensions: { width: 150, height: 150 } },
+    { id: UseZoneID, position: makeCoords(600, 25), dimensions: { width: 150, height: 150 } },
   ]
 
 
@@ -137,6 +137,7 @@ function App() {
   function generateCard(cardID: UniqueIdentifier, cardStyle?: CSSProperties): ReactNode {
     return (
       <MotionCard
+        key={cardID}
         cardData={cardsData[cardID]}
         activeCard={activeCard.id}
         setActiveCard={setActiveCard}
@@ -156,50 +157,50 @@ function App() {
         </LeftPanel>
       </div>
       <div id='centercol'>
-        <AnimatePresence>
-          <div className='CardBounds' style={{}}>
-            <DndContext onDragEnd={handleDragEnd}
-              onDragStart={handleDragStart}
-              onDragOver={handleOnDragOver}
+        <div className='CardBounds' style={{}}>
+          <DndContext onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+            onDragOver={handleOnDragOver}
+          >
+            {generateCard(c1ID, { cursor: 'grab' })}
+            {generateCard(c2ID, { cursor: 'grab' })}
+            {generateCard(c3ID, { cursor: 'grab' })}
+            <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
+              Info about myself. about me, projects, etc
+            </CardZone>
+
+            <CardZone zoneData={zoneData[UseZoneID]}
+              draggedCardStartZone={draggedCardStartZone}
+              disableFlag={disableZoneFlag}
+              style={{
+                backgroundColor: '#00b158ce',
+                borderColor: '#ffffffff',
+                borderRadius: '5px',
+                borderStyle: 'solid',
+                color: '#ffffffb0',
+                fontSize: '60pt'
+              }}
             >
-              {generateCard(c1ID, { cursor: 'grab' })}
-              {generateCard(c2ID, { cursor: 'grab' })}
-              {generateCard(c3ID, { cursor: 'grab' })}
-              <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
-                Info about myself. about me, projects, etc
-              </CardZone>
 
-              <CardZone zoneData={zoneData[UseZoneID]}
-                draggedCardStartZone={draggedCardStartZone}
-                disableFlag={disableZoneFlag}
-                style={{
-                  backgroundColor: '#00b158ce',
-                  borderColor: '#ffffffff',
-                  borderRadius: '5px',
-                  borderStyle: 'solid',
-                  color: '#ffffffb0',
-                  fontSize: '60pt'
-                }}
-              >
+              USE
 
-                USE
+            </CardZone>
+          </DndContext>
 
-              </CardZone>
-            </DndContext>
-            {showInfo && <PopupPanel setFunction={setShowInfo}>
-              <div>Hello this is the Info Panel {showInfo}</div>
-            </PopupPanel>}
-            {showSettings && <PopupPanel setFunction={setShowSettings}>
-              <div>Hello this is the Settings Panel </div>
-              <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
-            </PopupPanel>}
-          </div>
-
-          <motion.div id='content-display' style={{}}>
+        </div>
+        <motion.div id='content-display' style={{}}>
+          {showInfo && <PopupPanel setFunction={setShowInfo}>
+            <div>Hello this is the Info Panel {showInfo}</div>
+          </PopupPanel>}
+          {showSettings && <PopupPanel setFunction={setShowSettings}>
+            <div>Hello this is the Settings Panel </div>
+            <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
+          </PopupPanel>}
+          <AnimatePresence>
             {activeCard != BLANK_CARD_DATA &&
-              <ContentWrap>{activeCard.cardContent.cardContent}</ContentWrap>}
-          </motion.div>
-        </AnimatePresence>
+              <ContentWrap key={activeCard.id}>{activeCard.cardContent.cardContent}</ContentWrap>}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
 
