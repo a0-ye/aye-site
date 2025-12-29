@@ -63,7 +63,7 @@ function App() {
   const DEFAULT_COLOR = '#33473a';
   const blindColorMap: Record<UniqueIdentifier, string> = {
     [""]: DEFAULT_COLOR,
-    [c1ID]: '#a0ffef',
+    [c1ID]: '#3f457cff',
     [c2ID]: '#a00043',
     [c3ID]: '#ffd13a',
   }

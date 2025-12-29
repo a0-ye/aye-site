@@ -14,7 +14,7 @@ export default function ContentWrap(props: ContentWrapProps) {
             opacity: 0,
             zIndex: -1,
             position: 'absolute',
-            backgroundColor: '#ffffffff',
+            backgroundColor: '#faf8e2ff',
             borderColor: 'black',
             borderStyle: 'solid',
             // borderWidth: ,

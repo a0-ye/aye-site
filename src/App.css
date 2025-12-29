@@ -39,14 +39,14 @@
   align-self: center;
   position:relative;
   /* padding-top: 2%; */
-  background-color:#f82f2f31;
+  /* background-color:#f82f2f31; */
   height: 100%;
   border-bottom: #676767;
   border-bottom-style: solid;
 }
 
 #content-display{
-  z-index: -1;
+  /* z-index: -1; */
   position:relative;
   color:black;
 }

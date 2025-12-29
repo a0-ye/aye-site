@@ -112,7 +112,7 @@ export default function MotionCard(props: CardProps) {
     }
 
     const startWiggle = () => {
-        if (isOpen) {
+        if (isOpen || tokenFlag) {
             console.log('no wiggle ', cardData.id, activeCard);
             return
         };  // no wiggle while open
@@ -192,6 +192,7 @@ export default function MotionCard(props: CardProps) {
         backgroundColor: '#FFFFFF',
         boxShadow: '1px 4px 3px black',
 
+        overflow:'hidden',
         alignContent: 'left',
         textAlign: 'left',
     }
@@ -268,7 +269,11 @@ export default function MotionCard(props: CardProps) {
                 drag_id={cardData.id}
                 cardData={cardData}
             />
-            <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{}} />
+            <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+            }} />
             <motion.div className="hoverInfo" style={{
                 display: tokenFlag ? 'none' : 'flex',
                 right: '100%', top: '50%', translateY: '-50%',

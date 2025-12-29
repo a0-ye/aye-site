@@ -9,32 +9,161 @@
 }
 
 .about-img {
+    width: 90%;
+    max-height: 90%;
+    object-fit: cover;
+
+    box-shadow: 10px 5px 5px rgb(107, 107, 107);
+
     border-radius: 4px;
     margin: 4px;
 }
 
 #aboutme-header {
-    /* inherits from global css as well*/
-    font-size: x-large;
-    margin: 2px 4px 2px 4px;
     background-color: var(--boss-blind-color);
     border-radius: 7px;
     margin: 2% 30% 2% 30%;
     font-size: xx-large;
+    color: #ffffff;
+}
+
+#profile-description {
+    min-height: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+
+    background-color: #d7e1e6;
+    border-radius: 7px;
+    border-color: #4646464f;
+    border-style: dashed;
+}
+#profile-img{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-img-cardbox {
+    align-self: center;
+    justify-self: center;
+    position: relative;
+    width: 335px;
+    height: 300px;
+    background-color: #e0e0d2;
+    /* border: dashed #4d4d4d 2px; */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#profile-plaque {
+    margin: 3%;
+    max-width: 300px;
+    position: relative;
+    background-color: #a1e1ff;
+    border-radius: 7px;
+    padding: 1%
+}
+
+.padded-col-box {
+    width: 90%;
+    height: 90%;
+    border-radius: 7px;
+    border-color: #686868;
+    border-style: dashed;
+    padding: 1%;
+    background-color: #fbecff;
+    box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px;
+}
+
+.profile-desc {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+}
+
+.stickyWrap {
+    position: absolute;
 
 }
 
-.aboutme-content-grid {
+.profile-grid {
+    position: relative;
     border-radius: 4px;
+    border: dotted #000000 3px;
+    min-height: 400px;
+    min-width: 600px;
     display: grid;
+    padding: 2% 5% 2% 5%;
     background-color: color-mix(in srgb, #dbdbdb, var(--boss-blind-color) 20%);
     align-self: center;
-    grid-template-columns: 40% 40%;
+
     justify-content: center;
     align-items: center;
     justify-items: center;
 
+    font-size: large;
 }
+
+.tri-grid {
+    border-radius: 4px;
+    border: dotted #000000 3px;
+    min-height: 400px;
+    min-width: 600px;
+
+    display: grid;
+    padding: 0 5% 0 5%;
+    background-color: color-mix(in srgb, #dbdbdb, var(--boss-blind-color) 20%);
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+
+    font-size: large;
+}
+
+/* For devices with a max width of n px */
+@media screen and (max-width: 1200px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "img"
+            /* Image on top */
+            "desc";
+        /* Text on bottom */
+    }
+
+    .tri-grid {
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+}
+
+/* For devices with a min width of n px */
+@media screen and (min-width: 1200px) {
+    .profile-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "desc img"
+            "desc img";
+    }
+
+    .tri-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 
 .aboutme-content-flex {
     border-radius: 4px;
@@ -47,5 +176,5 @@
 }
 
 .content {
-    /* margin:5px */
+    margin: 5px
 }

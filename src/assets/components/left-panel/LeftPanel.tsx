@@ -27,6 +27,7 @@ export default function LeftPanel (props: panelProps) {
                             backgroundColor:'transparent',
                             borderRadius:50,
                             borderColor:'transparent',
+                            boxShadow: 'none',
                         }}
                     >
                         {/* <img src="public/img/sprout-token.png"></img> */}
