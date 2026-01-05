@@ -63,13 +63,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #ff4199;
+  background-color: color-mix(in srgb, #380a53 , var(--boss-blind-color) 30%);
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
+  background-color: color-mix(in srgb, #5d108a , var(--boss-blind-color) 30%);
   border-color: #646cff;
-  transform: perspective(1000px) rotateX(10deg) rotateY(10deg) scale(1.05);
+  scale: 1.1;
 }
 button:focus,
 button:focus-visible {

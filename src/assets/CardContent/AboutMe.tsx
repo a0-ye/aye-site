@@ -1,99 +1,144 @@
 import type { ReactNode } from 'react'
 import './AboutMe.css'
-import { motion } from 'motion/react';
+import { animate, motion } from 'motion/react';
 import MotionCard from '../components/DraggableCardKit/MotionCard';
 import { BLANK_CARD_DATA } from '../components/DraggableCardKit/CardKitFunctions';
 import StickyNote from '../StickyNote/StickyNote';
+import { div } from 'motion/react-client';
 
 
 // more professional. More consice / straight to the point
-const section1Text = {
-    type1: <p className='content'>
-        I'm an Alumni from UC San Diego with a B.S. in Computer Science & Engineering.
-        I have a passion for programming and technology; From web development, to embedded software, to virtualization and homelabbing,
-        I love learning new technologies and writing software!
-    </p>,
-    type2: <div>
-        <p className='content'>
-            BS Computer Science & Engineering from UC San Diego.
-        </p>
-        {/* <br/> */}
-        <p className='content'>
-
-        </p>
-        <p>
-
-        </p>
-    </div>
-}
 
 interface AboutMeProps {
     children?: ReactNode;
     currSettings: { beSerious: boolean };
 }
+
+function makeSquiggleBorder() {
+    return <div className='squiggle-border' style={{ position: 'absolute', width: '99%', height: '99%', borderColor: '#ecd6b1ff' }}>
+        <svg>
+            <defs>
+                <filter id="noise">
+                    <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="4" />
+                    <feDisplacementMap in="SourceGraphic" scale="2" />
+                </filter>
+            </defs>
+        </svg>
+    </div>
+}
+
+function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
+    const randomColor = () => {
+        const value = Math.random()
+        if (value <= 0.333) return '#ffa7a7ff'
+        if (value >= 0.666) return '#dcff9cff'
+        return '#fdb7ffff'
+    }
+    return <motion.div
+        key={label + contents}
+        drag
+        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        dragElastic={0.2}
+        className='chad'>
+        <div style={{ textDecoration: 'underline', margin: 0 }}>{label}</div>
+        {contents.length > 1 ? <div>
+            {contents.map((val, idx) => {
+                return <span key={idx} style={{
+                    minWidth: 30,
+                    margin: 6, padding: '0.25em', display: newlineFlag ? 'flex' : 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 12, backgroundColor: 'color-mix(in srgb, #ebfffcff, ' + randomColor() + ' 30% )'
+                }}>
+                    {val} </span>
+            })}
+        </div> : <div
+            style={{
+                minWidth: 30,
+                margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                borderRadius: 12, backgroundColor: 'color-mix(in srgb, #d1fff7ff, ' + randomColor() + ' % )'
+            }}
+        >
+            {contents[0]} </div>}
+    </motion.div>
+}
+
 export default function AboutMe(props: AboutMeProps) {
 
     return (
         <motion.div id='main'>
-
             <div id='aboutme-header'>
                 About Me
             </div>
             {/* TODO: if minimized beyond a certain size, Flip the grid to be Vertical instead of Horizontal */}
-            <div className='profile-grid' style={{ marginBottom: '75px' }}>
-                <div className='profile-desc' style={{ gridArea: 'desc' }}>
-                    <div id='profile-description'>
+            <motion.div className='profile-grid' style={{ marginBottom: '75px' }}
+                initial={{ opacity: 0, y: '30%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                transition={{ delay: 1 }}
+            >
+                <motion.div className='profile-desc' style={{ gridArea: 'desc' }}
+                    initial={{ opacity: 0, scale: 2 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.4 }}
+                >
+                    <motion.div id='profile-desc-content'
+                        whileHover={{ boxShadow: '#000000d0 3px 3px 7px' }}
+                    // style={{fontFamily:'sans'}}
+                    // transition={{type:'spring',duration:0.75}}
+                    >
+                        <div className='tape' style={{ width: 75, height: 25, backgroundColor: '#9e9d91ff', top: '0%', left: '2%', rotate: '-45deg', position: 'absolute', zIndex: 2 }} />
+                        <div className='tape' style={{ width: 75, height: 25, backgroundColor: '#9e9d91ff', top: '100%', left: '100%', rotate: '-45deg', position: 'absolute', zIndex: 2 }} />
+                        {makeSquiggleBorder()}
+                        <img src='public/img/stamp.png' alt='stamp here!' style={{ position: 'absolute', top: '5%', right: '5%' }} />
                         Experienced with a wide variety of technologies ranging from web development,
                         to embedded software, virtualization, computer networks and more, I'm confident in my ability to
                         adapt, rise to, and excel at any opportunity
-                    </div>
-                    <button onClick={() => { alert('fuck you.') }}> resume download button </button>
+                    </motion.div>
+                    <button onClick={() => { alert('oops this isnt done yet... sorry') }}> resume download button </button>
 
 
-                </div>
+                </motion.div>
                 <div id='profile-img' style={{ gridArea: 'img' }}>
                     <div className='profile-img-cardbox' style={{
                         width: 360,
-                        height: 320,
+                        height: 360,
                     }}>
                         <div className='profile-img-cardbox' style={{
                             width: 335,
-                            height: 300,
+                            height: 335,
                             borderColor: 'transparent',
                             backgroundColor: '#00000011'
                         }}>
                             <div className='profile-img-cardbox' style={{
                                 width: 315,
-                                height: 280,
+                                height: 315,
                                 borderColor: 'transparent',
                                 backgroundColor: '#00000025'
                             }}>
-                            <div className='profile-img-cardbox' style={{
-                                width: 295,
-                                height: 250,
-                                borderColor: 'transparent',
-                                backgroundColor: '#0000002a'
-                            }}>
-                            <div className='profile-img-cardbox' style={{
-                                width: 250,
-                                height: 210,
-                                borderColor: 'transparent',
-                                backgroundColor: '#00000036'
-                            }}>
-                                <div>
-                                    <MotionCard
-                                        cardData={BLANK_CARD_DATA}
-                                        cardContent={{ cardBack: 'img/gradsmile.jpg' }}
-                                        style={{
-                                            // make this the size of the image somehow?
-                                            width: 335,
-                                            height: 300,
-                                        }}
-                                    >
-                                    </MotionCard>
+                                <div className='profile-img-cardbox' style={{
+                                    width: 295,
+                                    height: 295,
+                                    borderColor: 'transparent',
+                                    backgroundColor: '#0000002a'
+                                }}>
+                                    <div className='profile-img-cardbox' style={{
+                                        width: 250,
+                                        height: 250,
+                                        borderColor: 'transparent',
+                                        backgroundColor: '#00000036'
+                                    }}>
+                                        <div>
+                                            <MotionCard
+                                                cardData={BLANK_CARD_DATA}
+                                                cardContent={{ cardBack: 'img/gradsmile.jpg' }}
+                                                style={{
+                                                    // make this the size of the image somehow?
+                                                    width: 300,
+                                                    height: 300,
+                                                }}
+                                            >
+                                            </MotionCard>
 
-                                </div>
-                                </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -115,73 +160,73 @@ export default function AboutMe(props: AboutMeProps) {
                         Avid computer and videogame enthusiast. Also mediocre on the piano.
                     </StickyNote>
                 </div>
+            </motion.div>
+            <div id='aboutme-header'>
+                Stats n' Facts
             </div>
+            <motion.div className='tri-grid' style={{ paddingLeft: '5%', paddingRight: '5%' }}
+                initial={{ opacity: 0, y: '30%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                transition={{ delay: 1 }}
+            >
+                <motion.div className='padded-chad-box'
+                    initial={{ opacity: 0, y: '30%' }}
+                    animate={{ opacity: 1, y: '0%' }}
+                    transition={{ delay: 1.5 }}
+                >
+                    <p style={{ textDecoration: 'underline', margin: 0 }}>
+                        Tech Deck [Use Card Carousel]:
+                    </p>
+                    {makeChad('Languages & Packages', ['Python', 'Javascript', 'Typescript', 'Java', 'C/C++', 'C#', 'MATLAB', 'Markdown', 'SQLite'])}
+                    {makeChad('Frontend & Design', ['React', 'CSS3', 'Framer Motion', 'Responsive UI'])}
+                    {makeChad('Tools & DevOps', ['Git/GitHub', 'Github Actions', 'Linux/Unix (Ubuntu/Debian)', 'Bash', 'systemd.service'])}
+                    {makeChad('Hardware & Systems', ['SystemVerilog', 'Assembly', 'RISC-V Architecture', 'OS Architecture & Scheduling'])}
+                    {makeChad('Advanced Debugging', ['GDB', 'Valgrind', 'Chrome/Firefox DevTools', 'PDB', 'Memory Management'])}
+                    Advanced Debugging: GDB, Valgrind, Chrome DevTools, PDB for runtime analysis & memory leak detection
+                    {makeChad('Specialized', ['NumPy', 'Pandas', 'Librosa', 'PyTorch'])}
 
-            <p> Throw a cool line divider here or something. Maybe the morphing background would suffice? </p>
-            <div className='tri-grid' style={{ paddingLeft: '5%', paddingRight: '5%' }}>
-                <div className='padded-col-box'>
+                </motion.div>
+                <motion.div className='padded-chad-box'
+                    initial={{ opacity: 0, y: '30%' }}
+                    animate={{ opacity: 1, y: '0%' }}
+                    transition={{ delay: 1.8 }}
+                >
+                    {makeChad('Education & Academic Excellence:', ['B.S. in Computer Science & Engineering', 'GPA: 3.65', '9x UCSD Provost Honors Recipient'], true)}
+                    {makeChad('Technical Experience & Projects:', ['Software Engineering Intern @ UH Manoa: Developed AvaSpec bridge for the VIA-SEEs Satellite Project',
+                        'Architected a Single-Cycle CPU and custom ISA using SystemVerilog',
+                        'Machine Learning and Data Processing w/ specialty in audio',
+                        ], true)}
                     <ul style={{ textAlign: 'left' }}>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Tech Deck [Use Card Carousel]:
-                        </p>
-                        <li><div className='padded-col-box'> test div</div></li>
-                        <li> Git & Github </li>
-                        <li> Github Actions </li>
-                        <li> React </li>
-                        <li> CSS </li>
-                        <li> C++ </li>
-                        <li> Java </li>
-                        <li> JS/TSX </li>
-                        <li> Debuggers at large. apparently a lot of people dont know how to use them???</li>
+                        <li> Learn and see more about my projects using the Projects Card at the top!</li>
                     </ul>
-                </div>
-                <div className='padded-col-box'>
+
+                </motion.div>
+                <motion.div className='padded-chad-box'
+                    initial={{ opacity: 0, y: '30%' }}
+                    animate={{ opacity: 1, y: '0%' }}
+                    transition={{ delay: 1.9 }}
+                >
                     <ul style={{ textAlign: 'left' }}>
                         <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Education Stats:
+                            Values:
                         </p>
-                        <li>B.S. in Computer Science & Engineering! </li>
-                        <li>GPA of 3.65! not too shabby </li>
-                        <li>4 years? </li>
-                        <li>2 hackathons? </li>
-                        <li> </li>
+                        <li>Challenging ideas and having my ideas challenged. Discussion and new perspectives are important and valuable!</li>
+                        <li>Listening & learning from feedback. A difficult thing to do but worthwhile!</li>
+                        <li>Having in-depth discussions of new and innovative topics</li>
                     </ul>
-                </div>
-                <div className='padded-col-box'>
                     <ul style={{ textAlign: 'left' }}>
                         <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Interests:
+                            Interests & Hobbies:
                         </p>
+                        <li>Learning different technologies. Currently reading about how Torrenting works</li>
                         <li>Building and talking about PCs</li>
-                        <li>Videogames</li>
-                        <li>Piano</li>
-                        <li>In depth discussions of new and innovative topics</li>
-                        <li>Feedback and opinions of others.</li>
-                        <li>Challenging ideas and having my ideas challenged. Discussion and new perspectives are important!</li>
-                        <li>TODO: ADD MORE</li>
+                        <li>Videogames. Currently on Monster Hunter GU, Deltarune, & Balatro</li>
+                        <li>Playing the piano. Perfecting Ruder Buster and My Castle Town</li>
+                        <li>Writing useless / silly scripts. Mainly webscraping</li>
                     </ul>
-                </div>
+                </motion.div>
 
-            </div>
-
-
-            what am I interested in doing:
-            - tech
-            - videogames
-
-            Who am i
-            personable section: name, where Im from, where I graduated from
-            my interestests
-            how is my code related to interests
-
-            My experience
-            - B.S. CSE
-            what am i interested in doing!
-
-            <p>This is my epic website that is inspired by one of my favorite games, Balatro! I hope you also think it is epic.</p>
-            <p></p>
-            <p />
-            { }
+            </motion.div>
 
         </motion.div>
 

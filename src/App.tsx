@@ -158,6 +158,10 @@ function App() {
       </div>
       <div id='centercol'>
         <div className='CardBounds' style={{}}>
+          <div style={{
+            position:'absolute',right:'5%', top:'50%', fontSize:'xx-large'
+          }}
+          > Drag a card to the Use zone to navigate to different pages!</div>
           <DndContext onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
             onDragOver={handleOnDragOver}

@@ -6,9 +6,16 @@
     padding: 1%;
 
     position: relative;
-    border: solid black 2px;
-    border-radius: 15px;
-    background-color: #e9f3ad;
+    border-color: #cfcfcfd0;
+    /* border-style: dashed; */
+    border-top: dashed #cfcfcfd0;
+    border-bottom: dashed #cfcfcfd0;
+    border-width: 4px;
+    /* border-radius: 15px; */
+    background-color: #fdff8f;
+
+    color: black    ;
+    font-size: large;
 
     display: flex;
     align-items: center;

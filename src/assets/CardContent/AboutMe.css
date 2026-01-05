@@ -1,10 +1,11 @@
 #main {
     /* background-color: #ffffff; */
-
+    min-width: min-content;
     color: #000000;
     text-align: center;
-    text-shadow: rgb(190, 190, 190) 0.1em 0.1em;
+    /* text-shadow: rgb(190, 190, 190) 0.1em 0.1em; */
     flex-grow: 1;
+    font-size: x-large;
     margin: 2% 5% 0 5%;
 }
 
@@ -20,14 +21,16 @@
 }
 
 #aboutme-header {
+    position: relative;
     background-color: var(--boss-blind-color);
-    border-radius: 7px;
+    /* border-radius: 7px; */
     margin: 2% 30% 2% 30%;
     font-size: xx-large;
     color: #ffffff;
 }
 
-#profile-description {
+#profile-desc-content {
+    position: relative;
     min-height: 50%;
 
     display: flex;
@@ -36,12 +39,12 @@
     align-items: center;
     padding: 30px;
 
-    background-color: #d7e1e6;
-    border-radius: 7px;
-    border-color: #4646464f;
-    border-style: dashed;
+    background-color: #fbf1e1;
+    box-shadow: #000000d0 2px 2px 7px;
+
 }
-#profile-img{
+
+#profile-img {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -52,7 +55,7 @@
     align-self: center;
     justify-self: center;
     position: relative;
-    width: 335px;
+    width: 300px;
     height: 300px;
     background-color: #e0e0d2;
     /* border: dashed #4d4d4d 2px; */
@@ -60,6 +63,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.ticket-header {
+    background-color: transparent;
+    margin: 2% 30% 2% 30%;
+    font-size: xx-large;
+    border-top: 5px solid black;
+    color: #ffffff;
+    /* Change this value to adjust the stamp perforation size: */
+    --radius: 8px;
+    background-image:
+        radial-gradient(var(--radius),
+            transparent 98%,
+            var(--boss-blind-color)),
+        linear-gradient(var(--boss-blind-color) 0 0);
+    background-repeat:
+        round,
+        no-repeat;
+    background-position:
+        calc(var(--radius) * -1.5) calc(var(--radius) * -1.5),
+        50%;
+    background-size:
+        calc(var(--radius) * 3) calc(var(--radius) * 3),
+        calc(100% - var(--radius) * 3) calc(100% - var(--radius) * 3);
+
+}
+
+.squiggle-border {
+    width: 12rem;
+    aspect-ratio: 1;
+    border: 4px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: url(#noise);
 }
 
 #profile-plaque {
@@ -71,15 +109,29 @@
     padding: 1%
 }
 
-.padded-col-box {
+.padded-chad-box {
     width: 90%;
-    height: 90%;
+    height: auto;
+    min-height: 90%;
+    border-radius: 7px;
+    border-color: #686868;
+    border-style: solid;
+    padding: 2%;
+    background-color: #ecfeff;
+    box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px;
+    font-size: large;
+}
+.chad {
+    width: auto;
+    margin:5px;
     border-radius: 7px;
     border-color: #686868;
     border-style: dashed;
-    padding: 1%;
-    background-color: #fbecff;
-    box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px;
+    border-width: 2px;
+    padding: 2%;
+    background-color: #f6ffff;
+    /* box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px; */
+    font-size: large;
 }
 
 .profile-desc {
@@ -113,7 +165,7 @@
     align-items: center;
     justify-items: center;
 
-    font-size: large;
+    /* font-size: large; */
 }
 
 .tri-grid {
@@ -123,14 +175,13 @@
     min-width: 600px;
 
     display: grid;
-    padding: 0 5% 0 5%;
+    padding: 2% 5% 2% 5%;
     background-color: color-mix(in srgb, #dbdbdb, var(--boss-blind-color) 20%);
     align-self: center;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
+    
+    /* justify-content: center; */
 
-    font-size: large;
+    /* font-size: large; */
 }
 
 /* For devices with a max width of n px */
