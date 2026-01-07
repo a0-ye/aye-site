@@ -192,7 +192,7 @@ export default function MotionCard(props: CardProps) {
         backgroundColor: '#FFFFFF',
         boxShadow: '1px 4px 3px black',
 
-        overflow:'hidden',
+        // overflow:'hidden',
         alignContent: 'left',
         textAlign: 'left',
     }

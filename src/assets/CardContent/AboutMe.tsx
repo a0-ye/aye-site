@@ -87,7 +87,7 @@ export default function AboutMe(props: AboutMeProps) {
                         <div className='tape' style={{ width: 75, height: 25, backgroundColor: '#9e9d91ff', top: '0%', left: '2%', rotate: '-45deg', position: 'absolute', zIndex: 2 }} />
                         <div className='tape' style={{ width: 75, height: 25, backgroundColor: '#9e9d91ff', top: '100%', left: '100%', rotate: '-45deg', position: 'absolute', zIndex: 2 }} />
                         {makeSquiggleBorder()}
-                        <img src='public/img/stamp.png' alt='stamp here!' style={{ position: 'absolute', top: '5%', right: '5%' }} />
+                        <img src='/img/stamp.png' alt='stamp here!' style={{ position: 'absolute', top: '5%', right: '5%' }} />
                         Experienced with a wide variety of technologies ranging from web development,
                         to embedded software, virtualization, computer networks and more, I'm confident in my ability to
                         adapt, rise to, and excel at any opportunity
@@ -182,7 +182,6 @@ export default function AboutMe(props: AboutMeProps) {
                     {makeChad('Tools & DevOps', ['Git/GitHub', 'Github Actions', 'Linux/Unix (Ubuntu/Debian)', 'Bash', 'systemd.service'])}
                     {makeChad('Hardware & Systems', ['SystemVerilog', 'Assembly', 'RISC-V Architecture', 'OS Architecture & Scheduling'])}
                     {makeChad('Advanced Debugging', ['GDB', 'Valgrind', 'Chrome/Firefox DevTools', 'PDB', 'Memory Management'])}
-                    Advanced Debugging: GDB, Valgrind, Chrome DevTools, PDB for runtime analysis & memory leak detection
                     {makeChad('Specialized', ['NumPy', 'Pandas', 'Librosa', 'PyTorch'])}
 
                 </motion.div>
@@ -208,7 +207,7 @@ export default function AboutMe(props: AboutMeProps) {
                 >
                     <ul style={{ textAlign: 'left' }}>
                         <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Values:
+                            Values: TODO: To fill this up, we can write ACTUAL paragraphs for each of these! Shows writing skills and communication?
                         </p>
                         <li>Challenging ideas and having my ideas challenged. Discussion and new perspectives are important and valuable!</li>
                         <li>Listening & learning from feedback. A difficult thing to do but worthwhile!</li>
@@ -221,7 +220,7 @@ export default function AboutMe(props: AboutMeProps) {
                         <li>Learning different technologies. Currently reading about how Torrenting works</li>
                         <li>Building and talking about PCs</li>
                         <li>Videogames. Currently on Monster Hunter GU, Deltarune, & Balatro</li>
-                        <li>Playing the piano. Perfecting Ruder Buster and My Castle Town</li>
+                        <li>Playing the piano. Perfecting Ruder Buster and My Castle Town TODO:</li>
                         <li>Writing useless / silly scripts. Mainly webscraping</li>
                     </ul>
                 </motion.div>
