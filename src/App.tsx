@@ -73,11 +73,6 @@ function App() {
     animate("#centercol", { '--boss-blind-color': blindColorMap[activeCard.id] })
   }, [activeCard])
 
-  const cardBounds = {
-    width: 900,
-    height: 650,
-  }
-
   const initialZones: InitZoneData[] = [
     // { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
     { id: jokerZoneID, position: makeCoords(50, 25), dimensions: { width: 500, height: 150 }, },
@@ -226,6 +221,51 @@ function App() {
         }
         animate={{
           width: 0, height: 0
+        }}
+      >
+      </motion.div>
+      
+      <motion.div id='moving-bkg-1'
+        transition={{
+          duration: 30,
+          ease: 'linear',
+          repeat:Infinity
+        }}
+        initial={{
+          zIndex: -10,
+          position: 'absolute',
+          top: '50%', left: '50%',
+          translateX: '-50%', 
+          translateY: '-50%',
+          width: '200vw', height: '200vw',
+        }
+        }
+        animate={{
+          translateX: '-25%',
+          translateY: '-25%',
+          // width: 0, height: 0
+        }}
+      >
+      </motion.div>
+      <motion.div id='moving-bkg-2'
+        transition={{
+          duration: 30,
+          ease: 'linear',
+          repeat:Infinity
+        }}
+        initial={{
+          zIndex: -10,
+          position: 'absolute',
+          top: '50%', left: '50%',
+          translateX: '-25%', 
+          translateY: '-25%',
+          width: '200vw', height: '200vw',
+        }
+        }
+        animate={{
+          translateX: '-50%',
+          translateY: '-50%',
+          // width: 0, height: 0
         }}
       >
       </motion.div>

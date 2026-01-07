@@ -18,8 +18,9 @@
 
   height:100vh;
   background-color: color-mix(in srgb,var(--left-panel-bkg-color) , var(--boss-blind-color) 20%);
-  border-right: 3px solid #676767;
-  border-left: 3px solid #676767;
+  
+  border-right: 3px solid color-mix(in srgb, #ffff , var(--boss-blind-color) 50%);
+  border-left: 3px solid color-mix(in srgb, #ffff , var(--boss-blind-color) 50%);
   
 }
 
@@ -49,4 +50,24 @@
   /* z-index: -1; */
   position:relative;
   color:black;
+}
+#moving-bkg-1 {
+    /* height: 100%;
+    width: 100%; */
+    margin: 0;
+    opacity: 0.2;
+    background-image:
+      repeating-linear-gradient(#ff5cce 0 1px, transparent 1px 100%),
+      repeating-linear-gradient(90deg, #ff5cce 0 1px, transparent 1px 100%);
+    background-size: 200px 200px;
+}
+#moving-bkg-2 {
+    /* height: 100%;
+    width: 100%; */
+    margin: 0;
+    opacity: 0.2;
+    background-image:
+      repeating-linear-gradient(#307e7e 0 1px, transparent 1px 100%),
+      repeating-linear-gradient(90deg, #307e7e 0 1px, transparent 1px 100%);
+    background-size: 200px 200px;
 }

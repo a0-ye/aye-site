@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import './AboutMe.css'
-import { animate, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import MotionCard from '../components/DraggableCardKit/MotionCard';
 import { BLANK_CARD_DATA } from '../components/DraggableCardKit/CardKitFunctions';
 import StickyNote from '../StickyNote/StickyNote';
-import { div } from 'motion/react-client';
+// import { div } from 'motion/react-client';
 
 
 // more professional. More consice / straight to the point
@@ -195,7 +195,7 @@ export default function AboutMe(props: AboutMeProps) {
                     {makeChad('Technical Experience & Projects:', ['Software Engineering Intern @ UH Manoa: Developed AvaSpec bridge for the VIA-SEEs Satellite Project',
                         'Architected a Single-Cycle CPU and custom ISA using SystemVerilog',
                         'Machine Learning and Data Processing w/ specialty in audio',
-                        ], true)}
+                    ], true)}
                     <ul style={{ textAlign: 'left' }}>
                         <li> Learn and see more about my projects using the Projects Card at the top!</li>
                     </ul>
@@ -227,7 +227,7 @@ export default function AboutMe(props: AboutMeProps) {
                 </motion.div>
 
             </motion.div>
-
+            {props.children}
         </motion.div>
 
     )

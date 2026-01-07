@@ -141,7 +141,7 @@ export default function MotionCard(props: CardProps) {
                     const centeredY = (window.innerHeight / 2) ;
                     console.log( "window center: ", centeredX, centeredY, leftPanelWidth);
 
-                    const contentDisplayBox = document.getElementById('content-display')?.getBoundingClientRect()
+                    // const contentDisplayBox = document.getElementById('content-display')?.getBoundingClientRect()
                     
                     animate([//animate OPEN
                         [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4}],
