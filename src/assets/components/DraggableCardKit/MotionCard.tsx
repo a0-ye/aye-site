@@ -113,10 +113,11 @@ export default function MotionCard(props: CardProps) {
 
     const startWiggle = () => {
         if (isOpen || tokenFlag) {
-            console.log('no wiggle ', cardData.id, activeCard);
+            // console.log('no wiggle ', cardData.id, activeCard);
             return
         };  // no wiggle while open
-        console.log('wigglign! ', cardData.id, activeCard);
+        return
+        // console.log('wigglign! ', cardData.id, activeCard);
         const wiggleAmount = 2 * Math.sign(Math.random() - 0.5);
         const wiggleDuration = 10;
         animate(scope.current, { rotate: [0, wiggleAmount, -wiggleAmount, 0] },

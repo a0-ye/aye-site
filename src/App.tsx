@@ -164,7 +164,9 @@ function App() {
             {generateCard(c1ID, { cursor: 'grab' })}
             {generateCard(c2ID, { cursor: 'grab' })}
             {generateCard(c3ID, { cursor: 'grab' })}
-            <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}>
+            <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}
+              style={{backgroundColor:'#3b3d46a9'}}
+            >
               Info about myself. about me, projects, etc
             </CardZone>
 
@@ -227,7 +229,7 @@ function App() {
       
       <motion.div id='moving-bkg-1'
         transition={{
-          duration: 30,
+          duration: 60,
           ease: 'linear',
           repeat:Infinity
         }}
@@ -249,7 +251,7 @@ function App() {
       </motion.div>
       <motion.div id='moving-bkg-2'
         transition={{
-          duration: 30,
+          duration: 60,
           ease: 'linear',
           repeat:Infinity
         }}
