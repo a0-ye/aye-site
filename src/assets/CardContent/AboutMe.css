@@ -123,6 +123,7 @@
 }
 .chad {
     width: auto;
+    height: min-content;
     margin:5px;
     border-radius: 7px;
     border-color: #686868;
