@@ -50,7 +50,7 @@ function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
                 return <span key={idx} style={{
                     minWidth: 30,
                     margin: 6, padding: '0.25em', display: newlineFlag ? 'flex' : 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    borderRadius: 12, backgroundColor: 'color-mix(in srgb, #ebfffcff, ' + randomColor() + ' 30% )'
+                    borderRadius: 12, backgroundColor: 'color-mix(in srgb, #ebfffcff, ' + randomColor() + ' 20% )'
                 }}>
                     {val} </span>
             })}
@@ -58,7 +58,7 @@ function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
             style={{
                 minWidth: 30,
                 margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                borderRadius: 12, backgroundColor: 'color-mix(in srgb, #d1fff7ff, ' + randomColor() + ' % )'
+                borderRadius: 12, backgroundColor: 'color-mix(in srgb, #d1fff7ff, ' + randomColor() + ' 20% )'
             }}
         >
             {contents[0]} </div>}
@@ -92,9 +92,16 @@ export default function AboutMe(props: AboutMeProps) {
                         <div className='tape' style={{ width: 75, height: 25, backgroundColor: '#9e9d91ff', top: '100%', left: '100%', rotate: '-45deg', position: 'absolute', zIndex: 2 }} />
                         {makeSquiggleBorder()}
                         <img src='img/stamp.png' alt='stamp here!' style={{ position: 'absolute', top: '5%', right: '5%' }} />
-                        Experienced with a wide variety of technologies ranging from web development,
-                        to embedded software, virtualization, computer networks and more, I'm confident in my ability to
-                        adapt, rise to, and excel at any opportunity
+                        <p
+                        // style={{ textDecoration:'underline solid #c7c4aa 2px'}}
+                        >
+                            Experienced with a wide variety of technologies ranging from web development,
+                            to embedded software, virtualization, computer networks and more, I'm confident in my ability to
+                            adapt, rise to, and excel at any opportunity
+                        </p>
+                        <p
+                            style={{ position: 'absolute', right: '5%', bottom: '0%' }}
+                        > - Me, Adrian!</p>
                     </motion.div>
                     <button onClick={() => { alert('oops this isnt done yet... sorry') }}> resume download button </button>
 
@@ -149,9 +156,23 @@ export default function AboutMe(props: AboutMeProps) {
 
 
                     </div>
-                    <div id='profile-plaque'>
-                        Software Developer with a BS Computer Science & Engineering from UC San Diego.
-                    </div>
+
+                    <motion.div className='notecard'
+                        style={{ rotate: '3deg' }}
+                        initial={{ y: '-90%' }}
+                        animate={{ y: '0%' }}
+                        transition={{ delay: 1.2 }}
+                    >
+                        <motion.div className='notecard'
+                            style={{ position: 'absolute', width: '100%', height: '100%', rotate: '-6deg', }}
+                            initial={{ y: '-90%' }}
+                            animate={{ y: '-10%' }}
+                            transition={{ delay: 1.2 }}
+                        >
+                        <p>Software Developer with a BS Computer Science & Engineering from UC San Diego.</p>
+                        </motion.div>
+                        <p style={{}}>Software Developer with a BS Computer Science & Engineering from UC San Diego.</p>
+                    </motion.div>
                 </div>
 
                 <div className='stickyWrap' style={{ top: '100%', left: '10%', rotate: '5deg' }}>
@@ -175,8 +196,8 @@ export default function AboutMe(props: AboutMeProps) {
             >
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
-                    animate={{ opacity: 1, y: '0%' }}
-                    transition={{ delay: 1.5 }}
+                    whileInView={{ opacity: 1, y: '0%' }}
+                    // transition={{ delay: 0.1 }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
                         Tech Deck [Use Card Carousel]:
@@ -192,8 +213,8 @@ export default function AboutMe(props: AboutMeProps) {
 
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
-                    animate={{ opacity: 1, y: '0%' }}
-                    transition={{ delay: 1.9 }}
+                    whileInView={{ opacity: 1, y: '0%' }}
+                    transition={{ delay: 0.2 }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
                         Values:
@@ -294,11 +315,18 @@ export default function AboutMe(props: AboutMeProps) {
                                     borderRadius: 12, backgroundColor: color2
                                 }}>
                                     Deltarune
-                                </span><span style={{
+                                </span>
+                                <span style={{
                                     minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                                     borderRadius: 12, backgroundColor: color2
                                 }}>
                                     Balatro
+                                </span>
+                                <span style={{
+                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                    borderRadius: 12, backgroundColor: color2
+                                }}>
+                                    Dungeons & Dragons
                                 </span>
                             </motion.div>
                         </div>
@@ -350,8 +378,8 @@ export default function AboutMe(props: AboutMeProps) {
                 </motion.div>
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
-                    animate={{ opacity: 1, y: '0%' }}
-                    transition={{ delay: 1.8 }}
+                    whileInView={{ opacity: 1, y: '0%' }}
+                    transition={{ delay: 0.3 }}
                 // style={{ display: 'grid', gridTemplateRows: ' 1.5em 1fr 1fr' }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
@@ -457,7 +485,7 @@ export default function AboutMe(props: AboutMeProps) {
 
                     {/* {makeChad('Relevant Coursework', ['Systems & Architecture:', '', '', '', '', '', '', '', ''])} */}
                     <ul style={{ textAlign: 'left' }}>
-                        <li> Learn and see more about my projects using the Projects Card at the top!</li>
+                        <li>See more using the Projects Card at the top!</li>
                     </ul>
 
                 </motion.div>

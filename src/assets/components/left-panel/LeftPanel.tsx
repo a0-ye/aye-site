@@ -4,14 +4,14 @@ import MotionCard from "../DraggableCardKit/MotionCard";
 import { BLANK_CARD_DATA, type CardMap } from "../DraggableCardKit/CardKitFunctions";
 
 interface panelProps {
-    activeCard:UniqueIdentifier,
-    cardsData:CardMap,
-    setActiveCard:Function
-    setShowSettings:Function,
-    setShowInfo:Function,
+    activeCard: UniqueIdentifier,
+    cardsData: CardMap,
+    setActiveCard: Function
+    setShowSettings: Function,
+    setShowInfo: Function,
 }
 
-export default function LeftPanel (props: panelProps) {
+export default function LeftPanel(props: panelProps) {
     const activeCard = props.activeCard
     return <div className='left-panel'>
         <div className='panel-box'>
@@ -20,13 +20,14 @@ export default function LeftPanel (props: panelProps) {
                 <div id="token-container">
                     <MotionCard
                         cardData={BLANK_CARD_DATA}
-                        cardContent={{cardBack:"img/sprout-token.png"}}
-                        style={{top:"50%",left:'50%',
-                            width:75,
-                            height:75,
-                            backgroundColor:'transparent',
-                            borderRadius:50,
-                            borderColor:'transparent',
+                        cardContent={{ cardBack: "img/sprout-token.png" }}
+                        style={{
+                            top: "50%", left: '50%',
+                            width: 75,
+                            height: 75,
+                            backgroundColor: 'transparent',
+                            borderRadius: 50,
+                            borderColor: 'transparent',
                             boxShadow: 'none',
                         }}
                     >
@@ -46,13 +47,13 @@ export default function LeftPanel (props: panelProps) {
 
         <div id='hand-box' className='panel-box'>
             <div className='panel-text'>Active Card:</div>
-            <div className='panel-value'>{activeCard != "" ? props.cardsData[activeCard].cardContent.cardHoverInfo : " Drag some cards!" }</div>
+            <div className='panel-value'>{activeCard != "" ? props.cardsData[activeCard].cardContent.cardHoverInfo : " Drag some cards!"}</div>
         </div>
-        
+
         <div id='buttons-n-numbers-grid' >
             <div id='panel-button-container'>
-                <button className='panel-button' onClick={()=>props.setShowInfo(true)}> Contact </button>
-                <button className='panel-button' onClick={()=>props.setShowSettings(true)}> options </button>
+                <button className='panel-button' onClick={() => props.setShowInfo(true)}> Contact </button>
+                <button className='panel-button' onClick={() => props.setShowSettings(true)}> options </button>
             </div>
             <div id='numbers-container'>
                 <div id='hand-discard-container' className='duo-val-container'>
@@ -77,9 +78,7 @@ export default function LeftPanel (props: panelProps) {
                     </div>
                 </div>
             </div>
-                    <button style={{
-                    zIndex: 10,
-                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> DEBUG Close Card</button>
+            {props.activeCard && <button style={{ zIndex: 10, }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</button>}
         </div>
 
     </div>

@@ -6,7 +6,7 @@
     /* text-shadow: rgb(190, 190, 190) 0.1em 0.1em; */
     flex-grow: 1;
     font-size: x-large;
-    margin: 2% 5% 0 5%;
+    margin: 2% 5% 5% 5%;
 }
 
 .about-img {
@@ -57,12 +57,28 @@
     position: relative;
     width: 300px;
     height: 300px;
-    background-color: #e0e0d2;
+    background-color: #e0e0dd;
     /* border: dashed #4d4d4d 2px; */
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.notecard {
+    /* font-family; */
+    margin: 3%;
+    max-width: 300px;
+    position: relative;
+    background-color: #fdffff;
+    box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px;
+    border-radius: 7px;
+    padding: 1%;
+    background-image:
+        linear-gradient(rgba(255, 0, 0, 0.5) 2px, transparent 2px),
+        repeating-linear-gradient(transparent, transparent 27px, #add8e6 27px, #add8e6 28px);
+    background-size: 100% 40px, 100% 28px;
+    background-repeat: no-repeat, repeat;
 }
 
 .ticket-header {
@@ -100,15 +116,6 @@
     filter: url(#noise);
 }
 
-#profile-plaque {
-    margin: 3%;
-    max-width: 300px;
-    position: relative;
-    background-color: #a1e1ff;
-    border-radius: 7px;
-    padding: 1%
-}
-
 .padded-chad-box {
     width: 90%;
     height: auto;
@@ -121,10 +128,11 @@
     box-shadow: rgba(0, 0, 0, 0.815) 6px 6px 7px;
     font-size: large;
 }
+
 .chad {
     width: auto;
     height: min-content;
-    margin:5px;
+    margin: 5px;
     border-radius: 7px;
     border-color: #686868;
     border-style: dashed;
@@ -148,7 +156,6 @@
 
 .stickyWrap {
     position: absolute;
-
 }
 
 .profile-grid {
@@ -179,7 +186,7 @@
     padding: 2% 5% 2% 5%;
     background-color: color-mix(in srgb, #dbdbdb, var(--boss-blind-color) 20%);
     align-self: center;
-    
+
     /* justify-content: center; */
 
     /* font-size: large; */

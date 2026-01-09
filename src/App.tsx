@@ -34,9 +34,9 @@ function App() {
   const jokerZoneID = useId(); // Where jokers live.. No functionality, just naming like balaro :drooling:
   // const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
-
+  const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
   const aboutMeContent: CardContent = {
-    cardContent: <AboutMe currSettings={currSettings} />,
+    cardContent: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
     cardBack: "img/Jimbo.png",
     cardHoverInfo: 'About Me!',
   }
@@ -153,10 +153,12 @@ function App() {
       </div>
       <div id='centercol'>
         <div className='CardBounds' style={{}}>
-          <div style={{
-            position:'absolute',right:'5%', top:'50%', fontSize:'xx-large'
+          <motion.div style={{
+            position: 'absolute', right: '5%', top: '50%', fontSize: 'xx-large'
           }}
-          > Drag a card to the Use zone to navigate to different pages!</div>
+            initial={{}}
+          >
+            Drag a card to the Use zone to navigate to different pages!</motion.div>
           <DndContext onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
             onDragOver={handleOnDragOver}
@@ -165,7 +167,7 @@ function App() {
             {generateCard(c2ID, { cursor: 'grab' })}
             {generateCard(c3ID, { cursor: 'grab' })}
             <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}
-              style={{backgroundColor:'#3b3d46a9'}}
+              style={{ backgroundColor: '#3b3d46a9' }}
             >
               Info about myself. about me, projects, etc
             </CardZone>
@@ -190,19 +192,19 @@ function App() {
 
         </div>
         <motion.div id='content-display' style={{}}>
-          {showInfo && <PopupPanel setFunction={setShowInfo}>
-            <div>Hello this is the Info Panel {showInfo}</div>
-          </PopupPanel>}
-          {showSettings && <PopupPanel setFunction={setShowSettings}>
-            <div>Hello this is the Settings Panel </div>
-            <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
-          </PopupPanel>}
           <AnimatePresence>
             {activeCard != BLANK_CARD_DATA &&
               <ContentWrap key={activeCard.id}>{activeCard.cardContent.cardContent}</ContentWrap>}
           </AnimatePresence>
         </motion.div>
       </div>
+      {showInfo && <PopupPanel setFunction={setShowInfo}>
+        <div>Hello this is the Info Panel {showInfo}</div>
+      </PopupPanel>}
+      {showSettings && <PopupPanel setFunction={setShowSettings}>
+        <div>Hello this is the Settings Panel </div>
+        <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
+      </PopupPanel>}
 
 
       <motion.div id='TransitionBlock'
@@ -226,18 +228,18 @@ function App() {
         }}
       >
       </motion.div>
-      
+
       <motion.div id='moving-bkg-1'
         transition={{
           duration: 60,
           ease: 'linear',
-          repeat:Infinity
+          repeat: Infinity
         }}
         initial={{
           zIndex: -10,
           position: 'absolute',
           top: '50%', left: '50%',
-          translateX: '-50%', 
+          translateX: '-50%',
           translateY: '-50%',
           width: '200vw', height: '200vw',
         }
@@ -253,13 +255,13 @@ function App() {
         transition={{
           duration: 60,
           ease: 'linear',
-          repeat:Infinity
+          repeat: Infinity
         }}
         initial={{
           zIndex: -10,
           position: 'absolute',
           top: '50%', left: '50%',
-          translateX: '-25%', 
+          translateX: '-25%',
           translateY: '-25%',
           width: '200vw', height: '200vw',
         }
