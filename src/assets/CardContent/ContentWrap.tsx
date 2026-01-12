@@ -36,7 +36,7 @@ export default function ContentWrap(props: ContentWrapProps) {
         },
         sExit: {
             width: 0, height: 0,
-            opacity:0,
+            opacity: 0,
             transition: { duration: 0.1, }
 
         }
@@ -47,6 +47,10 @@ export default function ContentWrap(props: ContentWrapProps) {
         },
         open: {
             opacity: 1,
+            minHeight: 0,        /* IMPORTANT: Allows the row to shrink to fit 1fr */
+            display: 'flex',        /* This allows #main to use flex-grow or height: 100% */
+            flexDirection: 'column',
+            overflow: 'hidden',     /* This wrapper should NOT scroll */
             transition: {
                 delay: 1,
                 duration: 0.5
@@ -59,6 +63,7 @@ export default function ContentWrap(props: ContentWrapProps) {
 
     return (<>
         <motion.div
+            id='contentWrapClsas'
             initial={variants.closed}
             animate={variants.open}
             exit={variants.exit}

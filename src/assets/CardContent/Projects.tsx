@@ -20,20 +20,12 @@ const projectsStyle = {}
 export default function Projects() {
     const images = [
         'img/temp/decks_and_misc/00.png',
-        'img/temp/decks_and_misc/03.png',
-        'img/temp/decks_and_misc/04.png',
-        'img/temp/decks_and_misc/20.png',
-        'img/temp/decks_and_misc/21.png',
-        'img/temp/decks_and_misc/22.png',
         'img/temp/decks_and_misc/23.png',
-        'img/temp/decks_and_misc/24.png',
-        'img/temp/decks_and_misc/25.png',
-        'img/temp/decks_and_misc/26.png',
         // '',
     ]
 
     return (
-        <div style={projectsStyle}>
+        <div id='proj-main' style={projectsStyle}>
             <MotionCarousel images={images}></MotionCarousel>
             <h2>
                 There are some things that I have done that I feel like sharing!

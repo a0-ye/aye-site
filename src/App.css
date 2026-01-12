@@ -3,11 +3,12 @@
   grid-template-columns: [left] 300px [center] 1fr;
   text-align: center;
   position: fixed;
-  top:50%;
-  left:50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%) scale(1);
   flex-grow: 1;
-  width:100%; height:100%;
+  width: 100%;
+  height: 100%;
 }
 
 #leftcol {
@@ -16,29 +17,26 @@
   align-content: center;
   justify-content: center;
 
-  height:100vh;
-  background-color: color-mix(in srgb,var(--left-panel-bkg-color) , var(--boss-blind-color) 20%);
-  
-  border-right: 3px solid color-mix(in srgb, #ffff , var(--boss-blind-color) 50%);
-  border-left: 3px solid color-mix(in srgb, #ffff , var(--boss-blind-color) 50%);
-  
+  height: 100vh;
+  background-color: color-mix(in srgb, var(--left-panel-bkg-color), var(--boss-blind-color) 20%);
+
+  border-right: 3px solid color-mix(in srgb, #ffff, var(--boss-blind-color) 50%);
+  border-left: 3px solid color-mix(in srgb, #ffff, var(--boss-blind-color) 50%);
+
 }
 
 #centercol {
-  /* background-color:#f8c32f31; */
-  height:100vh;
-  /* align-content: center; */
-  /* justify-content: center; */
-  display:grid;
+  height: 100vh;
+  display: grid;
   grid-template-rows: [cardbounds] 200px [displayspace] 1fr;
-  overflow:auto
-  /* width:900px;  */
+  overflow: hidden;
+  box-sizing: content-box;
 
 }
 
 .CardBounds {
   align-self: center;
-  position:relative;
+  position: relative;
   /* padding-top: 2%; */
   /* background-color:#f82f2f31; */
   height: 100%;
@@ -46,28 +44,35 @@
   border-bottom-style: solid;
 }
 
-#content-display{
-  /* z-index: -1; */
-  position:relative;
-  color:black;
+#content-display {
+  /* This must be a flex container for #main to fill it */
+  min-height: 0; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  position: relative;
+  color: black;
 }
+
 #moving-bkg-1 {
-    /* height: 100%;
+  /* height: 100%;
     width: 100%; */
-    margin: 0;
-    opacity: 0.2;
-    background-image:
-      repeating-linear-gradient(#ff5cce 0 1px, transparent 1px 100%),
-      repeating-linear-gradient(90deg, #ff5cce 0 1px, transparent 1px 100%);
-    background-size: 200px 200px;
+  margin: 0;
+  opacity: 0.2;
+  background-image:
+    repeating-linear-gradient(#ff5cce 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(90deg, #ff5cce 0 1px, transparent 1px 100%);
+  background-size: 200px 200px;
 }
+
 #moving-bkg-2 {
-    /* height: 100%;
+  /* height: 100%;
     width: 100%; */
-    margin: 0;
-    opacity: 0.2;
-    background-image:
-      repeating-linear-gradient(#307e7e 0 1px, transparent 1px 100%),
-      repeating-linear-gradient(90deg, #307e7e 0 1px, transparent 1px 100%);
-    background-size: 200px 200px;
+  margin: 0;
+  opacity: 0.2;
+  background-image:
+    repeating-linear-gradient(#307e7e 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(90deg, #307e7e 0 1px, transparent 1px 100%);
+  background-size: 200px 200px;
 }

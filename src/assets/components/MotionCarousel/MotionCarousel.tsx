@@ -13,6 +13,7 @@ const variants = {
         };
     },
     center: {
+        // translateX: '-50%',
         zIndex: 1,
         x: 0,
         opacity: 1

@@ -196,7 +196,9 @@ export default function AboutMe(props: AboutMeProps) {
             >
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
+                    layout
                     whileInView={{ opacity: 1, y: '0%' }}
+                    viewport={{ once: true }}
                     // transition={{ delay: 0.1 }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
@@ -213,8 +215,10 @@ export default function AboutMe(props: AboutMeProps) {
 
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
+                    layout
                     whileInView={{ opacity: 1, y: '0%' }}
                     transition={{ delay: 0.2 }}
+                    viewport={{ once: true }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
                         Values:
@@ -378,8 +382,10 @@ export default function AboutMe(props: AboutMeProps) {
                 </motion.div>
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
+                    layout
                     whileInView={{ opacity: 1, y: '0%' }}
                     transition={{ delay: 0.3 }}
+                    viewport={{ once: true }}
                 // style={{ display: 'grid', gridTemplateRows: ' 1.5em 1fr 1fr' }}
                 >
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
