@@ -75,9 +75,9 @@ function App() {
 
   const initialZones: InitZoneData[] = [
     // { id: handZoneID, position: makeCoords((cardBounds.width - 750) / 2, 450), dimensions: { width: 750, height: 150 }, },
-    { id: jokerZoneID, position: makeCoords(50, 25), dimensions: { width: 500, height: 150 }, },
+    { id: jokerZoneID, position: makeCoords(50, 0), dimensions: { width: 500, height: 150 }, },
     // { id: consumableZoneID, position: makeCoords(600, 15), dimensions: { width: 250, height: 150 } },
-    { id: UseZoneID, position: makeCoords(600, 25), dimensions: { width: 150, height: 150 } },
+    { id: UseZoneID, position: makeCoords(600, 7.5), dimensions: { width: 130, height: 130 } },
   ]
 
 
