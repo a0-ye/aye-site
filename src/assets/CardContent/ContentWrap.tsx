@@ -47,10 +47,10 @@ export default function ContentWrap(props: ContentWrapProps) {
         },
         open: {
             opacity: 1,
-            minHeight: 0,        /* IMPORTANT: Allows the row to shrink to fit 1fr */
-            display: 'flex',        /* This allows #main to use flex-grow or height: 100% */
+            minHeight: 0, 
+            display: 'flex', 
             flexDirection: 'column',
-            overflow: 'hidden',     /* This wrapper should NOT scroll */
+            overflow: 'hidden', 
             transition: {
                 delay: 1,
                 duration: 0.5
