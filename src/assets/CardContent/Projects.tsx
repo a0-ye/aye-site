@@ -1,8 +1,6 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
-import MotionCarousel from '../components/MotionCarousel/MotionCarousel'
 import './Projects.css'
 import { useRef, useState, type ReactNode } from 'react'
-import { desc } from 'motion/react-client'
 const projectsStyle = {}
 
 
@@ -179,7 +177,7 @@ const projectCardVariants = {
         y: [55, 0],
         opacity: [0, 1, 1],
         zIndex: 1,
-        transition: { duration: 0.25 }
+        transition: { duration: 0.5 }
     },
 }
 
@@ -188,17 +186,21 @@ export default function Projects() {
 
     const [isExpanded, setIsExpanded] = useState(false)
     const { scrollYProgress } = useScroll({ container: ref })
-    const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length])
+    const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length - 1])
     const [prog, setProg] = useState(0);
-    parallaxCardTracker.on('change', (latest) => { setProg(latest) })   // FOR DEBUG
+    const [activeProject, setActiveProject] = useState(0)
+    scrollYProgress.on('change', (latest) => { setProg(latest) })   // FOR DEBUG
+    parallaxCardTracker.on('change', (latest) => { setActiveProject(Math.round(latest)) })   // FOR DEBUG
 
     function createProjectCard(content: projectContent, idx: number) {
-        return inRange(parallaxCardTracker.get(), idx) && <motion.div className="projectBox"
+        return activeProject == idx && <motion.div className="projectBox"
             key={idx}
             variants={projectCardVariants}
             initial='inactive'
-            animate={['midpoint', 'active']}
-            exit={['midpoint', 'inactive']}
+            animate={'active'}
+            exit={'inactive'}
+            style={{ opacity: activeProject == idx ? 1 : 0 }}
+
             // transition={{
             //     type: "spring",
             //     bounce: 0.4,
@@ -275,14 +277,26 @@ export default function Projects() {
 
     return (
         <div ref={ref} id='proj-main' style={projectsStyle}>
-            <motion.div id='scrollprog' style={{ scaleX: scrollYProgress, position: 'absolute', width: 50, height: 50, backgroundColor: '#00c3ffff', }} />
-            <div style={{ position: 'sticky', top: '10%', height: '100%' }}>
+            <div style={{
+                position: 'sticky',
+                top: 0,
+                height: '100vh',
+                width: '100%',
+                zIndex: 1,
+                marginBottom: '-100vh',
+                pointerEvents: 'none',
+                // overflow: 'hidden'
+            }}>
+                <motion.div id='scrollprog' style={{
+                    scaleX: scrollYProgress,
+                    position: 'absolute', width: '100%',
+                    height: 10, backgroundColor: '#00c3ffff',
+                }} />
                 <div id='debug' style={{ position: 'absolute', backgroundColor: '#00c3ffff', width: 50, height: 50, zIndex: 10 }}>
-                    {prog}
+                    {prog} and {activeProject}
+
                 </div>
-                <AnimatePresence mode='popLayout'>
-                    {contentList.map((val, idx) => { return createProjectCard(val, idx); })}
-                </AnimatePresence>
+                {contentList.map((val, idx) => { return createProjectCard(val, idx); })}
                 <motion.div className='projectBox' style={{
                     width: '100%',
                     y: 50,
@@ -295,14 +309,21 @@ export default function Projects() {
                     // scale:1.,
                     rotate: -7
                 }}></motion.div>
+
+
             </div>
-
-
-
-
-
-            <div id='ghost' style={{ width: '100%', height: '600vh', zIndex: -1 }}></div>
-
+            <div id='ghost-scroller' style={{
+                position: 'absolute', top: 0,
+                height: `${50 * contentList.length}vh`,
+                width: '100%', zIndex: 0
+            }}>
+                {/* {contentList.map((_, idx) => {
+                    return <div key={idx} className='scroll-anchor' style={{
+                        border: 'solid black 2px',
+                        backgroundColor: idx % 2 ? '#643838ff' : '#29586bff'
+                    }}> </div>
+                })} */}
+            </div>
         </div >
     )
 }
