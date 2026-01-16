@@ -203,13 +203,11 @@
         grid-template-rows: auto auto;
         grid-template-areas:
             "img"
-            /* Image on top */
             "desc";
-        /* Text on bottom */
     }
 
     .tri-grid {
-        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr ;
     }
 }
 
@@ -223,7 +221,7 @@
     }
 
     .tri-grid {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr ;
     }
 }
 

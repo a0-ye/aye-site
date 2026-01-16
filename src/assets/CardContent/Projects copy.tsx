@@ -1,7 +1,6 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
 import './Projects.css'
 import { useRef, useState, type ReactNode } from 'react'
-import ProjectCard, { type projectContent } from '../components/ProjectCard/ProjectCard'
 const projectsStyle = {}
 
 
@@ -22,7 +21,13 @@ const projectsStyle = {}
 
 
 
-const contentList: projectContent[] = [
+
+
+interface projectContent {
+    img: string, title: ReactNode, date: ReactNode, description: ReactNode, bullets: ReactNode
+}
+
+const contentList = [
     {
         img: 'img/aye-site.png',
         title: <a target="_blank" rel="noopener noreferrer"
@@ -158,55 +163,172 @@ const contentList: projectContent[] = [
     // },
 
 ]
+const projectCardVariants = {
+    exit: {
+        rotate: [0, 30, -15],
+        rotateX:'90deg',
+        y: [0, -500, 50],
+        opacity: [1, 0.7, 0.5, 0],
+        zIndex: [1, 1, 0, 0],
+        // transition:{duration:2}
 
+    },
+    enter: {
+        rotate: [-7, 0],
+        rotateX:'0deg',
+        y: [55, 0],
+        opacity: [0, 1, 1],
+        zIndex: 1,
+        transition: { duration: 0.5 }
+    },
+}
+
+/**
+ * goes from closed, just the image. When clicked, half the image, grow the bottom up
+ */
+const projectContentVariants = {
+    closed: {
+
+    }, open: {}
+}
 
 export default function Projects() {
-    const mainRef = useRef<HTMLDivElement>(null)
+    const ref = useRef(null)
 
     const [isExpanded, setIsExpanded] = useState(false)
-    const { scrollYProgress } = useScroll({ container: mainRef })
-    // const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length - 1])
+    const { scrollYProgress } = useScroll({ container: ref })
+    const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length - 1])
     const [prog, setProg] = useState(0);
-    const [activeProject, setActiveProject] = useState(-1)
+    const [activeProject, setActiveProject] = useState(0)
+    scrollYProgress.on('change', (latest) => { setProg(latest) })   // FOR DEBUG
+    parallaxCardTracker.on('change', (latest) => { setActiveProject(Math.round(latest)) })   // FOR DEBUG
 
+    function createProjectCard(content: projectContent, idx: number) {
+        return activeProject == idx && <motion.div className="projectBox"
+            key={idx}
+            variants={projectCardVariants}
+            initial='exit'
+            animate={'enter'}
+            exit={'exit'}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.1}
 
-
-
-    return (
-        <div ref={mainRef} id='proj-main' style={projectsStyle}>
-            <motion.div id='projects-grid'
+            style={{
+                opacity: activeProject == idx ? 1 : 0,
+                transformOrigin:'100% 50%'
+            }}
+        >
+            <div id='projectContentWrap'
                 style={{
-                    // height: 500,
-                    // overflow: 'hidden',
+                    backgroundImage: `url(${content.img})`,
+                    margin:'1%',
+                    borderRadius:2
                 }}
             >
-                <div className='grid-cell'>
-                    <div style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}> hlelo</div>
+                <motion.div className='project-bot'
+                    layout
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    style={{
+                        display: 'flex', position: 'relative'
+
+                    }}
+                >
+                    <motion.div className='project-banner'
+                        style={{ position: 'absolute', bottom: '0%', left: '2%' }}
+                        initial={{ y: 300 }}
+                        animate={{ y: 0 }}
+                    // transition={{ delay: 0.8 }}
+                    >{content.title}
+                    </motion.div>
+                    <motion.div className='project-banner'
+                        style={{ position: 'absolute', bottom: '0%', right: '2%' }}
+                        initial={{ y: 300 }}
+                        animate={{ y: 0 }}
+                    // transition={{ delay: 0.8 }}
+                    > {content.date} </motion.div>
+                    <motion.div className='project-description'
+                        onClick={() => { setIsExpanded(!isExpanded) }}
+                        layout
+                        // style={{ flex: isExpanded ? '1 0 100%' : '1'}}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        style={isExpanded ? { fontSize: 'large' } : { fontSize: 'x-large', WebkitMaskImage: 'linear-gradient(180deg,#000 60%,transparent)', cursor: 'pointer' }}
+                    >
+                        {content.description}
+
+                    </motion.div>
+                    <AnimatePresence mode='popLayout'>
+                        {!isExpanded &&
+                            <motion.div className='project-bullets'
+                                layout
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                                {content.bullets}
+                            </motion.div>}
+                    </AnimatePresence>
+
+                </motion.div>
+            </div>
+        </motion.div>
+    }
+    return (
+        <div ref={ref} id='proj-main' style={projectsStyle}>
+            <div style={{
+                position: 'sticky',
+                top: 0,
+                // left:'0%',
+                height: '100vh',
+                width: '100%',
+                zIndex: 1,
+                marginBottom: '-100vh',
+                // overflow: 'hidden'
+            }}>
+
+                <div id='debug' style={{ position: 'absolute', backgroundColor: '#00c3ffff', height: 50, zIndex: 10 }}>
+                    {prog} and {activeProject}
+                    <h2>
+                        DEBUG: scroll to flip through cards
+                    </h2>
 
                 </div>
-                <div className='grid-cell'>
-                    <ProjectCard
-                        content={contentList[0]}
-                        id={0}
-                        activeProject={activeProject}
-                        setActiveProject={setActiveProject}
-                        mainRef={mainRef}
-                    />
-                </div>
-                <div className='grid-cell'>
-                    <ProjectCard
-                        content={contentList[1]}
-                        id={1}
-                        activeProject={activeProject}
-                        setActiveProject={setActiveProject}
-                        mainRef={mainRef}
-                    />
-                </div>
-                <div className='grid-cell'>
-                    <div style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}> hlelo</div>
-                </div>
-                {/* {contentList.map((val, idx) => { return createProjectCard(val, idx); })} */}
-            </motion.div>
+                <AnimatePresence>
+                    {contentList.map((val, idx) => { return createProjectCard(val, idx); })}
+                </AnimatePresence>
+                <motion.div className='projectBox' style={{
+                    width: '100%',
+                    y: 50,
+                    // scale:1.,
+                    rotate: -5
+                }}></motion.div>
+                <motion.div className='projectBox' style={{
+                    width: '100%',
+                    y: 55,
+                    // scale:1.,
+                    rotate: -7
+                }}></motion.div>
+                <motion.div id='scrollprog' style={{
+                    scaleY: scrollYProgress,
+                    position: 'absolute', right: 0,
+                    height: '100vh', width: 10,
+                    backgroundColor: '#ff7b00ff',
+                }} />
+
+            </div>
+            <div id='ghost-scroller' style={{
+                position: 'absolute', top: 0,
+                height: `${25 * contentList.length}vh`,
+                width: '100%', zIndex: 0
+            }}>
+                {/* {contentList.map((_, idx) => {
+                    return <div key={idx} className='scroll-anchor' style={{
+                        border: 'solid black 2px',
+                        backgroundColor: idx % 2 ? '#643838ff' : '#29586bff'
+                    }}> </div>
+                })} */}
+            </div>
         </div >
     )
 }

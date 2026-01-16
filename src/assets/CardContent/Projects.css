@@ -9,109 +9,39 @@
     height: 100vh;
     text-align: center;
     --lightcolor: #ffdef2;
-    --darkcolor: #bb5b80;
+    --darkcolor: #fff8fc;
     position: relative;
+    background-color: #460606;
 }
 
-.projectBox {
-    position: absolute;
-
-    min-width: 600px;
-    max-width: 1200px;
-
-    width: auto;
+.project-box {
+    /* position: absolute; */
+    width:auto;
     height: 600px;
 
-
     background-color: var(--lightcolor);
-    margin: 10px;
-    border: 5px solid black;
-    border-radius: 15px;
+    /* margin: 10px; */
+    border: 2px solid black;
+    /* border-radius: 15px; */
 
     align-items: center;
     justify-content: center;
-    display: grid;
-    grid-template-rows: 50% 1fr;
+    /* display: grid; */
+    /* grid-template-rows: 50% 1fr; */
 }
 
-.project-top {
-    display: grid;
-    grid-template-rows: 1fr;
-    min-height: 0;
-    height: 300px;
-    overflow: hidden;
-
-}
-
-.image-container {
-    margin: 2% 5%;
-    background-position: center;
-    background-size: cover;
-
-    min-height: 0;
-    box-sizing: border-box;
-    background-color: #47d43a;
-    border-radius: 5px;
-
-
+#projects-grid {
     position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    display:flex;
+    flex-wrap: wrap;
+    gap:20px;
+    /* width: 80vw; */
+    max-width: 990px;
+    /* grid-template-columns:1fr 1fr; */
+    /* grid-template-rows: 1fr 1fr 1fr 1fr; */
 }
 
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-
-}
-
-
-.project-banner {
-    font-size: xx-large;
-    color: #fff;
-    background-color: var(--darkcolor);
-    padding: 0 5px 0 5px;
-    border-radius: 15px 15px 0 0;
-}
-
-.project-bot {
-    border-top: #000000 solid 2px;
-
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    /* background-color: #d9ff00; */
-
-    width: 100%;
-    height: 100%
-}
-
-.project-description {
-    margin: 2% 5% 2% 5%;
-    background-color: var(--darkcolor);
-    /* height: min-content; */
-    height: 260px;
-    border-radius: 5px;
-    font-size: x-large;
-    overflow: hidden;
-    flex: 1 0 50%;
-
-}
-
-
-.project-bullets {
-    margin: 2% 5%;
-    font-size: x-large;
-    /* background-color: var(--darkcolor); */
-    
-}
-.project-bullets li {
-    /* margin: 2% 5%; */
-    /* background-color: var(--darkcolor); */
-    text-align: left;
-    
+.project-row {
+    display:grid;
+    background-color: #ff1af4;
 }

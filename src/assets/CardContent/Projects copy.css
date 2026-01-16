@@ -1,0 +1,120 @@
+#proj-main {
+    overflow: scroll;
+    padding: 2% 5% 5% 5%;
+
+    /* scroll-behavior: smooth; */
+    /* scroll-snap-type: y proximity; */
+
+    width: auto;
+    height: 100vh;
+    text-align: center;
+    --lightcolor: #ffdef2;
+    --darkcolor: #fff8fc;
+    position: relative;
+    background-color: #460606;
+}
+
+.projectBox {
+    position: absolute;
+
+    min-width: 600px;
+    max-width: 1200px;
+    width: auto;
+
+    min-height: 600px;
+    max-height: 1080px;
+    height: 70vh;
+
+
+    background-color: var(--lightcolor);
+    /* margin: 10px; */
+    border: 2px solid black;
+    /* border-radius: 15px; */
+
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 50% 1fr;
+}
+
+.project-top {
+    display: grid;
+    grid-template-rows: 1fr;
+    min-height: 0;
+    height: 300px;
+    overflow: hidden;
+
+}
+
+.image-container {
+    /* margin: 2% 5%; */
+    background-position: center;
+    background-size: cover;
+
+    min-height: 0;
+    box-sizing: border-box;
+    background-color: #47d43a;
+    border-radius: 5px;
+
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+}
+
+
+.project-banner {
+    font-size: xx-large;
+    color: #fff;
+    background-color: var(--darkcolor);
+    padding: 0 5px 0 5px;
+    border-radius: 15px 15px 0 0;
+}
+
+.project-bot {
+    border-top: #000000 solid 2px;
+
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    /* background-color: #d9ff00; */
+
+    width: 100%;
+    height: 100%
+}
+
+.project-description {
+    margin: 2% 5% 2% 5%;
+    background-color: var(--darkcolor);
+    /* height: min-content; */
+    height: 260px;
+    border-radius: 5px;
+    font-size: x-large;
+    overflow: hidden;
+    flex: 1 0 50%;
+
+}
+
+
+.project-bullets {
+    margin: 2% 5%;
+    font-size: x-large;
+    /* background-color: var(--darkcolor); */
+    
+}
+.project-bullets li {
+    /* margin: 2% 5%; */
+    /* background-color: var(--darkcolor); */
+    text-align: left;
+    
+}

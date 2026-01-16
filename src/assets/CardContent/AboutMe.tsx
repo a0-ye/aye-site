@@ -29,6 +29,10 @@ function makeSquiggleBorder() {
 const color1 = '#ffa7a7ff'
 const color2 = '#dcff9cff'
 const color3 = '#fdb7ffff'
+const color4 = '#b8b7ffff'
+const color5 = 'rgba(183, 255, 195, 1)'
+const color6 = '#b7ffe1ff'
+
 const randomColor = () => {
     const value = Math.random()
     if (value <= 0.333) return color1
@@ -50,7 +54,7 @@ function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
                 return <span key={idx} style={{
                     minWidth: 30,
                     margin: 6, padding: '0.25em', display: newlineFlag ? 'flex' : 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    borderRadius: 12, backgroundColor: 'color-mix(in srgb, #ebfffcff, ' + randomColor() + ' 20% )'
+                    borderRadius: 12, backgroundColor: randomColor()
                 }}>
                     {val} </span>
             })}
@@ -194,7 +198,7 @@ export default function AboutMe(props: AboutMeProps) {
                 animate={{ opacity: 1, y: '0%' }}
                 transition={{ delay: 1 }}
             >
-                <motion.div className='padded-chad-box'
+                {/* <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
                     layout
                     whileInView={{ opacity: 1, y: '0%' }}
@@ -211,7 +215,7 @@ export default function AboutMe(props: AboutMeProps) {
                     {makeChad('Advanced Debugging', ['GDB', 'Valgrind', 'Chrome/Firefox DevTools', 'PDB', 'Memory Management'])}
                     {makeChad('Specialized', ['NumPy', 'Pandas', 'Librosa', 'PyTorch'])}
 
-                </motion.div>
+                </motion.div> */}
 
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
