@@ -16,7 +16,7 @@
 
 .project-box {
     /* position: absolute; */
-    width:auto;
+    width: auto;
     height: 600px;
 
     background-color: var(--lightcolor);
@@ -32,9 +32,9 @@
 
 #projects-grid {
     position: relative;
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
-    gap:20px;
+    gap: 20px;
     /* width: 80vw; */
     max-width: 990px;
     /* grid-template-columns:1fr 1fr; */
@@ -42,6 +42,17 @@
 }
 
 .project-row {
-    display:grid;
+    display: grid;
     background-color: #ff1af4;
+}
+
+.grid-cell {
+    width: 300px;
+    height: 300px;
+    align-self: center;
+    justify-self: center;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }

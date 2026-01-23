@@ -19,8 +19,8 @@ export default function LeftPanel(props: panelProps) {
             <div id='blind-body'>
                 <div id="token-container">
                     <MotionCard
-                        cardData={BLANK_CARD_DATA}
-                        cardContent={{ cardBack: "img/sprout-token.png" }}
+                        cardData={{...BLANK_CARD_DATA, cardContent:{ cardBack: "img/sprout-token.png" }}}
+                        token
                         style={{
                             top: "50%", left: '50%',
                             width: 75,
@@ -47,7 +47,7 @@ export default function LeftPanel(props: panelProps) {
 
         <div id='hand-box' className='panel-box'>
             <div className='panel-text'>Active Card:</div>
-            <div className='panel-value'>{activeCard != "" ? props.cardsData[activeCard].cardContent.cardHoverInfo : " Drag some cards!"}</div>
+            <div className='panel-value'>{activeCard != "" ? " there is a page open... ": " Drag some cards!"}</div>
         </div>
 
         <div id='buttons-n-numbers-grid' >

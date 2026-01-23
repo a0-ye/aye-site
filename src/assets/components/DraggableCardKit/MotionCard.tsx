@@ -12,7 +12,11 @@ interface CardProps {
     activeCard?: UniqueIdentifier | null;
     setActiveCard?: Function;
     trySwapOrigins?: Function;
-    cardContent: CardContent;
+
+    onClick?: Function;
+    token?: boolean;
+    hideWhenOpen?:boolean;
+
     style?: MotionStyle;
     children?: ReactNode;
 }
@@ -22,15 +26,19 @@ interface CardProps {
  * Origin can be updated, and is updated via the origin prop.
  * 
  * TODO: there are 200 lines in this one function. do some readability refactoring
+ *       make hoverInfo an option, not auto disable
+ *       make go to center an option? we figured it out with the proto ProjectCard
+ *       custom onClick
  * 
  * KNOWN ISSUES:
  *  sometimes the wiggle breaks and continues to wiggle while open. Not sure why, possibly a motion animation queue issue
  */
 export default function MotionCard(props: CardProps) {
     const cardData = props.cardData
-    const cardContent = props.cardContent;
+    const cardContent = cardData.cardContent;
     const activeCard = props.activeCard;
-    const tokenFlag = (cardData == BLANK_CARD_DATA)
+    const token = props.token
+    const hideWhenOpen = props.hideWhenOpen;
     const [scope, animate] = useAnimate();
     const dragSpringConfig = { damping: 8, stiffness: 120, mass: 0.01, restDelta: 0.001 }
 
@@ -63,7 +71,7 @@ export default function MotionCard(props: CardProps) {
 
 
     const returnToOrigin = () => {
-        if (isDragging.current == false) {
+        if (isDragging.current == false) {            
             targetX.set(cardData.origin.x)
             targetY.set(cardData.origin.y)
             animate(scope.current, makeCoords(cardData.origin.x, cardData.origin.y))
@@ -76,7 +84,7 @@ export default function MotionCard(props: CardProps) {
     )
 
     const showHoverInfo = (flag: boolean) => {
-        if (!cardContent.cardHoverInfo) return;
+        if (token || !cardContent.cardHoverInfo) return;
         animate('.hoverInfo', { opacity: flag ? 1 : 0 }, { duration: 0.1 })
     }
 
@@ -107,12 +115,10 @@ export default function MotionCard(props: CardProps) {
             animate(scope.current, { zIndex: 1 })
             returnToOrigin();
         }
-        else{
-        }
     }
 
     const startWiggle = () => {
-        if (isOpen || tokenFlag) {
+        if (isOpen || token) {
             // console.log('no wiggle ', cardData.id, activeCard);
             return
         };  // no wiggle while open
@@ -128,44 +134,45 @@ export default function MotionCard(props: CardProps) {
         )
     }
 
-    useEffect(() => { 
-        setIsOpen(activeCard == cardData.id); 
+    useEffect(() => {
+        setIsOpen(activeCard == cardData.id);
     }, [activeCard])
     useEffect(() => {
         const doAnimation = async () => {
-            if (!tokenFlag) {
+            if (!token) {
                 if (isOpen) {
                     // TODO. need to translate left by the leftPanel width + its margin
                     // const rect = scope.current.getBoundingClientRect();
+                    // this is unused code to make card open at the center of a given rect. remake?
                     const leftPanelWidth = document.getElementById('leftcol')?.getBoundingClientRect().width || 0;
-                    const centeredX = ((window.innerWidth - leftPanelWidth) / 2) ;
-                    const centeredY = (window.innerHeight / 2) ;
-                    console.log( "window center: ", centeredX, centeredY, leftPanelWidth);
+                    const centeredX = ((window.innerWidth - leftPanelWidth) / 2);
+                    const centeredY = (window.innerHeight / 2);
+                    console.log("window center: ", centeredX, centeredY, leftPanelWidth);
 
                     // const contentDisplayBox = document.getElementById('content-display')?.getBoundingClientRect()
-                    
-                    animate([//animate OPEN
-                        [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4}],
 
-                        [scope.current, { rotateY: 90 }, { duration: 0.1}],
+                    animate([//animate OPEN
+                        [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4 }],
+
+                        [scope.current, { rotateY: 90 }, { duration: 0.1 }],
                         ['.cardBackImg', { display: 'none' }, { duration: 0.1 }],
                         [scope.current, { rotateY: 0 }, { duration: 0.1 }],
-                        [scope.current, {...cardVariantStyles.open, /**width:contentDisplayBox?.width || 10, height:contentDisplayBox?.height || 10*/}, { duration: 0.2 }],
+                        [scope.current, { ...cardVariantStyles.open, /**width:contentDisplayBox?.width || 10, height:contentDisplayBox?.height || 10*/ }, { duration: 0.2 }],
                         ['.cardContentWrap', contentVariants.open,],
-                        [scope.current, {width:0, height:0},{ duration: 0 }],
                     ])
                 } else {
-                    animate([
+                    animate([//animate CLOSE
                         ['.cardContentWrap', contentVariants.initial, { duration: 0.1 }],
-                        [scope.current, {...cardVariantStyles.open},{ duration: 0 }],
-                        [scope.current, { width: 93, height: 125, opacity:1 }, { duration: 0.1 }],
+                        [scope.current, { ...cardVariantStyles.open }, { duration: 0 }],
+                        [scope.current, { width: 93, height: 125, opacity: 1 }, { duration: 0.1 }],
                         [scope.current, { rotateY: 90 }, { duration: 0.1 }],
                         ['.cardBackImg', { display: 'block' }, { duration: 0.1, }],
                         [scope.current, { rotateY: 0 }, { duration: 0.1 }],
                         [scope.current, cardVariantStyles.initial, { duration: 0.1, }],
                         [scope.current, { zIndex: 2 }, { duration: 0.1 }],
                     ])
-                    startWiggle()
+                    returnToOrigin()
+                    // startWiggle()
                 }
             }
         }
@@ -179,7 +186,7 @@ export default function MotionCard(props: CardProps) {
 
     const cardStyle: MotionStyle = {
         width: 93, height: 125,
-        opacity:1,
+        opacity: 1,
         zIndex: 1,
         display: 'flex',
 
@@ -204,12 +211,13 @@ export default function MotionCard(props: CardProps) {
             ...mergedStyle,
         },
         open: { // fades out
-            width: 1200, height: 1000,
+            width:  hideWhenOpen? 0 : 1200,
+            height: hideWhenOpen? 0 : 1000,
+            opacity: hideWhenOpen? 0 : 1,
             zIndex: 11,
-            opacity: 0,
-            PointerEvent:false,
+            PointerEvent: false,
             backgroundColor: '#FFFFFF',
-            borderColor:'transparent',
+            borderColor: 'transparent',
             // boxShadow: '7px 7px 15px black',
             cursor: 'auto'
 
@@ -230,7 +238,7 @@ export default function MotionCard(props: CardProps) {
     return (
         <motion.div className="MotionCard"
             ref={scope}
-            whileHover={isOpen || tokenFlag ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
+            whileHover={isOpen || token ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
             onHoverStart={() => {
                 if (!isOpen) {
                     showHoverInfo(true)
@@ -243,12 +251,7 @@ export default function MotionCard(props: CardProps) {
                 startWiggle();
             }}
             whileTap={isOpen ? {} : { scale: 0.99, rotate: 2 }}
-            onTap={() => {
-                if (!isDragging.current) {
-                    console.log("clickah!");
-                }
-
-            }}
+            onClick={() => { props.onClick ? props.onClick() : {} }}
             drag={!isOpen}
             onDragStart={onDragStartHandler}
             onDrag={onDragHandler}
@@ -275,27 +278,34 @@ export default function MotionCard(props: CardProps) {
                 height: '100%',
                 objectFit: 'contain',
             }} />
-            <motion.div className="hoverInfo" style={{
-                display: tokenFlag ? 'none' : 'flex',
-                right: '100%', top: '50%', translateY: '-50%',
-            }}>
-                {cardContent?.cardHoverInfo}
-            </motion.div>
 
-            <motion.div
-                className={"cardContentWrap"}
-                initial={contentVariants.initial}
-                style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
-            >
-                <motion.button style={{
-                    zIndex: 10,
-                    position: 'absolute', margin: 15,
-                    top: '100%', left: '50%',
-                    translateX: '-50%'
-                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</motion.button>
-                {/* { isOpen && cardContent?.cardContent} */}
-                {props.children}
-            </motion.div>
+            {token? <></> : <>
+                <motion.div className="hoverInfo" style={{
+                    display: token ? 'none' : 'flex',
+                    right: '100%', top: '50%', translateY: '-50%',
+                }}>
+                    {cardContent?.cardHoverInfo}
+                </motion.div>
+
+                <motion.div
+                    className={"cardContentWrap"}
+                    initial={contentVariants.initial}
+                    style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
+                >
+                    <motion.button style={{
+                        zIndex: 10,
+                        position: 'absolute', margin: 15,
+                        top: '100%', left: '50%',
+                        translateX: '-50%'
+                    }} onClick={() => { 
+                        console.log('internal close card button clicked');
+                        props.setActiveCard?.(BLANK_CARD_DATA); 
+                        
+                    }}> Close Card</motion.button>
+                    {/* { isOpen && cardContent?.cardContent} */}
+                    {props.children}
+                </motion.div>
+            </>}
         </motion.div>
 
     )

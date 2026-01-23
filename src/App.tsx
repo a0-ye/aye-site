@@ -1,7 +1,7 @@
 import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties } from 'react'
 import './App.css'
 
-import AboutMe from './assets/CardContent/AboutMe'
+import AboutMe from './assets/pages/AboutMe'
 
 import MotionCard from './assets/components/DraggableCardKit/MotionCard'
 import CardZone from './assets/components/DraggableCardKit/CardZone'
@@ -12,11 +12,11 @@ import { BLANK_CARD_DATA, makeCoords, useCardHandler, type CardContent, type Car
 
 import LeftPanel from './assets/components/left-panel/LeftPanel'
 import { animate } from 'motion'
-import Projects from './assets/CardContent/Projects'
+import Projects from './assets/pages/Projects'
 import { AnimatePresence, motion } from 'motion/react'
-import { Papers } from './assets/CardContent/Papers'
+import { Papers } from './assets/pages/Papers'
 import PopupPanel from './assets/components/popup-panel/PopupPanel'
-import ContentWrap from './assets/CardContent/ContentWrap'
+import ContentWrap from './assets/pages/ContentWrap'
 
 
 function App() {
@@ -36,19 +36,19 @@ function App() {
   const UseZoneID = useId();
   const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
   const aboutMeContent: CardContent = {
-    cardContent: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
+    content: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
     cardBack: "img/Jimbo.png",
     cardHoverInfo: 'About Me!',
   }
   const c2Content: CardContent = {
     cardBack: "img/michel.png",
     cardHoverInfo: 'Things I\'ve done!',
-    cardContent: <Projects />,
+    content: <Projects />,
   }
   const c3Content: CardContent = {
     cardBack: "img/andrew.png",
     cardHoverInfo: 'Papers',
-    cardContent: Papers,
+    content: Papers,
   }
 
   const initialCards: InitCardData[] = [
@@ -137,8 +137,8 @@ function App() {
         activeCard={activeCard.id}
         setActiveCard={setActiveCard}
         trySwapOrigins={trySwapOrigins}
-        cardContent={cardsData[cardID].cardContent}
         style={{ ...cardStyle }}
+        hideWhenOpen
       />
     )
   }
@@ -194,7 +194,7 @@ function App() {
         <motion.div id='content-display' style={{}}>
           <AnimatePresence>
             {activeCard != BLANK_CARD_DATA &&
-              <ContentWrap key={activeCard.id}>{activeCard.cardContent.cardContent}</ContentWrap>}
+              <ContentWrap key={activeCard.id}>{activeCard.cardContent.content}</ContentWrap>}
           </AnimatePresence>
         </motion.div>
       </div>

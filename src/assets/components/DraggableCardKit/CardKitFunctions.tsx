@@ -10,7 +10,7 @@ export interface CardData{
 }
 
 export interface CardContent {
-    cardContent?:JSX.Element | undefined,
+    content?:JSX.Element | undefined,
     cardBack:string,
     cardHoverInfo?:string,
   }

@@ -142,8 +142,7 @@ export default function AboutMe(props: AboutMeProps) {
                                     }}>
                                         <div>
                                             <MotionCard
-                                                cardData={BLANK_CARD_DATA}
-                                                cardContent={{ cardBack: 'img/gradsmile.jpg' }}
+                                                cardData={{...BLANK_CARD_DATA, cardContent:{ cardBack: 'img/gradsmile.jpg'}}}
                                                 style={{
                                                     // make this the size of the image somehow?
                                                     width: 300,

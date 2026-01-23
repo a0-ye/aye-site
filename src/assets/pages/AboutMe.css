@@ -59,12 +59,12 @@
     align-self: center;
     justify-self: center;
     position: relative;
+    display: flex;
     width: 300px;
     height: 300px;
     background-color: #e0e0dd;
     /* border: dashed #4d4d4d 2px; */
     border-radius: 10px;
-    display: flex;
     align-items: center;
     justify-content: center;
 }

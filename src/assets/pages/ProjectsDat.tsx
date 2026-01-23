@@ -1,28 +1,10 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
-import './Projects.css'
-import { useRef, useState, type ReactNode } from 'react'
-import ProjectCard, { type projectContent } from '../components/ProjectCard/ProjectCard'
-const projectsStyle = {}
+import type { ReactNode } from "react"
 
+export interface projectContent {
+    img: string, title: ReactNode, date: ReactNode, description: ReactNode, bullets: ReactNode
+}
 
-
-/**
- * 
- * Carousel Idea: cards that we can drag and throw to slide through a carousel on
- * the card itself. Cool AND interesting. Velocity and mass for speedy spring
- * click to grow? yah propbably
- * 
- * https://motion.dev/docs/react-animate-presence#changing-key
- * idea: velocity slideshow.
- * Enable drag controls or something. Track velocity. while velocity != 0, increment a value by velocity % 100.
- * Once Velocity is greater than 100, switch to the next slide. this drag is separate from the carousel,
- * 
- * once velocity is 0, that means we settled on a slide
- */
-
-
-
-const contentList: projectContent[] = [
+export const contentList: projectContent[] = [
     {
         img: 'img/aye-site.png',
         title: <a target="_blank" rel="noopener noreferrer"
@@ -158,55 +140,3 @@ const contentList: projectContent[] = [
     // },
 
 ]
-
-
-export default function Projects() {
-    const mainRef = useRef<HTMLDivElement>(null)
-
-    const [isExpanded, setIsExpanded] = useState(false)
-    const { scrollYProgress } = useScroll({ container: mainRef })
-    // const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length - 1])
-    const [prog, setProg] = useState(0);
-    const [activeProject, setActiveProject] = useState(-1)
-
-
-
-
-    return (
-        <div ref={mainRef} id='proj-main' style={projectsStyle}>
-            <motion.div id='projects-grid'
-                style={{
-                    // height: 500,
-                    // overflow: 'hidden',
-                }}
-            >
-                <div className='grid-cell'>
-                    <div style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}> hlelo</div>
-
-                </div>
-                <div className='grid-cell'>
-                    <ProjectCard
-                        content={contentList[0]}
-                        id={0}
-                        activeProject={activeProject}
-                        setActiveProject={setActiveProject}
-                        mainRef={mainRef}
-                    />
-                </div>
-                <div className='grid-cell'>
-                    <ProjectCard
-                        content={contentList[1]}
-                        id={1}
-                        activeProject={activeProject}
-                        setActiveProject={setActiveProject}
-                        mainRef={mainRef}
-                    />
-                </div>
-                <div className='grid-cell'>
-                    <div style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}> hlelo</div>
-                </div>
-                {/* {contentList.map((val, idx) => { return createProjectCard(val, idx); })} */}
-            </motion.div>
-        </div >
-    )
-}
