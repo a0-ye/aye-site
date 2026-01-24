@@ -12,6 +12,11 @@
     --darkcolor: #fff8fc;
     position: relative;
     background-color: #460606;
+
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .project-box {

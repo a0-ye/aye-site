@@ -38,7 +38,7 @@ export default function Projects() {
     const card1Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
-            cardHoverInfo: 'Project the First', cardBack: 'img/michel.png', content: <div>none</div>
+            cardHoverInfo: 'Project the First', cardBack: 'img/michel.png', content: <div> HEY HEY its [hyperlink blocked]</div>
         }
     }
     const card2Dat: CardData = {

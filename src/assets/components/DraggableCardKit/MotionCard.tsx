@@ -2,7 +2,7 @@ import './MotionCard.css'
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
-import { BLANK_CARD_DATA, makeCoords, type CardContent, type CardData } from "./CardKitFunctions"
+import { BLANK_CARD_DATA, makeCoords, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
 
 
@@ -139,28 +139,20 @@ export default function MotionCard(props: CardProps) {
         setIsOpen(activeCard == cardData.id);
     }, [activeCard])
 
-    const anchorRef = useRef(null)
+    const anchorRef = useRef<HTMLDivElement | null>(null)
     function calculateCenter(boundingRef?: RefObject<HTMLDivElement | null>) {
         if (!boundingRef?.current || !scope.current || ! anchorRef.current) return [0, 0];
 
         const target = boundingRef.current.getBoundingClientRect();
-        const cardRect = scope.current.getBoundingClientRect();
         const anchorRect = anchorRef.current.getBoundingClientRect();
 
         // 1. Find the center point of the target (absolute viewport pixels)
         const targetCenterX = target.left + target.width / 2;
         const targetCenterY = target.top + target.height / 2;
 
-        // 2. ISSUE: Container XY needs to be calculated based on left and top of ABSOLUTE origin 
-        const containerCenterX = cardRect.left + cardRect.width / 2;
-        const containerCenterY = cardRect.top + cardRect.height / 2;
-
-        // 3. The distance between the two centers
-        const centerX = targetCenterX - containerCenterX;
-        const centerY = targetCenterY - containerCenterY;
-
-        console.log(targetCenterX, targetCenterY, containerCenterX, containerCenterY, '|', centerX, centerY);
-
+        // 3. The pixel difference from the anchor to the target
+        const centerX = targetCenterX - anchorRect.left;
+        const centerY = targetCenterY - anchorRect.top;
         return [centerX, centerY]
     }
 
@@ -238,13 +230,14 @@ export default function MotionCard(props: CardProps) {
             ...mergedStyle,
         },
         open: { // fades out
-            width: hideWhenOpen ? 0 : 1200,
-            height: hideWhenOpen ? 0 : 1000,
+            width: hideWhenOpen ? 0 : 700,
+            height: hideWhenOpen ? 0 : 600,
             opacity: hideWhenOpen ? 0 : 1,
             zIndex: 11,
             PointerEvent: false,
             backgroundColor: '#FFFFFF',
             borderColor: 'transparent',
+            color:'#00ff7b',
             // boxShadow: '7px 7px 15px black',
             cursor: 'auto'
 
@@ -330,7 +323,7 @@ export default function MotionCard(props: CardProps) {
                             props.setActiveCard?.(BLANK_CARD_DATA);
 
                         }}> Close Card</motion.button>
-                        {/* { isOpen && cardContent?.cardContent} */}
+                        { cardContent?.content}
                         {props.children}
                     </motion.div>
                 </>}
