@@ -6,6 +6,7 @@ import MotionCard from '../components/DraggableCardKit/MotionCard'
 import { BLANK_CARD_DATA, type CardData } from '../components/DraggableCardKit/CardKitFunctions'
 
 import { contentList } from './ProjectsDat'
+import { main } from 'motion/react-client'
 
 
 /**
@@ -40,7 +41,12 @@ export default function Projects() {
             cardHoverInfo: 'Project the First', cardBack: 'img/michel.png', content: <div>none</div>
         }
     }
-
+    const card2Dat: CardData = {
+        id: useId(), zone: '', origin: { x: 0, y: 0 },
+        cardContent: {
+            cardHoverInfo: 'Second Project', cardBack: 'img/michel.png', content: <div>none</div>
+        }
+    }
 
 
     return (
@@ -62,6 +68,7 @@ export default function Projects() {
                             cardData={card1Dat}
                             setActiveCard={setActiveCard}
                             activeCard={activeCard.id}
+                            centeringTargetRef={mainRef}
                             style={{
                                 // make this the size of the image somehow?
                                 width: '100%',
@@ -70,7 +77,7 @@ export default function Projects() {
                             onClick={() => {
                                 setActiveCard((currentActiveCard) => {
                                     const result = (currentActiveCard.id == card1Dat.id)
-                                    console.log('click detected! ', currentActiveCard.id, card1Dat.id, result);
+                                    // console.log('click detected! ', currentActiveCard.id, card1Dat.id, result);
                                     if  (result) { return BLANK_CARD_DATA }
                                     else return card1Dat
                                 });
@@ -84,12 +91,25 @@ export default function Projects() {
                 <div className='grid-cell'>
                     <div>
                         <MotionCard
-                            cardData={{ ...BLANK_CARD_DATA, cardContent: { cardHoverInfo: 'uhh test', cardBack: 'img/michel.png' } }}
+                            cardData={card2Dat}
+                            setActiveCard={setActiveCard}
+                            activeCard={activeCard.id}
+                            centeringTargetRef={mainRef}
                             style={{
                                 // make this the size of the image somehow?
-                                width: 300,
-                                height: 300,
-                            }}>
+                                width: '100%',
+                                height: '100%',
+                            }}
+                            onClick={() => {
+                                setActiveCard((currentActiveCard) => {
+                                    const result = (currentActiveCard.id == card2Dat.id)
+                                    // console.log('click detected! ', currentActiveCard.id, card1Dat.id, result);
+                                    if  (result) { return BLANK_CARD_DATA }
+                                    else return card2Dat
+                                });
+
+                            }}
+                        >
 
                         </MotionCard>
                     </div>

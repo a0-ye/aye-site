@@ -27,6 +27,7 @@
 
 #centercol {
   height: 100vh;
+  position: relative;
   display: grid;
   grid-template-rows: [cardbounds] 150px [displayspace] 1fr;
   overflow: hidden;

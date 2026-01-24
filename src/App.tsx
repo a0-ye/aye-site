@@ -139,9 +139,14 @@ function App() {
         trySwapOrigins={trySwapOrigins}
         style={{ ...cardStyle }}
         hideWhenOpen
+        centeringTargetRef={centerColRef}
       />
     )
   }
+
+  // Refs
+  const centerColRef = useRef(null)
+
 
   return (
     <>
@@ -151,7 +156,7 @@ function App() {
 
         </LeftPanel>
       </div>
-      <div id='centercol'>
+      <div ref={centerColRef} id='centercol'>
         <div className='CardBounds' style={{}}>
           <motion.div style={{
             position: 'absolute', right: '5%', top: '50%', fontSize: 'xx-large'
@@ -191,7 +196,7 @@ function App() {
           </DndContext>
 
         </div>
-        <motion.div id='content-display' style={{}}>
+        <motion.div  id='content-display' style={{}}>
           <AnimatePresence>
             {activeCard != BLANK_CARD_DATA &&
               <ContentWrap key={activeCard.id}>{activeCard.cardContent.content}</ContentWrap>}

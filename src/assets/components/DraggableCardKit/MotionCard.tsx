@@ -1,6 +1,6 @@
 import './MotionCard.css'
 import { motion, useAnimate, useMotionValue, useSpring, useTransform, useVelocity, type MotionStyle, type PanInfo } from "motion/react"
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react"
 import Draggable from "../dnd-kit-wrappers/draggable"
 import { BLANK_CARD_DATA, makeCoords, type CardContent, type CardData } from "./CardKitFunctions"
 import type { UniqueIdentifier } from "@dnd-kit/core"
@@ -14,8 +14,9 @@ interface CardProps {
     trySwapOrigins?: Function;
 
     onClick?: Function;
+    centeringTargetRef?: RefObject<HTMLDivElement | null>
     token?: boolean;
-    hideWhenOpen?:boolean;
+    hideWhenOpen?: boolean;
 
     style?: MotionStyle;
     children?: ReactNode;
@@ -71,7 +72,7 @@ export default function MotionCard(props: CardProps) {
 
 
     const returnToOrigin = () => {
-        if (isDragging.current == false) {            
+        if (isDragging.current == false) {
             targetX.set(cardData.origin.x)
             targetY.set(cardData.origin.y)
             animate(scope.current, makeCoords(cardData.origin.x, cardData.origin.y))
@@ -137,6 +138,32 @@ export default function MotionCard(props: CardProps) {
     useEffect(() => {
         setIsOpen(activeCard == cardData.id);
     }, [activeCard])
+
+    const anchorRef = useRef(null)
+    function calculateCenter(boundingRef?: RefObject<HTMLDivElement | null>) {
+        if (!boundingRef?.current || !scope.current || ! anchorRef.current) return [0, 0];
+
+        const target = boundingRef.current.getBoundingClientRect();
+        const cardRect = scope.current.getBoundingClientRect();
+        const anchorRect = anchorRef.current.getBoundingClientRect();
+
+        // 1. Find the center point of the target (absolute viewport pixels)
+        const targetCenterX = target.left + target.width / 2;
+        const targetCenterY = target.top + target.height / 2;
+
+        // 2. ISSUE: Container XY needs to be calculated based on left and top of ABSOLUTE origin 
+        const containerCenterX = cardRect.left + cardRect.width / 2;
+        const containerCenterY = cardRect.top + cardRect.height / 2;
+
+        // 3. The distance between the two centers
+        const centerX = targetCenterX - containerCenterX;
+        const centerY = targetCenterY - containerCenterY;
+
+        console.log(targetCenterX, targetCenterY, containerCenterX, containerCenterY, '|', centerX, centerY);
+
+        return [centerX, centerY]
+    }
+
     useEffect(() => {
         const doAnimation = async () => {
             if (!token) {
@@ -144,13 +171,13 @@ export default function MotionCard(props: CardProps) {
                     // TODO. need to translate left by the leftPanel width + its margin
                     // const rect = scope.current.getBoundingClientRect();
                     // this is unused code to make card open at the center of a given rect. remake?
-                    const leftPanelWidth = document.getElementById('leftcol')?.getBoundingClientRect().width || 0;
-                    const centeredX = ((window.innerWidth - leftPanelWidth) / 2);
-                    const centeredY = (window.innerHeight / 2);
-                    console.log("window center: ", centeredX, centeredY, leftPanelWidth);
-
+                    // const leftPanelWidth = document.getElementById('leftcol')?.getBoundingClientRect().width || 0;
+                    // const centeredX = ((window.innerWidth - leftPanelWidth) / 2);
+                    // const centeredY = (window.innerHeight / 2);
+                    // console.log("window center: ", centeredX, centeredY, leftPanelWidth);
                     // const contentDisplayBox = document.getElementById('content-display')?.getBoundingClientRect()
 
+                    const [centeredX, centeredY] = calculateCenter(props.centeringTargetRef)
                     animate([//animate OPEN
                         [scope.current, { x: centeredX, y: centeredY, }, { duration: 0.4 }],
 
@@ -211,9 +238,9 @@ export default function MotionCard(props: CardProps) {
             ...mergedStyle,
         },
         open: { // fades out
-            width:  hideWhenOpen? 0 : 1200,
-            height: hideWhenOpen? 0 : 1000,
-            opacity: hideWhenOpen? 0 : 1,
+            width: hideWhenOpen ? 0 : 1200,
+            height: hideWhenOpen ? 0 : 1000,
+            opacity: hideWhenOpen ? 0 : 1,
             zIndex: 11,
             PointerEvent: false,
             backgroundColor: '#FFFFFF',
@@ -234,79 +261,82 @@ export default function MotionCard(props: CardProps) {
         }
     }
 
-
     return (
-        <motion.div className="MotionCard"
-            ref={scope}
-            whileHover={isOpen || token ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
-            onHoverStart={() => {
-                if (!isOpen) {
-                    showHoverInfo(true)
-                    animate(scope.current, { rotate: [-15, 0], zIndex: 3 }, { duration: 0.1 })
-                }
-            }}
-            onHoverEnd={() => {
-                showHoverInfo(false)
-                animate(scope.current, { zIndex: isOpen ? 10 : [3, 1] }, { duration: 0.1 })
-                startWiggle();
-            }}
-            whileTap={isOpen ? {} : { scale: 0.99, rotate: 2 }}
-            onClick={() => { props.onClick ? props.onClick() : {} }}
-            drag={!isOpen}
-            onDragStart={onDragStartHandler}
-            onDrag={onDragHandler}
-            onDragEnd={onDragEndHandler}
-            style={{
-                x: currentX, y: currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
-                translateX: '-50%',
-                translateY: '-50%',
-                rotate: angleSpring,
-                originX: '50%%',
-                originY: '-20%',
-                // rotateX: rotateX ,
-                // rotate: angleSpring,
-                ...mergedStyle,
-                // originX:cardData.origin.x, originY:cardData.origin.y
-            }}
-        >
-            <Draggable style={{ pointerEvents: (isOpen ? 'none' : 'auto') }}
-                drag_id={cardData.id}
-                cardData={cardData}
-            />
-            <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-            }} />
+        <div ref={anchorRef} className='anchor'>
 
-            {token? <></> : <>
-                <motion.div className="hoverInfo" style={{
-                    display: token ? 'none' : 'flex',
-                    right: '100%', top: '50%', translateY: '-50%',
-                }}>
-                    {cardContent?.cardHoverInfo}
-                </motion.div>
+            <motion.div className="MotionCard"
+                ref={scope}
+                whileHover={isOpen || token ? {} : { scale: 1.05, boxShadow: '3px 6px 3px black' }}
+                onHoverStart={() => {
+                    if (!isOpen) {
+                        showHoverInfo(true)
+                        animate(scope.current, { rotate: [-15, 0], zIndex: 3 }, { duration: 0.1 })
+                    }
+                }}
+                onHoverEnd={() => {
+                    showHoverInfo(false)
+                    animate(scope.current, { zIndex: isOpen ? 10 : [3, 1] }, { duration: 0.1 })
+                    startWiggle();
+                }}
+                whileTap={isOpen ? {} : { scale: 0.99, rotate: 2 }}
+                onClick={() => { props.onClick ? props.onClick() : {} }}
+                drag={!isOpen}
+                onDragStart={onDragStartHandler}
+                onDrag={onDragHandler}
+                onDragEnd={onDragEndHandler}
+                style={{
+                    x: currentX, y: currentY, // controls the position of the card. Uses currentX and currentY to spring towards targetXY
+                    translateX: '-50%',
+                    translateY: '-50%',
+                    rotate: angleSpring,
+                    originX: '50%%',
+                    originY: '-20%',
+                    // rotateX: rotateX ,
+                    // rotate: angleSpring,
+                    ...mergedStyle,
+                    // originX:cardData.origin.x, originY:cardData.origin.y
+                }}
+            >
+                <Draggable style={{ pointerEvents: (isOpen ? 'none' : 'auto') }}
+                    drag_id={cardData.id}
+                    cardData={cardData}
+                />
+                <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                }} />
 
-                <motion.div
-                    className={"cardContentWrap"}
-                    initial={contentVariants.initial}
-                    style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
-                >
-                    <motion.button style={{
-                        zIndex: 10,
-                        position: 'absolute', margin: 15,
-                        top: '100%', left: '50%',
-                        translateX: '-50%'
-                    }} onClick={() => { 
-                        console.log('internal close card button clicked');
-                        props.setActiveCard?.(BLANK_CARD_DATA); 
-                        
-                    }}> Close Card</motion.button>
-                    {/* { isOpen && cardContent?.cardContent} */}
-                    {props.children}
-                </motion.div>
-            </>}
-        </motion.div>
+                {token ? <></> : <>
+                    <motion.div className="hoverInfo" style={{
+                        display: token ? 'none' : 'flex',
+                        right: '100%', top: '50%', translateY: '-50%',
+                    }}>
+                        {cardContent?.cardHoverInfo}
+                    </motion.div>
+
+                    <motion.div
+                        className={"cardContentWrap"}
+                        initial={contentVariants.initial}
+                        style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
+                    >
+                        <motion.button style={{
+                            zIndex: 10,
+                            position: 'absolute', margin: 15,
+                            top: '100%', left: '50%',
+                            translateX: '-50%'
+                        }} onClick={() => {
+                            console.log('internal close card button clicked');
+                            props.setActiveCard?.(BLANK_CARD_DATA);
+
+                        }}> Close Card</motion.button>
+                        {/* { isOpen && cardContent?.cardContent} */}
+                        {props.children}
+                    </motion.div>
+                </>}
+            </motion.div>
+        </div>
+
 
     )
 }
