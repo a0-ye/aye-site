@@ -3,7 +3,7 @@ import './AboutMe.css'
 import { motion } from 'motion/react';
 import MotionCard from '../components/DraggableCardKit/MotionCard';
 import { BLANK_CARD_DATA } from '../components/DraggableCardKit/CardKitFunctions';
-import StickyNote from '../StickyNote/StickyNote';
+import StickyNote from '../components/StickyNote/StickyNote';
 // import { div } from 'motion/react-client';
 
 
@@ -107,7 +107,7 @@ export default function AboutMe(props: AboutMeProps) {
                             style={{ position: 'absolute', right: '5%', bottom: '0%' }}
                         > - Me, Adrian!</p>
                     </motion.div>
-                    <button onClick={() => { alert('oops this isnt done yet... sorry') }}> resume download button </button>
+                    <button onClick={() => { alert('oops this isnt done yet... sorry') }}> view resume </button>
 
 
                 </motion.div>

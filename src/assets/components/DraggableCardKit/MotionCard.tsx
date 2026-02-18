@@ -17,6 +17,8 @@ interface CardProps {
     centeringTargetRef?: RefObject<HTMLDivElement | null>
     token?: boolean;
     hideWhenOpen?: boolean;
+    showContentOnActivate?: boolean;
+    appendCloseCardButton?:boolean;
 
     style?: MotionStyle;
     children?: ReactNode;
@@ -237,7 +239,7 @@ export default function MotionCard(props: CardProps) {
             PointerEvent: false,
             backgroundColor: '#FFFFFF',
             borderColor: 'transparent',
-            color:'#00ff7b',
+            color:'#ffbb00ff',
             // boxShadow: '7px 7px 15px black',
             cursor: 'auto'
 
@@ -297,6 +299,7 @@ export default function MotionCard(props: CardProps) {
                 <motion.img src={cardContent?.cardBack} className='cardBackImg' style={{
                     width: '100%',
                     height: '100%',
+                    borderRadius:10,
                     objectFit: 'contain',
                 }} />
 
@@ -311,19 +314,21 @@ export default function MotionCard(props: CardProps) {
                     <motion.div
                         className={"cardContentWrap"}
                         initial={contentVariants.initial}
-                        style={{ pointerEvents: (isOpen ? 'auto' : 'none') }}
+                        style={{ pointerEvents: (isOpen ? 'auto' : 'none'), 
+                            width:700, height:600, overflow:'hidden',
+                        }}
                     >
-                        <motion.button style={{
+                        { props.appendCloseCardButton && <motion.button style={{
                             zIndex: 10,
                             position: 'absolute', margin: 15,
                             top: '100%', left: '50%',
                             translateX: '-50%'
                         }} onClick={() => {
-                            console.log('internal close card button clicked');
+                            // console.log('internal close card button clicked', props.activeCard);
                             props.setActiveCard?.(BLANK_CARD_DATA);
 
-                        }}> Close Card</motion.button>
-                        { cardContent?.content}
+                        }}> Close Card</motion.button>}
+                        {props.showContentOnActivate && cardContent?.content}
                         {props.children}
                     </motion.div>
                 </>}

@@ -1,5 +1,11 @@
 #proj-main {
-    overflow: scroll;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 100vw;
+    overflow-y: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     padding: 2% 5% 5% 5%;
 
     /* scroll-behavior: smooth; */
@@ -11,22 +17,49 @@
     --lightcolor: #ffdef2;
     --darkcolor: #fff8fc;
     position: relative;
-    background-color: #460606;
+    background-color: #ffe3be;
 
-
-    display:flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
 }
 
-.project-box {
+#content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+#banner-container {
+    background-color: color-mix(in srgb, var(--boss-blind-color), rgb(53, 53, 53) 20%);
+    color: #fff;
+    width: 750px;
+}
+
+
+#projects-container {
+    width: min-content;
+    /* height: 100vh; */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+}
+
+
+
+.projectBox {
     /* position: absolute; */
-    width: auto;
-    height: 600px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 
     background-color: var(--lightcolor);
     /* margin: 10px; */
     border: 2px solid black;
+    border-radius: 5px;
     /* border-radius: 15px; */
 
     align-items: center;
@@ -37,13 +70,21 @@
 
 #projects-grid {
     position: relative;
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     gap: 20px;
     /* width: 80vw; */
     max-width: 990px;
-    /* grid-template-columns:1fr 1fr; */
+    grid-template-columns: 1fr 1fr;
     /* grid-template-rows: 1fr 1fr 1fr 1fr; */
+}
+
+.project-banner {
+    background-color: #621099;
+    color: #fff;
+    font-size: xx-large;
+    border-radius: 10px 10px 0px 0px;
+    padding: 5px;
 }
 
 .project-row {
@@ -52,8 +93,8 @@
 }
 
 .grid-cell {
-    width: 300px;
-    height: 300px;
+    width: 150px;
+    height: 150px;
     align-self: center;
     justify-self: center;
     position: relative;

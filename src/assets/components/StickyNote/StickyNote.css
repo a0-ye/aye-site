@@ -1,0 +1,37 @@
+.sticky{
+    min-width: 60px;
+    min-height: 100px;
+    max-width: 175px;
+    max-height: 200px;
+    padding: 1%;
+
+    position: relative;
+    border-color: #cfcfcfd0;
+    /* border-style: dashed; */
+    border-top: dashed #cfcfcfd0;
+    border-bottom: dashed #cfcfcfd0;
+    border-width: 4px;
+    /* border-radius: 15px; */
+    background-color: #fdff8ff1;
+
+    color: black    ;
+    font-size: large;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tape{
+    
+    width: 100px;
+    height: 30px;
+    background-color: aqua;
+    opacity: 0.5;
+    position:absolute;
+    align-self: center;
+    top:0%;
+    left: 50%;
+    translate: -50% -50%;
+    
+}
