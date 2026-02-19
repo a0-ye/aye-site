@@ -274,22 +274,13 @@ export default function Projects() {
                     // height: 'min-content' 
                 }}>
 
-                    <div id='banner-container' style={{
+                    {/* <div id='banner-container' style={{
                         // backgroundColor:'',
                         borderRadius: 3, border: 'solid 3px #2b2b2bff', position: 'relative'
                     }}>
                         <h1> Projects</h1>
-                        <motion.div style={{ position: 'absolute', top: '50%', right: '-5%', rotate: '5deg' }}
-                            initial={{ opacity: 0, scale: 1.5 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.2, delay: 1 }}
-                        >
-                            <StickyNote>
-                                Click on any of the cards to view a project!
-                            </StickyNote>
-                        </motion.div>
-                    </div>
-                    <h3> These are some of my projects I want to showcase.<br /> Theres more are in progress, so expect more in the future!</h3>
+                        
+                    </div> */}
 
                     <motion.div
                         id="project-notebook"
@@ -301,7 +292,7 @@ export default function Projects() {
                             backgroundColor: '#fdfdfd', // Slightly off-white paper
                             borderRadius: '8px',
                             boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-                            overflow: 'hidden',
+                            // overflow: 'hidden',
                             padding: '40px',
                             // --- THE GRID ---
                             backgroundImage: `
@@ -359,8 +350,55 @@ export default function Projects() {
                                 marginBottom: '20px',
                                 display: 'inline-block'
                             }}>
-                                Project Notes
+                                <motion.div style={{ position: 'absolute', top: '0%', right: '-25%', rotate: '5deg' }}
+                                    initial={{ opacity: 0, scale: 1.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.2, delay: 1 }}
+                                >
+                                    <StickyNote>
+                                        Click on any of the cards to view a project!
+                                    </StickyNote>
+                                </motion.div>
+
+
+                                Projects Overview
                             </h2>
+                            <p style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 'medium', borderBottom: '2px solid rgba(0,0,0,0.1)', }}>
+                                These are some of my projects I want to showcase. Theres more in the works, so expect to see them in the near future!
+                            </p>
+                            <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 'medium', }}>
+                                Im currently working on a <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> lightweight narritive game engine </span> entirely in React,
+                                and a website for a USC student newsletter called <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> The Burkean Parlor </span>.
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
+                                <p> The Field Collector's Guide </p>
+                                <div className='progress-bar-outer'>
+                                    <motion.div className='progress-bar-inner'
+                                        style={{
+                                            width: '50%',
+                                            backgroundColor: '#abff84ff'
+                                        }}
+                                        initial={{ width: '0%' }}
+                                        animate={{ width: '50%' }}
+                                        transition={{ delay: 0.5, duration:2}}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
+                                <p>The Burkean Parlor Website </p>
+                                <div className='progress-bar-outer'>
+                                    <motion.div className='progress-bar-inner'
+                                        style={{
+                                            width: '20%',
+                                            backgroundColor: '#ffe284ff'
+                                        }}
+                                        initial={{ width: '0%' }}
+                                        animate={{ width: '20%' }}
+                                        transition={{ delay: 0.5, duration: 2 }}
+                                    />
+                                </div>
+                            </div>
 
                             {/* Two Column Layout */}
                             <div style={{
@@ -372,17 +410,17 @@ export default function Projects() {
                                 {/* Left Column: Tech & Specs */}
                                 <div style={{ flex: 1 }}>
                                     <h3 style={{ fontSize: '1.2rem', color: '#d9534f', textDecoration: 'underline' }}>
-                                        Technical Specs
+                                        Current Project Specs
                                     </h3>
                                     <div style={{ marginTop: '10px', lineHeight: '1.6' }}>
                                         <strong>Technologies:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>React, Framer Motion, Proxmox, CSS Gradients</p>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>React, Framer Motion, Python</p>
 
                                         <strong>Domain:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>Virtualization / Frontend Architecture</p>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>Frontend Architecture</p>
 
                                         <strong>Resources:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>GitHub Docs, MDN Web Docs</p>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>GitHub Docs, MDN Web Docs, Motion.dev Docs</p>
                                     </div>
                                 </div>
 
@@ -396,7 +434,7 @@ export default function Projects() {
                                 {/* Right Column: Thoughts & Learnings */}
                                 <div style={{ flex: 1.5 }}>
                                     <h3 style={{ fontSize: '1.2rem', color: '#428bca', textDecoration: 'underline' }}>
-                                        Developer Logs
+                                        Developer Comments
                                     </h3>
                                     <p style={{
                                         marginTop: '10px',
@@ -406,7 +444,18 @@ export default function Projects() {
                                         fontSize: '0.95rem'
                                     }}>
                                         {/* This is where your selected project state text would go */}
-                                        This project pushed my understanding of CSS layout cycles. I learned how to manage absolute positioning without breaking page scroll by using container-level overflow rules. The hardest part was getting the gears to feel "heavy" yet smooth.
+
+
+                                        {/* Put some bullshit here. Gotta be intelligent you know... About this much bullshit:
+                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles.
+                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles.
+                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles. */}
+                                        I'm currently researching methods to convert Docx / XML to my engine's JSX so that users can write and format in docx and import files directly hassle free.
+                                        My main task is writing a parser that is capable of properly recognize and convert DOCX XML tags to CSS.
+                                        <br /><br />
+                                        Originally I made my own format defined with just JSON and a basic JSON editor written in python using Tkinter, but I realized its too cumbersome for
+                                        non technical users, making it a good idea to pivot to a more accessible format that people can use.
+
                                     </p>
                                 </div>
                             </div>
@@ -460,7 +509,7 @@ export default function Projects() {
 
             </div>
             <motion.div id='darkscreen modal' style={{
-                position: 'absolute', top:'0%',
+                position: 'absolute', top: '0%',
                 width: '100%', height: '100%', backgroundColor: '#313131ad',
                 pointerEvents: 'none'
             }}
