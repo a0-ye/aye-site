@@ -81,7 +81,7 @@ function makeCardContent(name: string, date: string, description: ReactNode, img
 
 export default function Projects() {
     const [activeCard, setActiveCard] = useState<CardData>(BLANK_CARD_DATA)
-    const mainRef = useRef<HTMLDivElement>(null)
+    const targetCenteringRef = useRef<HTMLDivElement>(null)
     // const { scrollYProgress } = useScroll({ container: mainRef })
     // const parallaxCardTracker = useTransform(scrollYProgress, [0, 1], [0, contentList.length - 1])
     // const [prog, setProg] = useState(0);
@@ -238,7 +238,7 @@ export default function Projects() {
                 cardData={cardData}
                 setActiveCard={setActiveCard}
                 activeCard={activeCard.id}
-                centeringTargetRef={mainRef}
+                centeringTargetRef={targetCenteringRef}
                 showContentOnActivate
                 style={{
                     // make this the size of the image somehow?
@@ -262,21 +262,24 @@ export default function Projects() {
 
 
     return (
-        <div ref={mainRef} id='proj-main'>
-            <div id='top-half' style={{ display: 'grid', gridTemplateColumns: '1fr 1fr',
-                position:'relative' , zIndex:1}}>
-                <div id='banner-text-container' style={{ backgroundColor: '#0e701bff', 
-                    display:'flex', flexDirection:'column',
-                    alignItems:'center',
+        <div id='proj-main'>
+            <div id='main-2column-grid' style={{
+                display: 'grid', gridTemplateColumns: '1fr 1fr',
+                position: 'relative',
+            }}>
+                <div id='banner-text-container' style={{
+                    // backgroundColor: '#0e701bff', 
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center',
                     // height: 'min-content' 
-                    }}>
+                }}>
 
                     <div id='banner-container' style={{
                         // backgroundColor:'',
                         borderRadius: 3, border: 'solid 3px #2b2b2bff', position: 'relative'
                     }}>
                         <h1> Projects</h1>
-                        <motion.div style={{ position: 'absolute', top: '50%', right: '-15%', rotate: '5deg' }}
+                        <motion.div style={{ position: 'absolute', top: '50%', right: '-5%', rotate: '5deg' }}
                             initial={{ opacity: 0, scale: 1.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.2, delay: 1 }}
@@ -287,26 +290,137 @@ export default function Projects() {
                         </motion.div>
                     </div>
                     <h3> These are some of my projects I want to showcase.<br /> Theres more are in progress, so expect more in the future!</h3>
-                    
-                    
-                    <div style={{height:'100%', backgroundColor:'#fff'}}> filler </div>
+
+                    <motion.div
+                        id="project-notebook"
+                        style={{
+                            position: 'relative',
+                            display: 'flex', justifyContent: 'center',
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: '#fdfdfd', // Slightly off-white paper
+                            borderRadius: '8px',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                            overflow: 'hidden',
+                            padding: '40px',
+                            // --- THE GRID ---
+                            backgroundImage: `
+            linear-gradient(to right, rgba(0,100,200,0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,100,200,0.1) 1px, transparent 1px)
+        `,
+                            backgroundSize: '30px 30px', // Adjust size of the grid squares here
+                        }}
+                        animate={{
+                            zIndex: activeCard == BLANK_CARD_DATA ? 1 : 10,
+                            scale: activeCard == BLANK_CARD_DATA ? 1 : 1.02
+                        }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        {/* Spiral Coil Container */}
+                        <div style={{
+                            position: 'absolute',
+                            left: '10px',
+                            top: 0,
+                            bottom: 0,
+                            width: '20px',
+                            zIndex: 10,
+                            background: 'repeating-linear-gradient(transparent, transparent 15px, #777 15px, #aaa 20px, #777 22px)'
+                        }} />
+
+                        {/* Three Hole Punches */}
+                        <div style={{
+                            position: 'absolute',
+                            left: '35px',
+                            top: 0,
+                            bottom: 0,
+                            width: '30px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-around',
+                            padding: '40px 0',
+                            pointerEvents: 'none'
+                        }}>
+                            {[1, 2, 3].map(i => (
+                                <div key={i} style={{
+                                    width: '15px',
+                                    height: '15px',
+                                    backgroundColor: '#333', // This should match the background behind the paper
+                                    borderRadius: '50%',
+                                    boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.5)'
+                                }} />
+                            ))}
+                        </div>
+                        <div style={{ marginLeft: '60px', position: 'relative', zIndex: 1, paddingRight: '20px' }}>
+                            <h2 style={{
+                                fontFamily: '"Courier New", Courier, monospace',
+                                fontSize: 'xx-large',
+                                color: '#333',
+                                borderBottom: '2px solid rgba(0,0,0,0.1)', // Subtle underline for the title
+                                marginBottom: '20px',
+                                display: 'inline-block'
+                            }}>
+                                Project Notes
+                            </h2>
+
+                            {/* Two Column Layout */}
+                            <div style={{
+                                display: 'flex',
+                                gap: '40px',
+                                fontFamily: '"Courier New", Courier, monospace', // Keep the typewriter/tech vibe
+                            }}>
+
+                                {/* Left Column: Tech & Specs */}
+                                <div style={{ flex: 1 }}>
+                                    <h3 style={{ fontSize: '1.2rem', color: '#d9534f', textDecoration: 'underline' }}>
+                                        Technical Specs
+                                    </h3>
+                                    <div style={{ marginTop: '10px', lineHeight: '1.6' }}>
+                                        <strong>Technologies:</strong>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>React, Framer Motion, Proxmox, CSS Gradients</p>
+
+                                        <strong>Domain:</strong>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>Virtualization / Frontend Architecture</p>
+
+                                        <strong>Resources:</strong>
+                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>GitHub Docs, MDN Web Docs</p>
+                                    </div>
+                                </div>
+
+                                {/* Vertical Divider Line */}
+                                <div style={{
+                                    width: '1px',
+                                    backgroundColor: 'rgba(0,0,0,0.1)',
+                                    alignSelf: 'stretch'
+                                }} />
+
+                                {/* Right Column: Thoughts & Learnings */}
+                                <div style={{ flex: 1.5 }}>
+                                    <h3 style={{ fontSize: '1.2rem', color: '#428bca', textDecoration: 'underline' }}>
+                                        Developer Logs
+                                    </h3>
+                                    <p style={{
+                                        marginTop: '10px',
+                                        color: '#444',
+                                        fontStyle: 'italic',
+                                        lineHeight: '1.5',
+                                        fontSize: '0.95rem'
+                                    }}>
+                                        {/* This is where your selected project state text would go */}
+                                        This project pushed my understanding of CSS layout cycles. I learned how to manage absolute positioning without breaking page scroll by using container-level overflow rules. The hardest part was getting the gears to feel "heavy" yet smooth.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+
+
                 </div>
 
-                <div id='projects-container' style={{
+                <div id='projects-container' ref={targetCenteringRef} style={{
                     backgroundColor: '#e2bbc3ff', padding: 50,
                     border: 'solid 2px #242424ff', borderRadius: 15,
                     // more layout settings in the css
                 }}>
-                    <motion.div id='darkscreen modal' style={{
-                        position: 'absolute',
-                        width: '120%', height: '120%', backgroundColor: '#313131ad',
-                        pointerEvents: 'none'
-                    }}
-                        animate={{
-                            opacity: activeCard == BLANK_CARD_DATA ? 0 : 1,
-                            zIndex: activeCard == BLANK_CARD_DATA ? 0 : 5,
-                        }}
-                    />
                     <motion.div id='projects-grid'
                         style={{
                             // height: 500,
@@ -343,7 +457,18 @@ export default function Projects() {
                         </div>
                     </motion.div>
                 </div>
+
             </div>
+            <motion.div id='darkscreen modal' style={{
+                position: 'absolute', top:'0%',
+                width: '100%', height: '100%', backgroundColor: '#313131ad',
+                pointerEvents: 'none'
+            }}
+                animate={{
+                    opacity: activeCard == BLANK_CARD_DATA ? 0 : 1,
+                    zIndex: activeCard == BLANK_CARD_DATA ? 0 : 5,
+                }}
+            />
             {/* <div id='bottom-half' style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
                 <div> filler </div>
                 <div id='projects-container' style={{
@@ -404,7 +529,7 @@ export default function Projects() {
                 initial={{ y: 500 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '25%', left: '-15%' ,zIndex:0}}
+                style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
             >
                 <motion.img
                     src='img/gear-icon-13.png'
@@ -420,7 +545,7 @@ export default function Projects() {
                 initial={{ y: 500 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '25%', left: '-15%' ,zIndex:0}}
+                style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
             >
                 <motion.img
                     src='img/gear-icon-13.png'
@@ -437,7 +562,7 @@ export default function Projects() {
                 initial={{ y: 500 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '10%', right: '-10%' ,zIndex:0}}
+                style={{ position: 'absolute', top: '10%', right: '-10%', zIndex: 0 }}
             >
                 <motion.img
                     src='img/gear-icon-13.png'

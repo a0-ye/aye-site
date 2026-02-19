@@ -167,12 +167,15 @@ export default function AboutMe(props: AboutMeProps) {
                         transition={{ delay: 1.2 }}
                     >
                         <motion.div className='notecard'
-                            style={{ position: 'absolute', width: '100%', height: '100%', rotate: '-6deg', }}
+                            style={{ position: 'absolute', width: '100%', height: '100%', rotate: '-6deg', 
+                                fontFamily: '"Courier New", Courier, monospace', fontSize:'large',
+                                paddingTop:'1.7em'
+                            }}
                             initial={{ y: '-90%' }}
                             animate={{ y: '-10%' }}
                             transition={{ delay: 1.2 }}
                         >
-                        <p>Software Developer with a BS Computer Science & Engineering from UC San Diego.</p>
+                        Software Developer with a BS Computer Science & Engineering from UC San Diego.
                         </motion.div>
                         <p style={{}}>Software Developer with a BS Computer Science & Engineering from UC San Diego.</p>
                     </motion.div>
