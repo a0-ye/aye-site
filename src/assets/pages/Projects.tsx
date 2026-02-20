@@ -90,7 +90,7 @@ export default function Projects() {
     const card1Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
-            cardHoverInfo: 'Personal Website', cardBack: 'img/projects/webCard2.png',
+            cardHoverInfo: 'Personal Website', cardBack: 'img/sprout-token2.png',
             content: makeCardContent('This Website', '2026',
                 <><div> This is my personal website, if its hard to tell!</div>
                     <p> Main ingredients include: React, Motion.dev, and DndKit.</p>
@@ -164,11 +164,11 @@ export default function Projects() {
                 <div>
                     UCSD Hard Hack Hackathon, 2024 and 2025. I had a lot of fun working with my friends. We didn't win but it was a great experience working with people with different specialties, combining hardware, software, and mechanical engineering.
 
-                    <a href='https://devpost.com/software/pantry-pal-2-0'
+                    <a href='https://github.com/a0-ye/HardHack24'
                         target="_blank"
                         rel="noopener noreferrer"
-                    > 2025</a>
-                    <a href='https://github.com/a0-ye/HardHack24'
+                    > 2024</a>
+                    <a href='https://devpost.com/software/pantry-pal-2-0'
                         target="_blank"
                         rel="noopener noreferrer"
                     > 2025</a>
@@ -206,7 +206,7 @@ export default function Projects() {
     const card8Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
-            cardHoverInfo: 'Horse Game Remake', cardBack: 'img/projects/horseCard.png', content: makeCardContent(
+            cardHoverInfo: 'Horse Game Remake', cardBack: 'img/projects/horsecard2.png', content: makeCardContent(
                 'Horse Game Remake', '2024',
                 <>
                     <div>{"24 hour Horse Game Recreation attempt (was for fun)"} There was a game on twitter dot com that blew up for a while. It was some silly horse PNGs bouncing around a maze trying to win by reaching a bundle of carrots. I thought I could make it, so I made my best attempt to do so in just one day. The end result was pretty good and I had a great time learning Godot!</div>
@@ -229,7 +229,7 @@ export default function Projects() {
             )
         }
     }
-    const card10Dat: CardData= {
+    const card10Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
             cardHoverInfo: "The Burkean Parlor", cardBack: 'img/michel.png', content: makeCardContent(
@@ -276,7 +276,7 @@ export default function Projects() {
 
 
     return (
-        <div  ref={targetCenteringRef} id='proj-main'>
+        <div ref={targetCenteringRef} id='proj-main'>
             <div id='main-2column-grid' style={{
                 display: 'grid', gridTemplateColumns: '1fr 1fr',
                 position: 'relative',
@@ -299,7 +299,7 @@ export default function Projects() {
                     <motion.div
                         id="project-notebook"
                         style={{
-                            position: 'relative', zIndex:1,
+                            position: 'relative', zIndex: 1,
                             display: 'flex', justifyContent: 'center',
                             width: '100%',
                             height: '100%',
@@ -315,11 +315,11 @@ export default function Projects() {
         `,
                             backgroundSize: '30px 30px', // Adjust size of the grid squares here
                         }}
-                        // animate={{
-                        //     zIndex: activeCard == BLANK_CARD_DATA ? 1 : 10,
-                        //     scale: activeCard == BLANK_CARD_DATA ? 1 : 1.02
-                        // }}
-                        // transition={{ duration: 0.3 }}
+                    // animate={{
+                    //     zIndex: activeCard == BLANK_CARD_DATA ? 1 : 10,
+                    //     scale: activeCard == BLANK_CARD_DATA ? 1 : 1.02
+                    // }}
+                    // transition={{ duration: 0.3 }}
                     >
                         {/* Spiral Coil Container */}
                         <div style={{
@@ -395,7 +395,7 @@ export default function Projects() {
                                         }}
                                         initial={{ width: '0%' }}
                                         animate={{ width: '50%' }}
-                                        transition={{ delay: 0.5, duration:2}}
+                                        transition={{ delay: 0.5, duration: 2 }}
                                     />
                                 </div>
                             </div>
@@ -465,11 +465,11 @@ export default function Projects() {
                                         Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles.
                                         Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles. */}
                                         I'm currently researching methods to convert Docx / XML to my engine's JSX so that users
-                                         can write and format in docx and import files directly hassle free.
+                                        can write and format in docx and import files directly hassle free.
                                         My main task is writing a parser that is capable of properly recognize and convert DOCX XML tags to CSS.
                                         <br /><br />
                                         Originally I made my own format defined with just JSON and a basic JSON editor written
-                                         in python using Tkinter, but I realized its too cumbersome for
+                                        in python using Tkinter, but I realized its too cumbersome for
                                         non technical users, making it a good idea to pivot to a more accessible format that people can use.
 
                                     </p>
@@ -528,7 +528,7 @@ export default function Projects() {
 
             </div>
             <motion.div id='darkscreen modal' style={{
-                position: 'fixed', top: '0%', left:'0%',
+                position: 'fixed', top: '0%', left: '0%',
                 width: '100%', height: '100%', backgroundColor: '#313131ad',
                 pointerEvents: 'none'
             }}

@@ -37,11 +37,11 @@ function App() {
   const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
   const aboutMeContent: CardContent = {
     content: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
-    cardBack: "img/cardbacks/cropshot.jpg",
+    cardBack: "img/cardbacks/cropshot.png",
     cardHoverInfo: 'About Me!',
   }
   const c2Content: CardContent = {
-    cardBack: "img/michel.png",
+    cardBack: "img/cardbacks/notebook.png",
     cardHoverInfo: 'Projects',
     content: <Projects />,
   }

@@ -169,7 +169,7 @@ export default function AboutMe(props: AboutMeProps) {
                         <motion.div className='notecard'
                             style={{ position: 'absolute', width: '100%', height: '100%', rotate: '-6deg', 
                                 fontFamily: '"Courier New", Courier, monospace', fontSize:'large',
-                                paddingTop:'1.7em'
+                                paddingTop:'1.3em'
                             }}
                             initial={{ y: '-90%' }}
                             animate={{ y: '-10%' }}
@@ -200,7 +200,7 @@ export default function AboutMe(props: AboutMeProps) {
                 animate={{ opacity: 1, y: '0%' }}
                 transition={{ delay: 1 }}
             >
-                <motion.div className='padded-chad-box'
+                {/* <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
                     layout
                     whileInView={{ opacity: 1, y: '0%' }}
@@ -217,7 +217,7 @@ export default function AboutMe(props: AboutMeProps) {
                     {makeChad('Advanced Debugging', ['GDB', 'Valgrind', 'Chrome/Firefox DevTools', 'PDB', 'Memory Management'])}
                     {makeChad('Specialized', ['NumPy', 'Pandas', 'Librosa', 'PyTorch'])}
 
-                </motion.div>
+                </motion.div> */}
 
                 <motion.div className='padded-chad-box'
                     initial={{ opacity: 0, y: '30%' }}
