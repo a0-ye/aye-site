@@ -9,7 +9,7 @@
   /* border-right: 3px solid #676767; */
 
   display: grid;
-  grid-template-rows: [blind] 150px [score] 75px [hand1] 150px [bottom] 250px;
+  grid-template-rows: [blind] 150px [hand1] 150px [bottom] 250px;
   /* grid-template-rows: [blind] 1fr [score] 50px [hand1] 1fr [bottom] 1fr ; */
   align-items: stretch;
 }

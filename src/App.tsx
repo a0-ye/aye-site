@@ -38,7 +38,7 @@ function App() {
   const aboutMeContent: CardContent = {
     content: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
     cardBack: "img/cardbacks/cropshot.png",
-    cardHoverInfo: 'About Me!',
+    cardHoverInfo: 'About Me',
   }
   const c2Content: CardContent = {
     cardBack: "img/cardbacks/notebook.png",
@@ -158,12 +158,7 @@ function App() {
       </div>
       <div ref={centerColRef} id='centercol'>
         <div className='CardBounds' style={{}}>
-          <motion.div style={{
-            position: 'absolute', right: '5%', top: '50%', fontSize: 'xx-large'
-          }}
-            initial={{}}
-          >
-            Drag a card to the Use zone to navigate to different pages!</motion.div>
+          {/* <motion.div style={{position: 'absolute', right: '5%', top: '50%', fontSize: 'xx-large'}}initial={{}}>Drag a card to the Use zone to navigate to different pages!</motion.div> */}
           <DndContext onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
             onDragOver={handleOnDragOver}
@@ -174,7 +169,6 @@ function App() {
             <CardZone zoneData={zoneData[jokerZoneID]} draggedCardStartZone={draggedCardStartZone}
               style={{ backgroundColor: '#3b3d46a9' }}
             >
-              Info about myself. about me, projects, etc
             </CardZone>
 
             <CardZone zoneData={zoneData[UseZoneID]}
