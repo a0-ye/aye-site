@@ -50,7 +50,7 @@ export default function ContentWrap(props: ContentWrapProps) {
             minHeight: 0, 
             display: 'flex', 
             flexDirection: 'column',
-            overflow: 'hidden', 
+            // overflow: 'hidden', 
             transition: {
                 delay: 1,
                 duration: 0.5
@@ -63,7 +63,7 @@ export default function ContentWrap(props: ContentWrapProps) {
 
     return (<>
         <motion.div
-            id='contentWrapClsas'
+            id='contentWrap'
             initial={variants.closed}
             animate={variants.open}
             exit={variants.exit}

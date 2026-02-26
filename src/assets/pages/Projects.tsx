@@ -1,12 +1,10 @@
-import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
+import { motion } from 'motion/react'
 import './Projects.css'
-import { act, useId, useRef, useState, type ReactNode } from 'react'
+import { useId, useRef, useState, type ReactNode } from 'react'
 // import ProjectCard, { type projectContent } from '../components/ProjectCard/ProjectCard'
 import MotionCard from '../components/DraggableCardKit/MotionCard'
 import { BLANK_CARD_DATA, type CardData } from '../components/DraggableCardKit/CardKitFunctions'
 
-import { contentList } from './ProjectsDat'
-import { line, main } from 'motion/react-client'
 import StickyNote from '../components/StickyNote/StickyNote'
 
 
@@ -78,8 +76,12 @@ function makeCardContent(name: string, date: string, description: ReactNode, img
     </motion.div>
 }
 
+interface ProjectsProps {
+    doMovingBackground?: boolean
+}
 
-export default function Projects() {
+export default function Projects(props: ProjectsProps) {
+    props
     const [activeCard, setActiveCard] = useState<CardData>(BLANK_CARD_DATA)
     const targetCenteringRef = useRef<HTMLDivElement>(null)
     // const { scrollYProgress } = useScroll({ container: mainRef })
@@ -92,7 +94,7 @@ export default function Projects() {
         cardContent: {
             cardHoverInfo: 'Personal Website', cardBack: 'img/sprout-token2.png',
             content: makeCardContent('This Website', '2026',
-                <><div> This is my personal website, if its hard to tell!</div>
+                <><div > This is my personal website, if its hard to tell!</div>
                     <p> Main ingredients include: React, Motion.dev, and DndKit.</p>
                     {/* <p> Didn't have any knowledge of vite, and little real experience with React, zero knowledge of Motion.
                         As a project, it was a perfect hands on learning experience. I had a lot of trouble/fun trying to recreate the feel of Balatro cards with the tools I was using.
@@ -276,220 +278,177 @@ export default function Projects() {
 
 
     return (
-        <div ref={targetCenteringRef} id='proj-main'>
-            <div id='main-2column-grid' style={{
-                display: 'grid', gridTemplateColumns: '1fr 1fr',
+        <div id='proj-main' ref={targetCenteringRef} style={{
+            padding: '5em',
+            border: 'red 2px solid',
+        }}>
+            <div id='book' style={{
                 position: 'relative',
+                display: 'flex', height: 'min-content', gap: '2em', padding: '3em',
+                backgroundColor: '#2e1c07ff', borderRadius: '5px',
+                zIndex: 3,
+
             }}>
-                <div id='banner-text-container' style={{
-                    // backgroundColor: '#0e701bff', 
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: 'center',
-                    // height: 'min-content' 
-                }}>
-
-                    {/* <div id='banner-container' style={{
-                        // backgroundColor:'',
-                        borderRadius: 3, border: 'solid 3px #2b2b2bff', position: 'relative'
+                <motion.div id="overview-page" className='gridpaper'
+                    style={{
+                    }}
+                >
+                    {/* Spiral Coil Container */}
+                    <div className='spiral' style={{
+                        right: 10
+                    }} />
+                    {/* Three Hole Punches */}
+                    <div className='holepunch' style={{
+                        right: '35px',
                     }}>
-                        <h1> Projects</h1>
-                        
-                    </div> */}
+                        {[1, 2, 3].map(i => (
+                            <div key={i} style={{
+                                width: '15px',
+                                height: '15px',
+                                backgroundColor: '#333', // This should match the background behind the paper
+                                borderRadius: '50%',
+                                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.5)'
+                            }} />
+                        ))}
+                    </div>
+                    <div id='pagecontent'
+                        style={{ marginLeft: '60px', position: 'relative', zIndex: 1, paddingRight: '20px' }}>
+                        <h2 style={{
+                            fontSize: 'xx-large',
+                            color: '#333',
+                            borderBottom: '2px solid rgba(0,0,0,0.1)',
+                            marginBottom: '20px',
+                            display: 'inline-block'
+                        }}>
+                            Projects Overview
+                        </h2>
+                        <p style={{ fontSize: 'medium', borderBottom: '2px solid rgba(0,0,0,0.1)', }}>
+                            These are some of my projects I want to showcase. Theres more in the works, so expect to see them in the near future!
+                        </p>
+                        <div style={{ fontSize: 'medium', }}>
+                            Im currently working on a <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> lightweight narritive game engine </span> entirely in React,
+                            and a website for a USC student newsletter called <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> The Burkean Parlor </span>.
+                        </div>
 
-                    <motion.div
-                        id="project-notebook"
-                        style={{
-                            position: 'relative', zIndex: 1,
-                            display: 'flex', justifyContent: 'center',
-                            width: '100%',
-                            height: '100%',
-                            backgroundColor: '#fdfdfd', // Slightly off-white paper
-                            borderRadius: '8px',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-                            // overflow: 'hidden',
-                            padding: '40px',
-                            // --- THE GRID ---
-                            backgroundImage: `
-            linear-gradient(to right, rgba(0,100,200,0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,100,200,0.1) 1px, transparent 1px)
-        `,
-                            backgroundSize: '30px 30px', // Adjust size of the grid squares here
-                        }}
-                    // animate={{
-                    //     zIndex: activeCard == BLANK_CARD_DATA ? 1 : 10,
-                    //     scale: activeCard == BLANK_CARD_DATA ? 1 : 1.02
-                    // }}
-                    // transition={{ duration: 0.3 }}
-                    >
-                        {/* Spiral Coil Container */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
+                            <p> The Field Collector's Guide </p>
+                            <div className='progress-bar-outer'>
+                                <motion.div className='progress-bar-inner'
+                                    style={{
+                                        width: '50%',
+                                        backgroundColor: '#abff84ff'
+                                    }}
+                                    initial={{ width: '0%' }}
+                                    animate={{ width: '50%' }}
+                                    transition={{ delay: 0.5, duration: 2 }}
+                                />
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
+                            <p>The Burkean Parlor Website </p>
+                            <div className='progress-bar-outer'>
+                                <motion.div className='progress-bar-inner'
+                                    style={{
+                                        width: '20%',
+                                        backgroundColor: '#ffe284ff'
+                                    }}
+                                    initial={{ width: '0%' }}
+                                    animate={{ width: '20%' }}
+                                    transition={{ delay: 0.5, duration: 2 }}
+                                />
+                            </div>
+                        </div>
                         <div style={{
-                            position: 'absolute',
+                            display: 'flex',
+                            gap: '40px'
+                        }}>
+
+                            {/* Left Column: Tech & Specs */}
+                            <div style={{ flex: 1 }}>
+                                <h3 style={{ fontSize: '1.2rem', color: '#d9534f', textDecoration: 'underline' }}>
+                                    Current Project Specs
+                                </h3>
+                                <div style={{ marginTop: '10px', lineHeight: '1.6' }}>
+                                    <strong>Technologies:</strong>
+                                    <p style={{ color: '#555', fontSize: '0.9rem' }}>React, Framer Motion, Python</p>
+
+                                    <strong>Domain:</strong>
+                                    <p style={{ color: '#555', fontSize: '0.9rem' }}>Frontend Architecture</p>
+
+                                    <strong>Resources:</strong>
+                                    <p style={{ color: '#555', fontSize: '0.9rem' }}>GitHub Docs, MDN Web Docs, Motion.dev Docs</p>
+                                </div>
+                            </div>
+                            <div id='dividerline' style={{
+                                width: '1px',
+                                backgroundColor: 'rgba(0,0,0,0.1)',
+                                alignSelf: 'stretch'
+                            }} />
+
+                            <div style={{ flex: 1.5 }}>
+                                <h3 style={{ fontSize: '1.2rem', color: '#428bca', textDecoration: 'underline' }}>
+                                    Developer Comments
+                                </h3>
+                                <p style={{
+                                    marginTop: '10px',
+                                    color: '#444',
+                                    fontStyle: 'italic',
+                                    lineHeight: '1.5',
+                                    fontSize: '0.95rem'
+                                }}>
+                                    I'm currently researching methods to convert Docx / XML to my engine's JSX so that users
+                                    can write and format in docx and import files directly hassle free.
+                                    My main task is writing a parser that is capable of properly recognize and convert DOCX XML tags to CSS.
+                                    <br /><br />
+                                    Originally I made my own format defined with just JSON and a basic JSON editor written
+                                    in python using Tkinter, but I realized its too cumbersome for
+                                    non technical users, making it a good idea to pivot to a more accessible format that people can use.
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+
+                <motion.div id="project-page" className='gridpaper'
+                    style={{
+                    }}
+                >
+                    {/* Spiral Coil Container */}
+                    <div className='spiral'
+                        style={{
                             left: '10px',
-                            top: 0,
-                            bottom: 0,
-                            width: '20px',
-                            zIndex: 10,
-                            background: 'repeating-linear-gradient(transparent, transparent 15px, #777 15px, #aaa 20px, #777 22px)'
                         }} />
 
-                        {/* Three Hole Punches */}
-                        <div style={{
-                            position: 'absolute',
-                            left: '35px',
-                            top: 0,
-                            bottom: 0,
-                            width: '30px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-around',
-                            padding: '40px 0',
-                            pointerEvents: 'none'
-                        }}>
-                            {[1, 2, 3].map(i => (
-                                <div key={i} style={{
-                                    width: '15px',
-                                    height: '15px',
-                                    backgroundColor: '#333', // This should match the background behind the paper
-                                    borderRadius: '50%',
-                                    boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.5)'
-                                }} />
-                            ))}
-                        </div>
-                        <div style={{ marginLeft: '60px', position: 'relative', zIndex: 1, paddingRight: '20px' }}>
-                            <h2 style={{
-                                fontFamily: '"Courier New", Courier, monospace',
-                                fontSize: 'xx-large',
-                                color: '#333',
-                                borderBottom: '2px solid rgba(0,0,0,0.1)', // Subtle underline for the title
-                                marginBottom: '20px',
-                                display: 'inline-block'
-                            }}>
-                                <motion.div style={{ position: 'absolute', top: '0%', right: '-25%', rotate: '5deg' }}
-                                    initial={{ opacity: 0, scale: 1.5 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.2, delay: 1 }}
-                                >
-                                    <StickyNote>
-                                        Click on any of the cards to view a project!
-                                    </StickyNote>
-                                </motion.div>
+                    {/* Three Hole Punches */}
+                    <div className='holepunch' style={{
+                        left: '35px',
+                    }}>
+                        {[1, 2, 3].map(i => (
+                            <div key={i} style={{
+                                width: '15px',
+                                height: '15px',
+                                backgroundColor: '#333', // This should match the background behind the paper
+                                borderRadius: '50%',
+                                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.5)'
+                            }} />
+                        ))}
+                    </div>
 
-
-                                Projects Overview
-                            </h2>
-                            <p style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 'medium', borderBottom: '2px solid rgba(0,0,0,0.1)', }}>
-                                These are some of my projects I want to showcase. Theres more in the works, so expect to see them in the near future!
-                            </p>
-                            <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: 'medium', }}>
-                                Im currently working on a <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> lightweight narritive game engine </span> entirely in React,
-                                and a website for a USC student newsletter called <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> The Burkean Parlor </span>.
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
-                                <p> The Field Collector's Guide </p>
-                                <div className='progress-bar-outer'>
-                                    <motion.div className='progress-bar-inner'
-                                        style={{
-                                            width: '50%',
-                                            backgroundColor: '#abff84ff'
-                                        }}
-                                        initial={{ width: '0%' }}
-                                        animate={{ width: '50%' }}
-                                        transition={{ delay: 0.5, duration: 2 }}
-                                    />
-                                </div>
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1em' }}>
-                                <p>The Burkean Parlor Website </p>
-                                <div className='progress-bar-outer'>
-                                    <motion.div className='progress-bar-inner'
-                                        style={{
-                                            width: '20%',
-                                            backgroundColor: '#ffe284ff'
-                                        }}
-                                        initial={{ width: '0%' }}
-                                        animate={{ width: '20%' }}
-                                        transition={{ delay: 0.5, duration: 2 }}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Two Column Layout */}
-                            <div style={{
-                                display: 'flex',
-                                gap: '40px',
-                                fontFamily: '"Courier New", Courier, monospace', // Keep the typewriter/tech vibe
-                            }}>
-
-                                {/* Left Column: Tech & Specs */}
-                                <div style={{ flex: 1 }}>
-                                    <h3 style={{ fontSize: '1.2rem', color: '#d9534f', textDecoration: 'underline' }}>
-                                        Current Project Specs
-                                    </h3>
-                                    <div style={{ marginTop: '10px', lineHeight: '1.6' }}>
-                                        <strong>Technologies:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>React, Framer Motion, Python</p>
-
-                                        <strong>Domain:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>Frontend Architecture</p>
-
-                                        <strong>Resources:</strong>
-                                        <p style={{ color: '#555', fontSize: '0.9rem' }}>GitHub Docs, MDN Web Docs, Motion.dev Docs</p>
-                                    </div>
-                                </div>
-
-                                {/* Vertical Divider Line */}
-                                <div style={{
-                                    width: '1px',
-                                    backgroundColor: 'rgba(0,0,0,0.1)',
-                                    alignSelf: 'stretch'
-                                }} />
-
-                                {/* Right Column: Thoughts & Learnings */}
-                                <div style={{ flex: 1.5 }}>
-                                    <h3 style={{ fontSize: '1.2rem', color: '#428bca', textDecoration: 'underline' }}>
-                                        Developer Comments
-                                    </h3>
-                                    <p style={{
-                                        marginTop: '10px',
-                                        color: '#444',
-                                        fontStyle: 'italic',
-                                        lineHeight: '1.5',
-                                        fontSize: '0.95rem'
-                                    }}>
-                                        {/* This is where your selected project state text would go */}
-
-
-                                        {/* Put some bullshit here. Gotta be intelligent you know... About this much bullshit:
-                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles.
-                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles.
-                                        Padded pillows full of bricks and nickles. Padded pillows full of bricks and nickles. */}
-                                        I'm currently researching methods to convert Docx / XML to my engine's JSX so that users
-                                        can write and format in docx and import files directly hassle free.
-                                        My main task is writing a parser that is capable of properly recognize and convert DOCX XML tags to CSS.
-                                        <br /><br />
-                                        Originally I made my own format defined with just JSON and a basic JSON editor written
-                                        in python using Tkinter, but I realized its too cumbersome for
-                                        non technical users, making it a good idea to pivot to a more accessible format that people can use.
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    <motion.div style={{ position: 'absolute', top: '0%', left: '40%', rotate: '5deg' }}
+                        initial={{ opacity: 0, scale: 1.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.2, delay: 1 }}
+                    >
+                        <StickyNote>
+                            Click on any of the cards to view a project!
+                        </StickyNote>
                     </motion.div>
-
-
-                </div>
-
-                <div id='projects-container' style={{
-                    backgroundColor: '#e2bbc3ff', padding: 50,
-                    border: 'solid 2px #242424ff', borderRadius: 15,
-                    // more layout settings in the css
-                }}>
                     <motion.div id='projects-grid'
                         style={{
                             // height: 500,
                             // overflow: 'hidden',
+                            fontFamily: 'm6x11'
                         }}
                     >
                         <div className='grid-cell'>
@@ -524,141 +483,89 @@ export default function Projects() {
                             {makeProjectCard(card10Dat)}
                         </div>
                     </motion.div>
-                </div>
+                </motion.div>
 
-            </div>
-            <motion.div id='darkscreen modal' style={{
-                position: 'fixed', top: '0%', left: '0%',
-                width: '100%', height: '100%', backgroundColor: '#313131ad',
-                pointerEvents: 'none'
-            }}
-                animate={{
-                    opacity: activeCard == BLANK_CARD_DATA ? 0 : 1,
-                    zIndex: activeCard == BLANK_CARD_DATA ? 0 : 5,
+                <motion.div id='darkscreen modal' style={{
+                    position: 'fixed', top: '0%', left: '0%',
+                    width: '500vw', height: '500vh', backgroundColor: '#313131ad',
+                    pointerEvents: 'none'
                 }}
-            />
-            {/* <div id='bottom-half' style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-                <div> filler </div>
-                <div id='projects-container' style={{
-                    backgroundColor: '#e2bbc3ff', padding: 50,
-                    border: 'solid 2px #242424ff', borderRadius: 15,
-                    // more layout settings in the css
-                }}>
-                    <motion.div id='darkscreen modal' style={{
-                        position: 'absolute',
-                        width: '120%', height: '120%', backgroundColor: '#313131ad',
-                        pointerEvents: 'none'
+                    animate={{
+                        opacity: activeCard == BLANK_CARD_DATA ? 0 : 1,
+                        zIndex: activeCard == BLANK_CARD_DATA ? 0 : 2,
                     }}
-                        animate={{
-                            opacity: activeCard == BLANK_CARD_DATA ? 0 : 1,
-                            zIndex: activeCard == BLANK_CARD_DATA ? 0 : 5,
-                        }}
-                    />
-                    <motion.div id='projects-grid'
-                        style={{
-                            // height: 500,
-                            // overflow: 'hidden',
-                        }}
+                />
+            </div>
+            {
+                props.doMovingBackground && <div style={{}}>
+                    <motion.div
+                        initial={{ y: 500 }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 2, ease: 'easeOut' }}
+                        style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
                     >
-                        <div className='grid-cell'>
-                            {makeProjectCard(card1Dat)}
+                        <motion.img
+                            src='img/gear-icon-13.png'
+                            style={{
+                                opacity: 0.3,
+                                scale: 3,
+                            }}
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 40, ease: 'linear' }}
+                        />
+                    </motion.div>
+                    <motion.div
+                        initial={{ y: 500 }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 2, ease: 'easeOut' }}
+                        style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
+                    >
+                        <motion.img
+                            src='img/gear-icon-13.png'
+                            style={{
+                                opacity: 0.3,
+                                scale: 2,
+                            }}
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
+                        />
+                    </motion.div>
 
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card2Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card3Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card4Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card5Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card6Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card7Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card8Dat)}
-                        </div>
-                        <div className='grid-cell'>
-                            {makeProjectCard(card9Dat)}
-                        </div>
+                    <motion.div
+                        initial={{ y: 500 }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 2, ease: 'easeOut' }}
+                        style={{ position: 'absolute', top: '10%', right: '-10%', zIndex: 0 }}
+                    >
+                        <motion.img
+                            src='img/gear-icon-13.png'
+                            style={{
+                                opacity: 0.3,
+                                scale: 2,
+                            }}
+                            animate={{ rotate: -360 }}
+                            transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ y: 500 }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 2, ease: 'easeOut' }}
+                        style={{ position: 'absolute', top: '55%', right: '-5%' }}
+                    >
+                        <motion.img
+                            src='img/gear-icon-13.png'
+                            style={{
+                                opacity: 0.3,
+                                scale: 1,
+                            }}
+                            animate={{ rotate: 360 }}
+                            transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
+                        />
                     </motion.div>
                 </div>
-
-            </div> */}
-
-            <motion.div
-                initial={{ y: 500 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
-            >
-                <motion.img
-                    src='img/gear-icon-13.png'
-                    style={{
-                        opacity: 0.3,
-                        scale: 3,
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 40, ease: 'linear' }}
-                />
-            </motion.div>
-            <motion.div
-                initial={{ y: 500 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '25%', left: '-15%', zIndex: 0 }}
-            >
-                <motion.img
-                    src='img/gear-icon-13.png'
-                    style={{
-                        opacity: 0.3,
-                        scale: 2,
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
-                />
-            </motion.div>
-
-            <motion.div
-                initial={{ y: 500 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '10%', right: '-10%', zIndex: 0 }}
-            >
-                <motion.img
-                    src='img/gear-icon-13.png'
-                    style={{
-                        opacity: 0.3,
-                        scale: 2,
-                    }}
-                    animate={{ rotate: -360 }}
-                    transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
-                />
-            </motion.div>
-
-            <motion.div
-                initial={{ y: 500 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-                style={{ position: 'absolute', top: '50%', right: '5%' }}
-            >
-                <motion.img
-                    src='img/gear-icon-13.png'
-                    style={{
-                        opacity: 0.3,
-                        scale: 1,
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
-                />
-            </motion.div>
+            }
 
         </div >
     )

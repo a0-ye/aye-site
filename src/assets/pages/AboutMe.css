@@ -85,30 +85,6 @@
     background-repeat: no-repeat, repeat;
 }
 
-.ticket-header {
-    background-color: transparent;
-    margin: 2% 30% 2% 30%;
-    font-size: xx-large;
-    border-top: 5px solid black;
-    color: #ffffff;
-    /* Change this value to adjust the stamp perforation size: */
-    --radius: 8px;
-    background-image:
-        radial-gradient(var(--radius),
-            transparent 98%,
-            var(--boss-blind-color)),
-        linear-gradient(var(--boss-blind-color) 0 0);
-    background-repeat:
-        round,
-        no-repeat;
-    background-position:
-        calc(var(--radius) * -1.5) calc(var(--radius) * -1.5),
-        50%;
-    background-size:
-        calc(var(--radius) * 3) calc(var(--radius) * 3),
-        calc(100% - var(--radius) * 3) calc(100% - var(--radius) * 3);
-
-}
 
 .squiggle-border {
     width: 12rem;
@@ -123,7 +99,7 @@
 .padded-chad-box {
     width: 90%;
     height: auto;
-    min-height: 90%;
+    /* min-height: 90%; */
     border-radius: 7px;
     border-color: #686868;
     border-style: solid;

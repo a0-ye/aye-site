@@ -88,18 +88,6 @@
 #hand-box {
   margin: 3px 0px 3px 0px;
 }
-#buttons-n-numbers-grid{
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: 1fr 2fr;
-  padding: 2px;
-
-}
-#panel-button-container{
-  display: grid;
-  justify-items: center;
-  align-items: center;
-}
 #numbers-container {
   display: grid;
   padding: 2px;

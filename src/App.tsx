@@ -14,7 +14,7 @@ import LeftPanel from './assets/components/left-panel/LeftPanel'
 import { animate } from 'motion'
 import Projects from './assets/pages/Projects'
 import { AnimatePresence, motion } from 'motion/react'
-import { Papers } from './assets/pages/Papers'
+import Experience from './assets/pages/Experience'
 import PopupPanel from './assets/components/popup-panel/PopupPanel'
 import ContentWrap from './assets/pages/ContentWrap'
 
@@ -25,7 +25,7 @@ function App() {
   const [activeCard, setActiveCard] = useState<CardData>(BLANK_CARD_DATA) // needs to be here to give props to cards
   const [showInfo, setShowInfo] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [currSettings, setSettings] = useState({ beSerious: true })
+  const [doMovingBackground, setDoMovingBackground] = useState(true)
 
   const c1ID = useId();
   const c2ID = useId();
@@ -34,21 +34,21 @@ function App() {
   const jokerZoneID = useId(); // Where jokers live.. No functionality, just naming like balaro :drooling:
   // const consumableZoneID = useId(); // Where consumables live.. No functionality, just naming like balaro :drooling:
   const UseZoneID = useId();
-  const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
+  // const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
   const aboutMeContent: CardContent = {
-    content: <AboutMe currSettings={currSettings}>{closeCardButton}</AboutMe>,
+    content: <AboutMe/>,
     cardBack: "img/cardbacks/cropshot.png",
     cardHoverInfo: 'About Me',
   }
   const c2Content: CardContent = {
     cardBack: "img/cardbacks/notebook.png",
     cardHoverInfo: 'Projects',
-    content: <Projects />,
+    content: <Projects doMovingBackground={doMovingBackground}/>,
   }
   const c3Content: CardContent = {
     cardBack: "img/andrew.png",
-    cardHoverInfo: 'Papers',
-    content: Papers,
+    cardHoverInfo: 'Experience',
+    content: <Experience/>,
   }
 
   const initialCards: InitCardData[] = [
@@ -190,7 +190,7 @@ function App() {
           </DndContext>
 
         </div>
-        <motion.div  id='content-display' style={{}}>
+        <motion.div id='content-display' style={{}}>
           <AnimatePresence>
             {activeCard != BLANK_CARD_DATA &&
               <ContentWrap key={activeCard.id}>{activeCard.cardContent.content}</ContentWrap>}
@@ -198,11 +198,11 @@ function App() {
         </motion.div>
       </div>
       {showInfo && <PopupPanel setFunction={setShowInfo}>
-        <div>Hello this is the Info Panel {showInfo}</div>
+        <div>Hello this is the Contact Me panel {showInfo}</div>
       </PopupPanel>}
       {showSettings && <PopupPanel setFunction={setShowSettings}>
         <div>Hello this is the Settings Panel </div>
-        <button style={{ backgroundColor: currSettings.beSerious ? 'blue' : 'orange' }} onClick={() => { setSettings({ ...currSettings, beSerious: (!currSettings.beSerious) }) }}> toggle serious mode</button>
+        <button style={{ backgroundColor: doMovingBackground ? 'blue' : 'orange' }} onClick={() => { setDoMovingBackground(prev => !prev) }}> Toggle Moving Background</button>
       </PopupPanel>}
 
 
@@ -228,50 +228,54 @@ function App() {
       >
       </motion.div>
 
-      <motion.div id='moving-bkg-1'
-        transition={{
-          duration: 60,
-          ease: 'linear',
-          repeat: Infinity
-        }}
-        initial={{
-          zIndex: -10,
-          position: 'absolute',
-          top: '50%', left: '50%',
-          translateX: '-50%',
-          translateY: '-50%',
-          width: '200vw', height: '200vw',
-        }
-        }
-        animate={{
-          translateX: '-25%',
-          translateY: '-25%',
-          // width: 0, height: 0
-        }}
-      >
-      </motion.div>
-      <motion.div id='moving-bkg-2'
-        transition={{
-          duration: 60,
-          ease: 'linear',
-          repeat: Infinity
-        }}
-        initial={{
-          zIndex: -10,
-          position: 'absolute',
-          top: '50%', left: '50%',
-          translateX: '-25%',
-          translateY: '-25%',
-          width: '200vw', height: '200vw',
-        }
-        }
-        animate={{
-          translateX: '-50%',
-          translateY: '-50%',
-          // width: 0, height: 0
-        }}
-      >
-      </motion.div>
+      {doMovingBackground &&
+        <>
+          <motion.div id='moving-bkg-1'
+            transition={{
+              duration: 60,
+              ease: 'linear',
+              repeat: Infinity
+            }}
+            initial={{
+              zIndex: -10,
+              position: 'absolute',
+              top: '50%', left: '50%',
+              translateX: '-50%',
+              translateY: '-50%',
+              width: '200vw', height: '200vw',
+            }
+            }
+            animate={{
+              translateX: '-25%',
+              translateY: '-25%',
+              // width: 0, height: 0
+            }}
+          >
+          </motion.div>
+          <motion.div id='moving-bkg-2'
+            transition={{
+              duration: 60,
+              ease: 'linear',
+              repeat: Infinity
+            }}
+            initial={{
+              zIndex: -10,
+              position: 'absolute',
+              top: '50%', left: '50%',
+              translateX: '-25%',
+              translateY: '-25%',
+              width: '200vw', height: '200vw',
+            }
+            }
+            animate={{
+              translateX: '-50%',
+              translateY: '-50%',
+              // width: 0, height: 0
+            }}
+          >
+          </motion.div>
+        </>
+      }
     </>
   )
 }

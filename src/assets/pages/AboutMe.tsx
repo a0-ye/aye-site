@@ -11,7 +11,6 @@ import StickyNote from '../components/StickyNote/StickyNote';
 
 interface AboutMeProps {
     children?: ReactNode;
-    currSettings: { beSerious: boolean };
 }
 
 function makeSquiggleBorder() {
@@ -29,9 +28,9 @@ function makeSquiggleBorder() {
 const color1 = '#ffa7a7ff'
 const color2 = '#dcff9cff'
 const color3 = '#fdb7ffff'
-const color4 = '#b8b7ffff'
-const color5 = 'rgba(183, 255, 195, 1)'
-const color6 = '#b7ffe1ff'
+// const color4 = '#b8b7ffff'
+// const color5 = 'rgba(183, 255, 195, 1)'
+// const color6 = '#b7ffe1ff'
 
 const randomColor = () => {
     const value = Math.random()
@@ -40,7 +39,7 @@ const randomColor = () => {
     return color3
 }
 
-function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
+export function makeChad(label: string, contents: string[], newlineFlag?: boolean) {
 
     return <motion.div
         key={label + contents}
@@ -107,7 +106,7 @@ export default function AboutMe(props: AboutMeProps) {
                             style={{ position: 'absolute', right: '5%', bottom: '0%' }}
                         > - Me, Adrian!</p>
                     </motion.div>
-                    <button onClick={() => { alert('oops this isnt done yet... sorry') }}> view resume </button>
+                    {/* <button onClick={() => { alert('oops this isnt done yet... sorry') }}> view resume </button> */}
 
 
                 </motion.div>
@@ -142,7 +141,7 @@ export default function AboutMe(props: AboutMeProps) {
                                     }}>
                                         <div>
                                             <MotionCard
-                                                cardData={{...BLANK_CARD_DATA, cardContent:{ cardBack: 'img/gradsmile.jpg'}}}
+                                                cardData={{ ...BLANK_CARD_DATA, cardContent: { cardBack: 'img/gradsmile.jpg' } }}
                                                 style={{
                                                     // make this the size of the image somehow?
                                                     width: 300,
@@ -167,15 +166,16 @@ export default function AboutMe(props: AboutMeProps) {
                         transition={{ delay: 1.2 }}
                     >
                         <motion.div className='notecard'
-                            style={{ position: 'absolute', width: '100%', height: '100%', rotate: '-6deg', 
-                                fontFamily: '"Courier New", Courier, monospace', fontSize:'large',
-                                paddingTop:'1.3em'
+                            style={{
+                                position: 'absolute', width: '100%', height: '100%', rotate: '-6deg',
+                                fontFamily: '"Courier New", Courier, monospace', fontSize: 'large',
+                                paddingTop: '1.3em'
                             }}
                             initial={{ y: '-90%' }}
                             animate={{ y: '-10%' }}
                             transition={{ delay: 1.2 }}
                         >
-                        Software Developer with a BS Computer Science & Engineering from UC San Diego.
+                            Software Developer with a BS Computer Science & Engineering from UC San Diego.
                         </motion.div>
                         <p style={{}}>Software Developer with a BS Computer Science & Engineering from UC San Diego.</p>
                     </motion.div>
@@ -195,314 +195,176 @@ export default function AboutMe(props: AboutMeProps) {
             <div id='aboutme-header'>
                 Stats n' Facts
             </div>
-            <motion.div className='tri-grid' style={{ paddingLeft: '5%', paddingRight: '5%' }}
+
+            <motion.div className='padded-chad-box'
                 initial={{ opacity: 0, y: '30%' }}
-                animate={{ opacity: 1, y: '0%' }}
-                transition={{ delay: 1 }}
+                layout
+                whileInView={{ opacity: 1, y: '0%' }}
+                transition={{ delay: 0.2 }}
+                viewport={{ once: true }}
+                style={{width:'auto'}}
             >
-                {/* <motion.div className='padded-chad-box'
-                    initial={{ opacity: 0, y: '30%' }}
-                    layout
-                    whileInView={{ opacity: 1, y: '0%' }}
-                    viewport={{ once: true }}
-                    // transition={{ delay: 0.1 }}
-                >
-                    <p style={{ textDecoration: 'underline', margin: 0 }}>
-                        Tech Deck [Use Card Carousel]:
-                    </p>
-                    {makeChad('Languages & Packages', ['Python', 'Javascript', 'Typescript', 'Java', 'C/C++', 'C#', 'MATLAB', 'Markdown', 'SQLite'])}
-                    {makeChad('Frontend & Design', ['React', 'CSS3', 'Framer Motion', 'Responsive UI'])}
-                    {makeChad('Tools & DevOps', ['Git/GitHub', 'Github Actions', 'Linux/Unix (Ubuntu/Debian)', 'Bash', 'systemd.service'])}
-                    {makeChad('Hardware & Systems', ['SystemVerilog', 'Assembly', 'RISC-V Architecture', 'OS Architecture & Scheduling'])}
-                    {makeChad('Advanced Debugging', ['GDB', 'Valgrind', 'Chrome/Firefox DevTools', 'PDB', 'Memory Management'])}
-                    {makeChad('Specialized', ['NumPy', 'Pandas', 'Librosa', 'PyTorch'])}
+                <p style={{ textDecoration: 'underline', margin: 0, fontSize:'xx-large'}}>
+                    Values:
+                </p>
 
-                </motion.div> */}
-
-                <motion.div className='padded-chad-box'
-                    initial={{ opacity: 0, y: '30%' }}
-                    layout
-                    whileInView={{ opacity: 1, y: '0%' }}
-                    transition={{ delay: 0.2 }}
-                    viewport={{ once: true }}
-                >
+                <motion.div
+                    drag
+                    dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                    dragElastic={0.2}
+                    className='chad'>
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
-                        Values:
+                        Challenging ideas and having my ideas challenged:
                     </p>
-
-                    <motion.div
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        dragElastic={0.2}
-                        className='chad'>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Challenging ideas and having my ideas challenged:
-                        </p>
-                        I believe ideas and belief are best improved through critical analysis. It is important to look past personal bias to find
-                        the most robust solution.
-                    </motion.div>
-                    <motion.div
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        dragElastic={0.2}
-                        className='chad'>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Intellectual Openness:
-                        </p>
-                        It's easy to get entrenched in one's own beliefs. I value genuine discussions and new perspectives,
-                        as they are essential for a well rounded understanding!
-                    </motion.div>
-                    <motion.div
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        dragElastic={0.2}
-                        className='chad'>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Listening & learning from feedback:
-                        </p>
-                        Taking feedback is a practiced skill that I prioritize. While it's sometimes difficult,
-                        listening to others provides the necessary insights for personal and professional improvement.
-                    </motion.div>
-                    <motion.div
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        dragElastic={0.2}
-                        className='chad'>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Having in-depth discussions of new and innovative topics:
-                        </p>
-                        I love diving deep into the 'how' and 'why' of emerging tech or unconventional ideas.
-                        Nothing beats sharing a conversation that gets down to the minute and specific details
-                        of a complex concept.
-                    </motion.div>
+                    I believe ideas and belief are best improved through critical analysis. It is important to look past personal bias to find
+                    the most robust solution.
+                </motion.div>
+                <motion.div
+                    drag
+                    dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                    dragElastic={0.2}
+                    className='chad'>
                     <p style={{ textDecoration: 'underline', margin: 0 }}>
-                        Interests & Hobbies:
+                        Intellectual Openness:
                     </p>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                        <div>
-                            <motion.div
-                                drag
-                                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                                dragElastic={0.2}
-                                className='chad'>
-                                <p style={{ textDecoration: 'underline', margin: 0 }}>
-                                    Learning New Tech:
-                                </p>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Torrenting Protocols
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Proxmox Virtualization
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    PC hardware specs
-                                </span>
-                            </motion.div>
-                            <motion.div
-                                drag
-                                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                                dragElastic={0.2}
-                                className='chad'>
-                                <p style={{ textDecoration: 'underline', margin: 0 }}>
-                                    Gaming:
-                                </p>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    MHGU
-                                </span><span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Deltarune
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Balatro
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Dungeons & Dragons
-                                </span>
-                            </motion.div>
-                        </div>
-                        <div>
-                            <motion.div
-                                drag
-                                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                                dragElastic={0.2}
-                                className='chad'>
-                                <p style={{ textDecoration: 'underline', margin: 0 }}>
-                                    Piano:
-                                </p>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Ruder Buster
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    My Castle Town
-                                </span>
-                            </motion.div>
-                            <motion.div
-                                drag
-                                dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                                dragElastic={0.2}
-                                className='chad'>
-                                <p style={{ textDecoration: 'underline', margin: 0 }}>
-                                    Scripts
-                                </p>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Simple Webscrapers
-                                </span>
-                                <span style={{
-                                    minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                    borderRadius: 12, backgroundColor: color2
-                                }}>
-                                    Silly Automation Tools
-                                </span>
-                            </motion.div>
-                        </div>
+                    It's easy to get entrenched in one's own beliefs. I value genuine discussions and new perspectives,
+                    as they are essential for a well rounded understanding!
+                </motion.div>
+                <motion.div
+                    drag
+                    dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                    dragElastic={0.2}
+                    className='chad'>
+                    <p style={{ textDecoration: 'underline', margin: 0 }}>
+                        Listening & learning from feedback:
+                    </p>
+                    Taking feedback is a practiced skill that I prioritize. While it's sometimes difficult,
+                    listening to others provides the necessary insights for personal and professional improvement.
+                </motion.div>
+                <motion.div
+                    drag
+                    dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                    dragElastic={0.2}
+                    className='chad'>
+                    <p style={{ textDecoration: 'underline', margin: 0 }}>
+                        Having in-depth discussions of new and innovative topics:
+                    </p>
+                    I love diving deep into the 'how' and 'why' of emerging tech or unconventional ideas.
+                    Nothing beats sharing a conversation that gets down to the minute and specific details
+                    of a complex concept.
+                </motion.div>
+                <p style={{ textDecoration: 'underline', margin: 0 }}>
+                    Interests & Hobbies:
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <div>
+                        <motion.div
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragElastic={0.2}
+                            className='chad'>
+                            <p style={{ textDecoration: 'underline', margin: 0 }}>
+                                Learning New Tech:
+                            </p>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Torrenting Protocols
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Proxmox Virtualization
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                PC hardware specs
+                            </span>
+                        </motion.div>
+                        <motion.div
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragElastic={0.2}
+                            className='chad'>
+                            <p style={{ textDecoration: 'underline', margin: 0 }}>
+                                Gaming:
+                            </p>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                MHGU
+                            </span><span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Deltarune
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Balatro
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Dungeons & Dragons
+                            </span>
+                        </motion.div>
                     </div>
-                </motion.div>
-                <motion.div className='padded-chad-box'
-                    initial={{ opacity: 0, y: '30%' }}
-                    layout
-                    whileInView={{ opacity: 1, y: '0%' }}
-                    transition={{ delay: 0.3 }}
-                    viewport={{ once: true }}
-                // style={{ display: 'grid', gridTemplateRows: ' 1.5em 1fr 1fr' }}
-                >
-                    <p style={{ textDecoration: 'underline', margin: 0 }}>
-                        My Foundation:
-                    </p>
-                    {makeChad('Education & Academic Excellence:', ['B.S. in Computer Science & Engineering', 'GPA: 3.65', '9x UCSD Provost Honors Recipient'], true)}
-                    {makeChad('Technical Experience & Project Highlights:', ['Software Engineering Intern @ UH Manoa: Developed AvaSpec bridge for the VIA-SEEs Satellite Project',
-                        'Architected a Single-Cycle CPU and custom ISA using SystemVerilog',
-                        'Machine Learning and Data Processing w/ specialty in audio',
-                    ], true)}
-                    <motion.div
-                        drag
-                        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                        dragElastic={0.2}
-                        className='chad'>
-                        <p style={{ textDecoration: 'underline', margin: 0 }}>
-                            Relevant Coursework:
-                        </p>
-
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color1
-                        }}>
-                            Computer Organization & Systems Programming
-                        </span>
-
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color1
-                        }}>
-                            Operating Systems
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color1
-                        }}>
-                            Computer Architecture
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color1
-                        }}>
-                            Computer Security
-                        </span>
-
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color2
-                        }}>
-                            Design & Analysis of Algorithms
-                        </span>
-
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color2
-                        }}>
-                            Database Principles
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color2
-                        }}>
-                            Machine Learning: Learning Algorithms
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color2
-                        }}>
-                            Computational Theory
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color2
-                        }}>
-                            Advanced Data Structures
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color3
-                        }}>
-                            Software Engineering
-                        </span>
-
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color3
-                        }}>
-                            Interaction Design
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color3
-                        }}>
-                            Computer Networks
-                        </span>
-                        <span style={{
-                            minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                            borderRadius: 12, backgroundColor: color3
-                        }}>
-                            Working with Large Codebases
-                        </span>
-                    </motion.div>
-
-                    {/* {makeChad('Relevant Coursework', ['Systems & Architecture:', '', '', '', '', '', '', '', ''])} */}
-                    <ul style={{ textAlign: 'left' }}>
-                        <li>See more using the Projects Card at the top!</li>
-                    </ul>
-
-                </motion.div>
-
+                    <div>
+                        <motion.div
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragElastic={0.2}
+                            className='chad'>
+                            <p style={{ textDecoration: 'underline', margin: 0 }}>
+                                Piano:
+                            </p>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Ruder Buster
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                My Castle Town
+                            </span>
+                        </motion.div>
+                        <motion.div
+                            drag
+                            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                            dragElastic={0.2}
+                            className='chad'>
+                            <p style={{ textDecoration: 'underline', margin: 0 }}>
+                                Scripts
+                            </p>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Simple Webscrapers
+                            </span>
+                            <span style={{
+                                minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                borderRadius: 12, backgroundColor: color2
+                            }}>
+                                Silly Automation Tools
+                            </span>
+                        </motion.div>
+                    </div>
+                </div>
             </motion.div>
+
             {props.children}
         </motion.div >
 

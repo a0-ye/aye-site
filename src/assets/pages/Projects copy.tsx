@@ -183,15 +183,6 @@ const projectCardVariants = {
     },
 }
 
-/**
- * goes from closed, just the image. When clicked, half the image, grow the bottom up
- */
-const projectContentVariants = {
-    closed: {
-
-    }, open: {}
-}
-
 export default function Projects() {
     const ref = useRef(null)
 
