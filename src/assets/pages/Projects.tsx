@@ -151,7 +151,7 @@ export default function Projects(props: ProjectsProps) {
                 'TCP & ARP Implementations', 'Winter 2025',
                 <>
                     <div>
-                        TCP and ARP from networking class. I had a lot of fun and pain implementing TCP with congestion control and fast retransmission. It was a real eyeopener for how the internet worked, and having hands on experience re-implementing a core protocol was very enlightnening ad well as frustrating. The same could be said for implementing ARP, since it gave me a great understanding of how devices on a local network communicated with each other.
+                        TCP and ARP from networking class. I had a lot of fun and pain implementing TCP with congestion control and fast retransmission. It was a real eye-opener for how the internet worked, and having hands on experience re-implementing a core protocol was very enlightening ad well as frustrating. The same could be said for implementing ARP, since it gave me a great understanding of how devices on a local network communicated with each other.
                     </div>
                 </>,
                 'img/projects/network.png'
@@ -224,7 +224,7 @@ export default function Projects(props: ProjectsProps) {
                 "The Field Collector's Guide", '2026',
                 <>
                     <div>
-                        A text game made with react. I made a narritive game engine in the style of Twine for my friend's narritive project. I made a lot of tools for non-technical people to be able to write stories, so its easilly expandable and usable by all!
+                        A text game made with react. I made a narrative game engine in the style of Twine for my friend's narrative project. I made a lot of tools for non-technical people to be able to write stories, so its easilly expandable and usable by all!
                     </div>
                 </>,
                 'fakepath'
@@ -280,7 +280,6 @@ export default function Projects(props: ProjectsProps) {
     return (
         <div id='proj-main' ref={targetCenteringRef} style={{
             padding: '5em',
-            border: 'red 2px solid',
         }}>
             <div id='book' style={{
                 position: 'relative',
@@ -300,6 +299,8 @@ export default function Projects(props: ProjectsProps) {
                     {/* Three Hole Punches */}
                     <div className='holepunch' style={{
                         right: '35px',
+                        padding: '20px 0'
+
                     }}>
                         {[1, 2, 3].map(i => (
                             <div key={i} style={{
@@ -312,11 +313,12 @@ export default function Projects(props: ProjectsProps) {
                         ))}
                     </div>
                     <div id='pagecontent'
-                        style={{ marginLeft: '60px', position: 'relative', zIndex: 1, paddingRight: '20px' }}>
+                        style={{ marginLeft: '20px', paddingRight: '60px', position: 'relative', zIndex: 1 }}>
                         <h2 style={{
                             fontSize: 'xx-large',
                             color: '#333',
-                            borderBottom: '2px solid rgba(0,0,0,0.1)',
+                            borderBottom: '2px solid rgba(0, 0, 0, 0.64)',
+
                             marginBottom: '20px',
                             display: 'inline-block'
                         }}>
@@ -326,7 +328,7 @@ export default function Projects(props: ProjectsProps) {
                             These are some of my projects I want to showcase. Theres more in the works, so expect to see them in the near future!
                         </p>
                         <div style={{ fontSize: 'medium', }}>
-                            Im currently working on a <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> lightweight narritive game engine </span> entirely in React,
+                            Im currently working on a <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> lightweight narrative game engine </span> entirely in React,
                             and a website for a USC student newsletter called <span style={{ fontWeight: 'bold', borderBottom: '2px solid #353535ff' }}> The Burkean Parlor </span>.
                         </div>
 
@@ -412,6 +414,9 @@ export default function Projects(props: ProjectsProps) {
 
                 <motion.div id="project-page" className='gridpaper'
                     style={{
+                        height: 'auto',
+                        display: 'flex', flexDirection: 'column', gap: '1em',
+                        alignItems: 'center',
                     }}
                 >
                     {/* Spiral Coil Container */}
@@ -435,19 +440,23 @@ export default function Projects(props: ProjectsProps) {
                         ))}
                     </div>
 
-                    <motion.div style={{ position: 'absolute', top: '0%', left: '40%', rotate: '5deg' }}
-                        initial={{ opacity: 0, scale: 1.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.2, delay: 1 }}
-                    >
-                        <StickyNote>
-                            Click on any of the cards to view a project!
-                        </StickyNote>
-                    </motion.div>
+                    <h2 style={{
+                        fontSize: 'xx-large',
+                        color: '#333',
+                        borderBottom: '2px solid rgba(0, 0, 0, 0.64)',
+                        display: 'inline-block'
+                    }}>
+                        Project Cards
+                    </h2>
+                    <div style={{
+                        // position:'absolute', top:'5%', left:'15%',
+                        backgroundColor: '#a2ff8fb6', width: 'fit-content', height: 'auto',
+                    }}>Click on any of the cards below to view a project! <br /> Click again to close the card!</div>
                     <motion.div id='projects-grid'
                         style={{
                             // height: 500,
                             // overflow: 'hidden',
+                            // paddingTop: '100px',
                             fontFamily: 'm6x11'
                         }}
                     >

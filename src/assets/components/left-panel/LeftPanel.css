@@ -90,8 +90,6 @@
 }
 #numbers-container {
   display: grid;
-  padding: 2px;
-  grid-template-rows: 1fr 1fr 1fr;
   align-items: stretch;
 }
 

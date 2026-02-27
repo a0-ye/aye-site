@@ -45,7 +45,7 @@
 .gridpaper {
     position: relative;
     width: 100%;
-    height: max-content;
+    height: auto;
     max-width: 900px;
     background-color: #fdfdfd;
     border-radius: 8px;
@@ -72,11 +72,11 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 30px;
+    width: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 40px 0;
+    padding: 20px 0;
     pointer-events: none;
 }
 
@@ -125,7 +125,6 @@
     /* width: 80vw; */
     max-width: 990px;
     grid-template-columns: 1fr 1fr;
-    /* grid-template-rows: 1fr 1fr 1fr 1fr; */
 }
 
 .project-banner {

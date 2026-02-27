@@ -71,7 +71,7 @@ button {
 button:hover {
   background-color: color-mix(in srgb, #5d108a , var(--boss-blind-color) 30%);
   border-color: #646cff;
-  scale: 1.1;
+  /* scale: 1.1; */
 }
 button:focus,
 button:focus-visible {

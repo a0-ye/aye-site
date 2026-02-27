@@ -4,6 +4,7 @@ import MotionCard from "../DraggableCardKit/MotionCard";
 import { BLANK_CARD_DATA, type CardMap } from "../DraggableCardKit/CardKitFunctions";
 // import AboutMe from "../../pages/AboutMe";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
 interface panelProps {
     activeCard: UniqueIdentifier,
@@ -18,7 +19,7 @@ export default function LeftPanel(props: panelProps) {
     const pageDescriptions: Record<string, string> = {
         'About Me': 'Learn some stuff about me!',
         'Projects': 'This page contains overviews about my projects both past and present.',
-        'Experience': 'A page for experience. Resume, transcript, technical proficiencies',
+        'Experience': 'A page for my experience. Resume, transcript, technical proficiencies',
         'error': ''
     }
     const [counter, setCounter] = useState(new Set())
@@ -72,11 +73,11 @@ export default function LeftPanel(props: panelProps) {
         </div>
 
         <div id='buttons-n-numbers-grid' style={{
-            display:'flex', flexDirection:'column', gap:'1em',
+            display: 'flex', flexDirection: 'column', gap: '1em',
             padding: 2,
         }}>
 
-            <div id='numbers-container'>
+            <div id='numbers-container' style={{ gap: 5 }}>
                 {/* <div id='hand-discard-container' className='duo-val-container'>
                     <div className='panel-box'>
                         <div className='panel-text'>    hands:  </div>
@@ -87,7 +88,7 @@ export default function LeftPanel(props: panelProps) {
                         <div className='panel-value'>   3          </div>
                     </div>
                 </div> */}
-                <div className='panel-box'>
+                <div className='panel-box' >
                     Pages Visited:
                     <div className='panel-value' >{`${counter.size}/3`}</div>
                 </div>
@@ -100,13 +101,38 @@ export default function LeftPanel(props: panelProps) {
                     </div>
                 </div> */}
                 <div id='panel-button-container' style={{
-                    display: 'flex', justifyContent: 'space-evenly',
+                    display: 'flex', justifyContent: 'space-evenly', gap: '10px'
                 }}>
-                    <button className='panel-button' onClick={() => props.setShowInfo(true)}> Contact Me! </button>
-                    <button className='panel-button' onClick={() => props.setShowSettings(true)}> options </button>
+                    <motion.button style={{
+                        width: '50%', rotate: 0
+                    }}
+                        whileHover={{
+                            scale: 1.1,
+                            rotate: ['-3deg', '3deg', '0deg']
+                        }}
+                        className='panel-button' onClick={() => props.setShowInfo(true)}> Contact Me! </motion.button>
+                    <motion.button style={{
+                        width: '50%', rotate: 0
+                    }}
+                        whileHover={{
+                            scale: 1.1,
+                            rotate: ['-3deg', '3deg', '0deg']
+                        }} className='panel-button' onClick={() => props.setShowSettings(true)}> options </motion.button>
                 </div>
             </div>
-            {props.activeCard && <button style={{}} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</button>}
+            {props.activeCard && <motion.button
+                style={{
+                    width: '100%',
+                    height: 500,
+                    rotate: 0,
+                }}
+                initial={{ opacity: 0 }}
+                animate={{opacity: 1,}}
+                exit={{opacity: 0,}}
+                whileHover={{
+                    scale: 1.1,
+                    rotate: ['-3deg', '3deg', '0deg']
+                }} onClick={() => { props.setActiveCard?.(BLANK_CARD_DATA); }}> Close Card</motion.button>}
         </div>
 
     </div >
