@@ -112,8 +112,10 @@ export default function Projects(props: ProjectsProps) {
                 'Single Cycle CPU + ISA', 'June 2025', <>
                 {/* https://github.com/a0-ye/ittybittyriscSOLO */}
                 <div>
-                    My CPU from class. What was supposed to be a duo project became a solo project after my partner dropped. I had to learn how to design and simulate an 8 bit CPU,
-                    with an ISA. I had almost zero knowledge at the beginning. Had a lot of trouble with memory (initial and set) and the flow from power on vs entry point, but I managed by and got full marks! {"(lie.... got a B+)"}
+                    My CPU from class. What was supposed to be a duo project became a solo project after my partner dropped. And during my busiest year yet!
+                    I had to learn how to design and simulate an 8 bit CPU, with its own ISA. I had almost zero knowledge at the beginning. 
+                    Had a lot of trouble with memory (initial and set) and understanding the whole flow from power on, but I left with an amazing understanding
+                    of how machine code actually interacts with the hardware, <span style={{fontStyle:'italic'}}>AND</span> passed the class. No sweat at all...
                 </div>
             </>,
                 'img/projects/cpu.png')
@@ -148,7 +150,12 @@ export default function Projects(props: ProjectsProps) {
                 'TCP & ARP Implementations', 'Winter 2025',
                 <>
                     <div>
-                        TCP and ARP from networking class. I had a lot of fun and pain implementing TCP with congestion control and fast retransmission. It was a real eye-opener for how the internet worked, and having hands on experience re-implementing a core protocol was very enlightening ad well as frustrating. The same could be said for implementing ARP, since it gave me a great understanding of how devices on a local network communicated with each other.
+                        TCP and ARP from networking class. 
+                        I had a lot of fun and pain implementing TCP with congestion control and fast retransmission. 
+                        It was a real eye-opener for how the internet worked, and having hands on
+                         experience re-implementing a core protocol was very enlightening ad well as frustrating. 
+                         The same could be said for implementing ARP, since it gave me a great understanding of 
+                         how devices on a local network communicated with each other.
                     </div>
                 </>,
                 'img/projects/network.png'
@@ -224,6 +231,25 @@ export default function Projects(props: ProjectsProps) {
             )
         }
     }
+    const card7_1Dat: CardData = {
+        id: useId(), zone: '', origin: { x: 0, y: 0 },
+        cardContent: {
+            cardHoverInfo: 'IDLE Minimap', cardBack: 'img/projects/idleminimap.gif', content: makeCardContent(
+                'IDLE Minimap Extension', '2025',
+                <>
+                    <div>
+                        For my Large Codebases class, as a group, we created an extension for an existing codebase, which was Python's IDE, IDLE. <br/>
+                        We started by seeing what features other popular IDEs had, and settled on the Minimap, which shows the entire contents of your file on the side, and 
+                        highlights lines with issues. <br/>
+
+                        It was a fantastic expreince working with an unfamiliar codebase, and also a great application for what I've learned 
+                        about automated testing, as I was responsible for CI testing.
+                    </div>
+                </>,
+                'img/projects/idleminimap.gif'
+            )
+        }
+    }
     const card8Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
@@ -264,7 +290,7 @@ export default function Projects(props: ProjectsProps) {
     const card10Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
-            cardHoverInfo: "The Burkean Parlor", cardBack: 'img/michel.png', content: makeCardContent(
+            cardHoverInfo: "The Burkean Parlor", cardBack: 'img/projects/pardonourdust.jpg', content: makeCardContent(
                 "The Burkean Parlor", '2026',
                 <>
                     <div>
@@ -522,6 +548,9 @@ export default function Projects(props: ProjectsProps) {
                         </div>
                         <div className='grid-cell'>
                             {makeProjectCard(card10Dat)}
+                        </div>
+                        <div className='grid-cell'>
+                            {makeProjectCard(card7_1Dat)}
                         </div>
                     </motion.div>
                 </motion.div>
