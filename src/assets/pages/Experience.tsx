@@ -210,7 +210,9 @@ export default function Experience(props: ExperienceProps) {
                         <div className='course-box'
                             style={{ border: 'none', backgroundColor: 'transparent' }}
                         >
-                            <div>Degree: <br /> GPA: <br /> Awards: </div> <div style={{ textAlign: 'left' }}> B.S. in Computer Science & Engineering <br /> 3.65 <br /> 9x UCSD Provost Honors</div>
+                            <div><span>Degree:</span><br /> GPA: <br /> Awards: </div> <div style={{ textAlign: 'left' }}> 
+                                <span style={{backgroundColor:'#fffb0a86',padding:'0.1em'}}>B.S. in Computer Science & Engineering</span> <br /> 3.65 <br /> 9x UCSD Provost Honors
+                                </div>
                         </div>
                         <div style={{
                             borderTop: 'solid 2px #474747ff',
@@ -249,9 +251,9 @@ export default function Experience(props: ExperienceProps) {
                         transition={{ delay: 1.5, duration: 0.5 }}
                     >
                         {thumbtack()}
-                        Formal Resume Documents. Serious Business!
+                        Check out my resume here. Serious Business Below!
                         <motion.button style={{
-                            width: '70%', height: '40%', rotate: 0,
+                            width: '70%', height: '100%', rotate: 0,
                         }}
                             whileHover={{
                                 scale: 1.1,
@@ -260,7 +262,7 @@ export default function Experience(props: ExperienceProps) {
                             onClick={() => window.open('pdf/aye-resume.pdf', '_blank')}
                         > View Resume In New Tab</motion.button>
 
-                        <motion.button style={{
+                        {/* <motion.button style={{
                             width: '70%', height: '40%', rotate: 0,
                         }}
                             whileHover={{
@@ -268,7 +270,7 @@ export default function Experience(props: ExperienceProps) {
                                 rotate: ['-3deg', '3deg', '0deg']
                             }}
                             onClick={()=>setShowContactMe(true)}
-                        > Contact Me </motion.button>
+                        > Contact Me </motion.button> */}
                     </motion.div>
 
                     { showContactMe && <PopupPanel setFunction={setShowContactMe}>

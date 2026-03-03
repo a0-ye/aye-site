@@ -37,7 +37,7 @@ function App() {
   // const closeCardButton = <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 10 }}><button style={{ alignSelf: 'center', zIndex: 10, }} onClick={() => { setActiveCard?.(BLANK_CARD_DATA); }}>Close Card</button></div>
   const aboutMeContent: CardContent = {
     content: <AboutMe/>,
-    cardBack: "img/cardbacks/cropshot.png",
+    cardBack: "img/cardbacks/aboutmecard.png",
     cardHoverInfo: 'About Me',
   }
   const c2Content: CardContent = {
@@ -46,7 +46,7 @@ function App() {
     content: <Projects doMovingBackground={doMovingBackground}/>,
   }
   const c3Content: CardContent = {
-    cardBack: "img/andrew.png",
+    cardBack: "img/cardbacks/experiencecard.png",
     cardHoverInfo: 'Experience',
     content: <Experience/>,
   }

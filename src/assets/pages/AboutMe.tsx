@@ -315,7 +315,7 @@ export default function AboutMe(props: AboutMeProps) {
                                 minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                                 borderRadius: 12, backgroundColor: color1
                             }}>
-                                MHGU
+                                Deadlock
                             </span><span style={{
                                 minWidth: 30, margin: 6, padding: '0.25em', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                                 borderRadius: 12, backgroundColor: color1

@@ -5,9 +5,6 @@ import { useId, useRef, useState, type ReactNode } from 'react'
 import MotionCard from '../components/DraggableCardKit/MotionCard'
 import { BLANK_CARD_DATA, type CardData } from '../components/DraggableCardKit/CardKitFunctions'
 
-import StickyNote from '../components/StickyNote/StickyNote'
-
-
 /**
  * 
  * Carousel Idea: cards that we can drag and throw to slide through a carousel on
@@ -164,7 +161,9 @@ export default function Projects(props: ProjectsProps) {
             cardHoverInfo: 'HARD Hack', cardBack: 'img/projects/hardhackCard.png', content: makeCardContent(
                 'UCSD HARD Hack 2024 2025', '2024 & 2025',
                 <div>
-                    UCSD Hard Hack Hackathon, 2024 and 2025. I had a lot of fun working with my friends. We didn't win but it was a great experience working with people with different specialties, combining hardware, software, and mechanical engineering.
+                    UCSD Hard Hack Hackathon, 2024 and 2025. I had a lot of fun working with my friends. 
+                    We didn't win but it was a great experience working with people with different specialties,
+                     combining hardware, software, and mechanical engineering.
 
                     <a href='https://github.com/a0-ye/HardHack24'
                         target="_blank"
@@ -186,7 +185,16 @@ export default function Projects(props: ProjectsProps) {
             cardHoverInfo: 'Proxmox', cardBack: 'img/projects/proxmoxCard.png', content: makeCardContent(
                 'Proxmox Node', 'this month!',
                 <>
-                    <div>My Proxmox box. I want to get into self-hosting services for myself and my friends {"(mainly game servers and shows)"}. I had some spare pc parts so I used them to make a proxmox node to host VMs for fun! Admittedly a little overkill for just a few game servers since they could all run on one linux instance but I thought it would be fun to see if I could, rather than should. Plus I plan on expanding to host other services so it worked out.</div>
+                    <div>
+                        My Proxmox box. I want to get into self-hosting services for myself and
+                        my friends {"(mainly game servers and shows)"}. I had some spare pc parts so
+                        I used them to make a proxmox node to host VMs for fun! 
+                        <br/>
+                        Admittedly a little overkill for just a few game servers since they 
+                        could all run on one linux instance but I thought it would be fun
+                        to see if I could, rather than should. I also plan on expanding to host other services, so its nice
+                        to have extra resources.
+                    </div>
                 </>,
                 'img/projects/prox.png'
             )
@@ -198,8 +206,19 @@ export default function Projects(props: ProjectsProps) {
             cardHoverInfo: 'VIA-SEEs', cardBack: 'img/projects/viaseesCard.png', content: makeCardContent(
                 'VIA-SEEs Satellite Project', '2024 - 2025',
                 <>
-                    <div>Worked with UH Manoa VIA-SEEs satellite project. I worked as a software engineer. My main responsibility was to connect the USB interface between the science equipment and the OBC.
-                        Admittedly the project was not well managed.</div>
+                    <div>
+                        Worked as a software developer for the UH Manoa VIA-SEEs cube satellite project.
+                        My main responsibility was to devlop a low-level driver in C/C++ to manage communication between
+                        the CubeSat OBC and on-board instruments.
+                        <br />
+                        I acted as our development team's lead to to bypass organizational bottlenecks, to ensure team velocity during our development cycle, using
+                        AGILE and SCRUM skills I had learned from my software engineering classes.
+                        <br />
+                        One of the major problems my team faced was poorly documented USB protocols, requiring us to do a lot of manual testing to verify
+                        commands working, and communications with the maneufacturer.
+
+                    </div>
+
                 </>,
                 'img/projects/viasees.png'
             )
@@ -211,7 +230,14 @@ export default function Projects(props: ProjectsProps) {
             cardHoverInfo: 'Horse Game Remake', cardBack: 'img/projects/horsecard2.png', content: makeCardContent(
                 'Horse Game Remake', '2024',
                 <>
-                    <div>{"24 hour Horse Game Recreation attempt (was for fun)"} There was a game on twitter dot com that blew up for a while. It was some silly horse PNGs bouncing around a maze trying to win by reaching a bundle of carrots. I thought I could make it, so I made my best attempt to do so in just one day. The end result was pretty good and I had a great time learning Godot!</div>
+                    <div>
+                        There was a trend online called "horse race tests" that was really big on twitter.com, which
+                        It was some silly horse PNGs bouncing around a maze trying to win by
+                        reaching a bundle of carrots. <br /> <br />
+                        I thought I could make it, so I did!
+                        I set a challenge to myself to attempt to do so in just one day. The end result was pretty good
+                        and I had a great time learning Godot!
+                    </div>
                 </>,
                 'img/projects/horse.png'
             )
@@ -220,14 +246,18 @@ export default function Projects(props: ProjectsProps) {
     const card9Dat: CardData = {
         id: useId(), zone: '', origin: { x: 0, y: 0 },
         cardContent: {
-            cardHoverInfo: "The Field Collector's Guide", cardBack: 'img/michel.png', content: makeCardContent(
+            cardHoverInfo: "The Field Collector's Guide", cardBack: 'img/projects/lightningscroll.png', content: makeCardContent(
                 "The Field Collector's Guide", '2026',
                 <>
                     <div>
-                        A text game made with react. I made a narrative game engine in the style of Twine for my friend's narrative project. I made a lot of tools for non-technical people to be able to write stories, so its easilly expandable and usable by all!
+                        This is a narrative game with a custom react based engine. Compared to other engines such as Twine, we stand
+                        out due to the capability of adding custom React components to stories. Currently I am developing a content pipeline that
+                        converts DOCX to engine readable data, and a graph editor creating branching paths. This enables non-technical users will be able to
+                        write and plan branching paths with ease.
+
                     </div>
                 </>,
-                'fakepath'
+                'img/projects/pardonourdust.jpg'
             )
         }
     }
@@ -238,10 +268,12 @@ export default function Projects(props: ProjectsProps) {
                 "The Burkean Parlor", '2026',
                 <>
                     <div>
-                        A literary magazine website run by USC students. I was reached out to by a friend to see if I was interested in making a website, and I thought it was a good opportunity to use my skills I've developed to help out others.
+                        A literary magazine website run by USC students. I am leading a team of three to create a website to host their content, with a focus on modularity and legacy maintainability for future developers.
+                        I was reached out to by a friend to see if I was interested in helping out, and I thought it was a good opportunity to use my skills to help out others. Currently in development, but a link will
+                        be provided as soon as we deploy it.
                     </div>
                 </>,
-                'fakepath'
+                'img/projects/pardonourdust.jpg'
             )
         }
     }

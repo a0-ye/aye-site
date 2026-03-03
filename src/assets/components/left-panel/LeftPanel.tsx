@@ -103,7 +103,7 @@ export default function LeftPanel(props: panelProps) {
                 <div id='panel-button-container' style={{
                     display: 'flex', justifyContent: 'space-evenly', gap: '10px'
                 }}>
-                    <motion.button style={{
+                    {/* <motion.button style={{
                         width: '50%', rotate: 0
                     }}
                         whileHover={{
@@ -117,9 +117,10 @@ export default function LeftPanel(props: panelProps) {
                         whileHover={{
                             scale: 1.1,
                             rotate: ['-3deg', '3deg', '0deg']
-                        }} className='panel-button' onClick={() => props.setShowSettings(true)}> options </motion.button>
+                        }} className='panel-button' onClick={() => props.setShowSettings(true)}> options </motion.button> */}
                 </div>
             </div>
+            
             {props.activeCard && <motion.button
                 style={{
                     width: '100%',
