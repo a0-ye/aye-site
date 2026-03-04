@@ -1,6 +1,6 @@
 import { useState, useId, type ReactNode, useEffect, useRef, type CSSProperties } from 'react'
 import './App.css'
-import { Analytics } from "@vercel/analytics/next"
+import { inject } from '@vercel/analytics';
 
 import AboutMe from './assets/pages/AboutMe'
 
@@ -277,7 +277,7 @@ function App() {
           </motion.div>
         </>
       }
-      <Analytics/>
+      {inject()}
     </>
   )
 }
