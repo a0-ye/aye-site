@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import './stickynote.css'
+import './StickyNote.css'
 
 interface StickyNoteProps {
     children?: ReactNode
