@@ -277,10 +277,9 @@ export default function Projects(props: ProjectsProps) {
                 <>
                     <div>
                         This is a narrative game with a custom react based engine. Compared to other engines such as Twine, we stand
-                        out due to the capability of adding custom React components to stories. Currently I am developing a content pipeline that
-                        converts DOCX to engine readable data, and a graph editor creating branching paths. This enables non-technical users will be able to
+                        out due to the capability of adding custom React components to stories. I have created a content pipeline that
+                        converts DOCX to nodes, which users can then utilize a custom graph GUI editor to layout their stories. This enables non-technical users will be able to
                         write and plan branching paths with ease.
-
                     </div>
                 </>,
                 'img/projects/pardonourdust.jpg'
@@ -395,11 +394,11 @@ export default function Projects(props: ProjectsProps) {
                             <div className='progress-bar-outer'>
                                 <motion.div className='progress-bar-inner'
                                     style={{
-                                        width: '50%',
+                                        width: '75%',
                                         backgroundColor: '#abff84ff'
                                     }}
                                     initial={{ width: '0%' }}
-                                    animate={{ width: '50%' }}
+                                    animate={{ width: '75%' }}
                                     transition={{ delay: 0.5, duration: 2 }}
                                 />
                             </div>
@@ -456,13 +455,23 @@ export default function Projects(props: ProjectsProps) {
                                     lineHeight: '1.5',
                                     fontSize: '0.95rem'
                                 }}>
-                                    I'm currently researching methods to convert Docx / XML to my engine's JSX so that users
+                                    I just finished implementing a pipeline that converts DOCX to nodes, and a node graph editor that
+                                    is used to form branching paths and actions. Theres also a flag setting and node dependency system that
+                                    allows users to have control over when a node or entry can appear.
+                                    <br/><br/>
+                                    My original plan was to make a separate app in Python using TKinter, but I realized it would probably be 
+                                    more user friendly to have everything live in-browser client side. Therefore the entire story editor lives on
+                                    the app itself, allowing for easy story editing and viewing.
+                                    <br/><br/>
+                                    The last stage is to make everything look nicer, as most visuals are placeholders.
+                                   
+                                    {/* I'm currently researching methods to convert Docx / XML to my engine's JSX so that users
                                     can write and format in docx and import files directly hassle free.
                                     My main task is writing a parser that is capable of properly recognize and convert DOCX XML tags to CSS.
                                     <br /><br />
                                     Originally I made my own format defined with just JSON and a basic JSON editor written
                                     in python using Tkinter, but I realized its too cumbersome for
-                                    non technical users, making it a good idea to pivot to a more accessible format that people can use.
+                                    non technical users, making it a good idea to pivot to a more accessible format that people can use. */}
 
                                 </p>
                             </div>
